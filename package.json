@@ -1,0 +1,42 @@
+{
+  "name": "hydra-template",
+  "private": "true",
+  "version": "0.0.0",
+  "description": "GraphQL server and Substrate indexer. Generated with ♥ by Hydra-CLI",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "processor:typegen": "hydra-typegen typegen manifest.yml",
+    "processor:codegen": "hydra-cli codegen",
+    "processor:db:create": "hydra-cli db:create",
+    "processor:db:drop": "hydra-cli db:drop",
+    "processor:db:create-migration": "hydra-cli db:create-migration",
+    "processor:db:migrate": "hydra-cli db:migrate",
+    "processor:db:revert": "hydra-cli db:revert",
+    "processor:db:reset": "hydra-cli db:drop && hydra-cli db:create && hydra-processor migrate && hydra-cli db:migrate",
+    "processor:migrate": "hydra-processor migrate",
+    "processor:start": "hydra-processor run",
+    "processor:query-node:start": "ts-node --type-check ./generated/server/index.ts",
+    "processor:clean-and-setup": "./scripts/dev/clean-and-setup.sh",
+    "processor:test": "mocha -r ts-node/register mappings/**.spec.ts utils/**.spec.ts",
+    "processor:test:watch": "mocha -r ts-node/register --watch --watch-files mappings/**.ts,utils/**.ts mappings/**.spec.ts utils/**.spec.ts",
+    "indexer:start": "docker-compose -f ./indexer/docker-compose.yml up",
+    "indexer:stop": "docker-compose -f ./indexer/docker-compose.yml down",
+    "testnet:start": "./scripts/dev/start-testnet.sh",
+    "testnet:stop": "./scripts/dev/stop-testnet.sh"
+  },
+  "dependencies": {
+    "@subsquid/hydra-cli": "4.1.0-alpha.4",
+    "@subsquid/hydra-processor": "4.1.0-alpha.4",
+    "@subsquid/hydra-typegen": "4.1.0-alpha.4",
+    "@types/lodash": "^4.14.172",
+    "lodash": "^4.17.21",
+    "simple-linear-scale": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.21",
+    "@types/mocha": "^9.0.0",
+    "chai": "^4.3.4",
+    "mocha": "^9.1.0"
+  }
+}
