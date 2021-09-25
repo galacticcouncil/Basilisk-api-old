@@ -10,6 +10,7 @@ typegen:
     - tokens.Transfer
   outDir: types
   customTypes:
+    lib: ../chain
     typedefsLoc: types.json
 
 mappings:
