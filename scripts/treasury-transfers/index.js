@@ -89,13 +89,17 @@ async function main() {
 
     const b = free.toBn().add(i).add(payouts.remainder).sub(o);
 
-    console.log('balance at initial block', free.toHuman());
-    console.log('transfers in', toBalance(i).toHuman());
-    console.log('transfers out', toBalance(o).toHuman());
-    console.log('payouts to stakers', toBalance(payouts.stakers).toHuman());
-    console.log('payouts remainder', toBalance(payouts.remainder).toHuman());
-    console.log('indexed balance', toBalance(b).toHuman());
-    console.log('balance in latest block', (await api.query.system.account(treasury)).data.free.toHuman());
+    const currentBalance = await api.query.system.account(treasury);
+    const totalIssuance = await api.query.balances.totalIssuance();
+
+    console.log('balance at initial block', free.toHuman(), free.toString());
+    console.log('transfers in', toBalance(i).toHuman(), i.toString());
+    console.log('transfers out', toBalance(o).toHuman(), o.toString());
+    console.log('payouts to stakers', toBalance(payouts.stakers).toHuman(), payouts.stakers.toString());
+    console.log('payouts remainder', toBalance(payouts.remainder).toHuman(), payouts.remainder.toString());
+    console.log('indexed balance', toBalance(b).toHuman(), b.toString());
+    console.log('balance in latest block', currentBalance.data.free.toHuman(), currentBalance.data.free.toString());
+    console.log('total issuance', totalIssuance.toHuman(), totalIssuance.toString());
 }
 
 main().then(() => process.exit(0)).catch(console.error)
