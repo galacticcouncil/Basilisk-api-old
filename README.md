@@ -30,8 +30,8 @@ npm run processor:start
 ```
 
 ## Generate custom types
-1. define custom types in `chain/definitions.ts`
-2. run `./gen.sh`
+1. define custom types in `./chain/definitions.ts`
+2. run `processor:gen-chain-types`
 
 
 ## Configuration

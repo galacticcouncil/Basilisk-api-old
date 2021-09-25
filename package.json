@@ -20,6 +20,7 @@
     "processor:clean-and-setup": "./scripts/dev/clean-and-setup.sh",
     "processor:test": "mocha -r ts-node/register mappings/**.spec.ts utils/**.spec.ts",
     "processor:test:watch": "mocha -r ts-node/register --watch --watch-files mappings/**.ts,utils/**.ts mappings/**.spec.ts utils/**.spec.ts",
+    "processor:gen-chain-types": "./scripts/dev/gen-chain-types.sh",
     "indexer:start": "docker-compose -f ./indexer/docker-compose.yml up",
     "indexer:stop": "docker-compose -f ./indexer/docker-compose.yml down",
     "testnet:start": "./scripts/dev/start-testnet.sh",
