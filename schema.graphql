@@ -1,4 +1,4 @@
-type Transfer {
+type Transfer @entity {
   from: String!,
   to: String!,
   balance: BigInt!
