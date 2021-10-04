@@ -28,7 +28,12 @@ npm run processor:clean-and-setup
 # Start processing the indexed data
 npm run processor:start
 ```
- 
+
+## Generate custom types
+1. define custom types in `./chain/definitions.ts`
+2. run `processor:gen-chain-types`
+
+
 ## Configuration
 
 Project's configuration is driven by environment variables, defined in `.env`,

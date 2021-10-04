@@ -20,15 +20,17 @@
     "processor:clean-and-setup": "./scripts/dev/clean-and-setup.sh",
     "processor:test": "mocha -r ts-node/register mappings/**.spec.ts utils/**.spec.ts",
     "processor:test:watch": "mocha -r ts-node/register --watch --watch-files mappings/**.ts,utils/**.ts mappings/**.spec.ts utils/**.spec.ts",
+    "processor:gen-chain-types": "./scripts/dev/gen-chain-types.sh",
     "indexer:start": "docker-compose -f ./indexer/docker-compose.yml up",
     "indexer:stop": "docker-compose -f ./indexer/docker-compose.yml down",
     "testnet:start": "./scripts/dev/start-testnet.sh",
     "testnet:stop": "./scripts/dev/stop-testnet.sh"
   },
   "dependencies": {
-    "@subsquid/hydra-cli": "4.1.0-alpha.4",
-    "@subsquid/hydra-processor": "4.1.0-alpha.4",
-    "@subsquid/hydra-typegen": "4.1.0-alpha.4",
+    "@polkadot/typegen": "^5.6.1",
+    "@subsquid/hydra-cli": "4.2.0-alpha.2",
+    "@subsquid/hydra-processor": "4.2.0-alpha.2",
+    "@subsquid/hydra-typegen": "4.2.0-alpha.2",
     "@types/lodash": "^4.14.172",
     "lodash": "^4.17.21",
     "simple-linear-scale": "^1.0.1"
