@@ -3,3 +3,63 @@ type Transfer @entity {
   to: String!,
   balance: BigInt!
 }
+
+type Asset @entity {
+  id: ID!
+  decimals: Int!
+  name: String
+  type: String
+  symbol: String
+  nativeLocation: String
+  locked: Boolean!
+  parentPool: Pool
+}
+
+type Account @entity {
+  id: ID!
+  accountId: String!
+  createdPools: [Pool] @derivedFrom(field: "ownerAccount")
+}
+
+type Pool @entity {
+  id: ID!
+  accountId: String!
+  specVersion: String
+  isActive: Boolean!
+  sharedToken: Asset
+  sharedTokenInitialBalance: BigInt
+  ownerAccount: Account
+  createdAt: DateTime!
+  deletedAt: DateTime!
+  tokenZero: Asset!
+  tokenOne: Asset!
+  tokensVolume: [PoolTokensVolume] @derivedFrom(field: "pool")
+}
+
+type PoolTokensVolume @entity {
+  id: ID!
+  pool: Pool!
+  blockHash: String!
+  timestamp: BigInt!
+  tokenZeroAmount: BigInt
+  tokenOneAmount: BigInt
+  sharedAssetAmount: BigInt
+  marketCap: BigInt
+  tradeAmount: BigInt
+}
+
+type AssetPrice @entity {
+  id: ID!
+  assetZero: Asset
+  assetOne: Asset
+  pairName: String!
+  pairPool: Pool!
+  prices: [AssetPriceHistorical]
+}
+
+type AssetPriceHistorical @entity {
+  id: ID!
+  blockHash: String!
+  timestamp: BigInt!
+  price: BigInt!
+}
