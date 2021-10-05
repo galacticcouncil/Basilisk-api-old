@@ -33,7 +33,8 @@
     "@subsquid/hydra-typegen": "4.2.0-alpha.2",
     "@types/lodash": "^4.14.172",
     "lodash": "^4.17.21",
-    "simple-linear-scale": "^1.0.1"
+    "simple-linear-scale": "^1.0.1",
+    "hydradx-js": "git+https://github.com/galacticcouncil/HydraDX-js#feature/update-polkadot-api-version"
   },
   "devDependencies": {
     "@types/chai": "^4.2.21",
