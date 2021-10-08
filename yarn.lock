@@ -3438,9 +3438,9 @@ human-signals@^1.1.1:
   version "0.2.0"
   resolved "git+https://github.com/galacticcouncil/HydraDX-wasm#05f813051d86050f29ed8704cf8595776b1f036a"
 
-"hydradx-js@git+https://github.com/galacticcouncil/HydraDX-js#feature/update-polkadot-api-version":
+"hydradx-js@git+https://github.com/galacticcouncil/HydraDX-js#feature/integrate-lbp-functionality":
   version "0.1.0"
-  resolved "git+https://github.com/galacticcouncil/HydraDX-js#883ad8797747fbc9d350761e42c4fd652294f698"
+  resolved "git+https://github.com/galacticcouncil/HydraDX-js#1ce5597320cf371597fd597574e567f14c7ef4b7"
   dependencies:
     "@polkadot/api" "^6.2.1"
     bignumber.js "^9.0.1"

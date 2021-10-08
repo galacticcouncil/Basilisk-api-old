@@ -10,11 +10,12 @@ type Pool @entity {
   accountId: String!
   tokenZero: Asset!
   tokenOne: Asset!
-  assetsPrice: [AssetPriceHistorical]
+  assetsPrice: [AssetPriceHistorical] @derivedFrom(field: "pool")
 }
 
 type AssetPriceHistorical @entity {
   id: ID!
+  pool: Pool
   blockHash: String!
   timestamp: BigInt!
   tokenZero: Asset!
