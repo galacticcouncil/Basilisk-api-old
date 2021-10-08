@@ -1,35 +1,23 @@
 type Asset @entity {
   id: ID!
-  decimals: Int!
   name: String
   type: String
   symbol: String
-  nativeLocation: String
-  locked: Boolean!
-  parentPool: Pool
 }
 
 type Pool @entity {
   id: ID!
   accountId: String!
-  sharedToken: Asset
-  sharedTokenInitialBalance: BigInt
   tokenZero: Asset!
   tokenOne: Asset!
-}
-
-type AssetPrice @entity {
-  id: ID!
-  assetZero: Asset
-  assetOne: Asset
-  pairName: String!
-  pairPool: Pool!
-  prices: [AssetPriceHistorical]
+  assetsPrice: [AssetPriceHistorical]
 }
 
 type AssetPriceHistorical @entity {
   id: ID!
   blockHash: String!
   timestamp: BigInt!
+  tokenZero: Asset!
+  tokenOne: Asset!
   price: BigInt!
 }
