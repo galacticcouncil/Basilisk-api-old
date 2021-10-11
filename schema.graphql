@@ -1,5 +1,6 @@
 type Asset @entity {
   id: ID!
+  assetId: String!
   name: String
   type: String
   symbol: String

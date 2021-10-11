@@ -7,7 +7,10 @@ typegen:
   metadata:
     source: ws://localhost:9988
   events:
-    - tokens.Transfer
+    - asset-registry.Registered
+    - asset-registry.Updated
+    - lbp.PoolCreated
+    - balances.Transfer
   outDir: types
   customTypes:
     lib: ../chain
@@ -20,5 +23,13 @@ mappings:
 
   # events handled by the processor
   eventHandlers:
-    - event: tokens.Transfer
-      handler: handleTokensTransfer
+    - event: asset-registry.Registered
+      handler: handleAssetRegisteredUpdated
+    - event: asset-registry.Updated
+      handler: handleAssetRegisteredUpdated
+    - event: lbp.PoolCreated
+      handler: handlePoolCreated
+    - event: balances.Transfer
+      handler: handleTransfer
+  postBlockHooks:
+    - handler: handlePostBlock

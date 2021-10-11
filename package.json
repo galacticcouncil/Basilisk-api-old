@@ -32,9 +32,10 @@
     "@subsquid/hydra-processor": "4.2.0-alpha.2",
     "@subsquid/hydra-typegen": "4.2.0-alpha.2",
     "@types/lodash": "^4.14.172",
+    "hydradx-js": "git+https://github.com/galacticcouncil/HydraDX-js#feature/integrate-lbp-functionality",
     "lodash": "^4.17.21",
     "simple-linear-scale": "^1.0.1",
-    "hydradx-js": "git+https://github.com/galacticcouncil/HydraDX-js#feature/integrate-lbp-functionality"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
     "@types/chai": "^4.2.21",
