@@ -1,9 +1,10 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Compact, Enum, Struct, Vec, bool, i128, u128, u32, u64, u8 } from '@polkadot/types';
+import type { Bytes, Compact, Enum, Struct, Vec, bool, i128, u32, u64, u8 } from '@polkadot/types';
+import type { ITuple } from '@polkadot/types/types';
 import type { AccountId, AssetId, Balance, BlockNumber, Hash } from '@polkadot/types/interfaces/runtime';
-import type { MultiLocation } from '@polkadot/types/interfaces/xcm';
+import type { AssetInstanceV1, MultiAssetV1, MultiLocationV1, XcmOrderV1, XcmV1 } from '@polkadot/types/interfaces/xcm';
 
 /** @name Address */
 export interface Address extends AccountId {}
@@ -18,8 +19,15 @@ export interface AmountOf extends Amount {}
 export interface AssetDetails extends Struct {
   readonly name: Bytes;
   readonly asset_type: AssetType;
+  readonly existential_deposit: Balance;
   readonly locked: bool;
 }
+
+/** @name AssetDetailsT */
+export interface AssetDetailsT extends AssetDetails {}
+
+/** @name AssetInstance */
+export interface AssetInstance extends AssetInstanceV1 {}
 
 /** @name AssetMetadata */
 export interface AssetMetadata extends Struct {
@@ -39,6 +47,8 @@ export interface AssetPair extends Struct {
 /** @name AssetType */
 export interface AssetType extends Enum {
   readonly isToken: boolean;
+  readonly isPoolShare: boolean;
+  readonly asPoolShare: ITuple<[AssetId, AssetId]>;
 }
 
 /** @name BalanceInfo */
@@ -112,19 +122,17 @@ export interface IntentionType extends Enum {
   readonly isBuy: boolean;
 }
 
-/** @name LBPAssetInfo */
-export interface LBPAssetInfo extends Struct {
-  readonly id: AssetId;
-  readonly amount: Balance;
-  readonly initial_weight: LBPWeight;
-  readonly final_weight: LBPWeight;
-}
-
 /** @name LBPWeight */
-export interface LBPWeight extends u128 {}
+export interface LBPWeight extends u32 {}
 
 /** @name LookupSource */
 export interface LookupSource extends AccountId {}
+
+/** @name MultiAsset */
+export interface MultiAsset extends MultiAssetV1 {}
+
+/** @name MultiLocation */
+export interface MultiLocation extends MultiLocationV1 {}
 
 /** @name OrderedSet */
 export interface OrderedSet extends Vec<AssetId> {}
@@ -142,15 +150,11 @@ export interface Pool extends Struct {
   readonly start: BlockNumber;
   readonly end: BlockNumber;
   readonly assets: AssetPair;
-  readonly initial_weights: WeightPair;
-  readonly final_weights: WeightPair;
-  readonly last_weight_update: BlockNumber;
-  readonly last_weights: WeightPair;
+  readonly initial_weight: LBPWeight;
+  readonly final_weight: LBPWeight;
   readonly weight_curve: WeightCurveType;
-  readonly pausable: bool;
-  readonly paused: bool;
   readonly fee: Fee;
-  readonly fee_receiver: AccountId;
+  readonly fee_collector: AccountId;
 }
 
 /** @name PoolId */
@@ -196,10 +200,10 @@ export interface WeightCurveType extends Enum {
   readonly isLinear: boolean;
 }
 
-/** @name WeightPair */
-export interface WeightPair extends Struct {
-  readonly weight_a: LBPWeight;
-  readonly weight_b: LBPWeight;
-}
+/** @name Xcm */
+export interface Xcm extends XcmV1 {}
+
+/** @name XcmOrder */
+export interface XcmOrder extends XcmOrderV1 {}
 
 export type PHANTOM_DEFAULT = 'default';
