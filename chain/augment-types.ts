@@ -58,7 +58,7 @@ import type { ClassDetails, ClassId, ClassMetadata, DepositBalance, DepositBalan
 import type { Multisig, Timepoint } from '@polkadot/types/interfaces/utility';
 import type { VestingInfo } from '@polkadot/types/interfaces/vesting';
 import type { AssetInstance, AssetInstanceV0, AssetInstanceV1, BodyId, BodyPart, DoubleEncodedCall, Fungibility, InboundStatus, InstructionV2, InteriorMultiLocation, Junction, JunctionV0, JunctionV1, JunctionV2, Junctions, JunctionsV1, JunctionsV2, MultiAsset, MultiAssetFilter, MultiAssetFilterV1, MultiAssetFilterV2, MultiAssetV0, MultiAssetV1, MultiAssetV2, MultiAssets, MultiAssetsV1, MultiAssetsV2, MultiLocation, MultiLocationV0, MultiLocationV1, MultiLocationV2, NetworkId, OriginKindV0, OriginKindV1, OriginKindV2, OutboundStatus, Outcome, QueryId, QueryStatus, QueueConfigData, Response, ResponseV0, ResponseV1, ResponseV2, ResponseV2Error, ResponseV2Result, VersionMigrationStage, VersionedMultiAsset, VersionedMultiAssets, VersionedMultiLocation, VersionedResponse, VersionedXcm, WeightLimitV2, WildFungibility, WildMultiAsset, WildMultiAssetV1, Xcm, XcmAssetId, XcmError, XcmErrorV0, XcmErrorV1, XcmErrorV2, XcmOrder, XcmOrderV0, XcmOrderV1, XcmOrigin, XcmOriginKind, XcmV0, XcmV1, XcmV2, XcmVersion, XcmpMessageFormat } from '@polkadot/types/interfaces/xcm';
-import type { Amount, AmountOf, AssetNativeLocation, AssetPair, AssetType, BalanceInfo, Chain, ClassData, ClassIdOf, ClassInfo, ClassInfoOf, Currency, CurrencyId, CurrencyIdOf, Fee, Intention, IntentionId, IntentionType, LBPAssetInfo, LBPWeight, OrderedSet, OrmlAccountData, Pool, PoolId, Price, TokenData, TokenId, TokenIdOf, TokenInfo, TokenInfoOf, VestingScheduleOf, WeightCurveType, WeightPair } from 'chain/default';
+import type { Amount, AmountOf, AssetDetailsT, AssetNativeLocation, AssetPair, AssetType, BalanceInfo, Chain, ClassData, ClassIdOf, ClassInfo, ClassInfoOf, Currency, CurrencyId, CurrencyIdOf, Fee, Intention, IntentionId, IntentionType, LBPWeight, OrderedSet, OrmlAccountData, Pool, PoolId, Price, TokenData, TokenId, TokenIdOf, TokenInfo, TokenInfoOf, VestingScheduleOf, WeightCurveType } from 'chain/default';
 
 declare module '@polkadot/types/types/registry' {
   export interface InterfaceTypes {
@@ -103,6 +103,7 @@ declare module '@polkadot/types/types/registry' {
     AssetBalance: AssetBalance;
     AssetDestroyWitness: AssetDestroyWitness;
     AssetDetails: AssetDetails;
+    AssetDetailsT: AssetDetailsT;
     AssetId: AssetId;
     AssetInstance: AssetInstance;
     AssetInstanceV0: AssetInstanceV0;
@@ -525,7 +526,6 @@ declare module '@polkadot/types/types/registry' {
     LaneId: LaneId;
     LastContribution: LastContribution;
     LastRuntimeUpgradeInfo: LastRuntimeUpgradeInfo;
-    LBPAssetInfo: LBPAssetInfo;
     LBPWeight: LBPWeight;
     LeasePeriod: LeasePeriod;
     LeasePeriodOf: LeasePeriodOf;
@@ -1032,7 +1032,6 @@ declare module '@polkadot/types/types/registry' {
     WeightCurveType: WeightCurveType;
     WeightLimitV2: WeightLimitV2;
     WeightMultiplier: WeightMultiplier;
-    WeightPair: WeightPair;
     WeightPerClass: WeightPerClass;
     WeightToFeeCoefficient: WeightToFeeCoefficient;
     WildFungibility: WildFungibility;
