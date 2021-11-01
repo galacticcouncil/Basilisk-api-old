@@ -4,21 +4,21 @@ repository: https://github.com/
 hydraVersion: "4"
 
 typegen:
+  outDir: src/types
   metadata:
     source: ws://localhost:9988
   events:
     - tokens.Transfer
-  outDir: types
   customTypes:
     lib: ../chain
     typedefsLoc: types.json
 
 mappings:
-  mappingsModule: mappings
+  mappingsModule: lib/mappings
 
   range: '[0, )'
 
   # events handled by the processor
   eventHandlers:
-    - event: tokens.Transfer
-      handler: handleTokensTransfer
+    - event: system.ExtrinsicSuccess
+      handler: handleExtrinsicSuccess

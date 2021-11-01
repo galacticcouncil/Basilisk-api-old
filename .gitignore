@@ -1,5 +1,6 @@
 /.idea
 /node_modules
+/lib
 /db
-/generated
-/types
+/src/generated
+/src/types
