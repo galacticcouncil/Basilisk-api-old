@@ -1,8 +1,11 @@
+set -e
+
 docker-compose down
-rm -r db generated types
+rm -rf db src/generated src/types
 
 npm run processor:codegen
 npm run processor:typegen
+npm run build
 
 docker-compose up -d db
 sleep 1

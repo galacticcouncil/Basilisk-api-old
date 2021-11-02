@@ -2,9 +2,9 @@
 /* eslint-disable */
 
 import type { Bytes, Compact, Enum, Struct, Vec, bool, i128, u32, u64, u8 } from '@polkadot/types';
-import type { ITuple } from '@polkadot/types/types';
 import type { AccountId, AssetId, Balance, BlockNumber, Hash } from '@polkadot/types/interfaces/runtime';
 import type { AssetInstanceV1, MultiAssetV1, MultiLocationV1, XcmOrderV1, XcmV1 } from '@polkadot/types/interfaces/xcm';
+import type { ITuple } from '@polkadot/types/types';
 
 /** @name Address */
 export interface Address extends AccountId {}
