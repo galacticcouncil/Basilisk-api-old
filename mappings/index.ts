@@ -1,21 +1,9 @@
-import {EventContext, StoreContext} from "@subsquid/hydra-common"
-import {Extrinsic} from "../generated/model/extrinsic.model"
 import { Balances } from "../types/balances"
-import handlePostBlock from "../block/handlePostBlock"
-import handleCurrenciesTransferred from "../currencies/handleCurrenciesTransferred";
+import handlePostBlock from "./block/handlePostBlock"
+import handleCurrenciesTransferred from "./currencies/handleCurrenciesTransferred";
 import {Tokens} from "../types/tokens"
-
-export async function handleExtrinsicSuccess({
-    block,
-    event,
-    store
-}: StoreContext & EventContext): Promise<void> {
-    let extrinsic = new Extrinsic()
-    extrinsic.id = event.id
-    extrinsic.name = event.extrinsic?.section + '.' + event.extrinsic?.method
-    await store.save(extrinsic)
-}
-
+import { LBP } from "../types/lbp";
+import { EventContext, StoreContext } from '@subsquid/hydra-common'
 const handleTokensTransfer = async ({ block, event, store }: any) => {
     console.log(`tokens.Transfer`)
     console.log(`method ${event.extrinsic?.method}`)
@@ -55,9 +43,7 @@ const handleTokensEndowed = async ({ block, event, store }: any) => {
 
 const handlePoolCreated = async ({ block, event, store, extrinsic }: EventContext & StoreContext): Promise<void> => {
     console.log("lbp.PoolCreated");
-    console.log("LBP Pool address",event.params[0].value)
-    console.log("assets", event.params[1].value)
-    //console.log(`arguments of extrinsic resulting in lbp.PoolCreated: ${JSON.stringify(event.extrinsic!.args[0].value)}`)
+    console.log(`arguments of extrinsic resulting in lbp.PoolCreated: ${JSON.stringify(event.extrinsic!.args[0].value)}`)
 };
 
 const handleSellExecuted = async ({ block, event, store }: any) => {

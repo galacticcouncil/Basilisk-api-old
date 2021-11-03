@@ -1,9 +1,31 @@
 type Transfer @entity {
+  currencyId: BigInt!,
   from: String!,
   to: String!,
-  balance: BigInt!
+  balance: BigInt!,
+  blockHeight: BigInt!
 }
 
 type Extrinsic @entity {
   name: String!
+}
+
+type Pool @entity {
+    id: ID!,
+    asset1: BigInt!,
+    asset2: BigInt!,
+    historicLiquidity: LiquidityAtBlockHeight
+}
+
+type LiquidityAtBlockHeight @entity {
+  id: ID!,
+  asset1: BigInt!,
+  asset2: BigInt!,
+  blockHeight: BigInt!
+}
+
+type Chronicle @entity {
+  id: ID!,
+  # TODO: use stateSubscription.lastCompletedBlock instead
+  lastProcessedBlock: BigInt!,
 }
