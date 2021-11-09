@@ -1,31 +1,36 @@
-type Transfer @entity {
-  currencyId: BigInt!,
-  from: String!,
-  to: String!,
-  balance: BigInt!,
-  blockHeight: BigInt!
+# TODO: look into using scalars (type alias)
+
+interface Pool {
+    id: ID!
+    assetAId: BigInt
+    assetBId: BigInt
+    assetABalance: BigInt!
+    assetBBalance: BigInt!
 }
 
-type Extrinsic @entity {
-  name: String!
+type LBPPool implements Pool @entity {
+    "PoolId"
+    id: ID!
+    assetAId: BigInt
+    assetBId: BigInt
+    assetABalance: BigInt!
+    assetBBalance: BigInt!
+    saleEndAtRelayChainBlockHeight: BigInt
+    saleEnded: Boolean
+    historicalBalances: [HistoricalBalance!]! @derivedFrom(field: "pool")
 }
 
-type Pool @entity {
-    id: ID!,
-    asset1: BigInt!,
-    asset2: BigInt!,
-    historicLiquidity: LiquidityAtBlockHeight
-}
-
-type LiquidityAtBlockHeight @entity {
-  id: ID!,
-  asset1: BigInt!,
-  asset2: BigInt!,
-  blockHeight: BigInt!
+type HistoricalBalance @entity {
+  "paraChainBlockHeight"
+  id: ID!
+  pool: LBPPool!
+  assetABalance: BigInt!
+  assetBBalance: BigInt!
+  relayChainBlockHeight: BigInt!
 }
 
 type Chronicle @entity {
-  id: ID!,
+  id: ID!
   # TODO: use stateSubscription.lastCompletedBlock instead
-  lastProcessedBlock: BigInt!,
+  lastProcessedBlock: BigInt!
 }
