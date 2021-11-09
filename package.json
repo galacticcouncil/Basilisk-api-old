@@ -25,18 +25,21 @@
     "indexer:start": "docker-compose -f ./indexer/docker-compose.yml up",
     "indexer:stop": "docker-compose -f ./indexer/docker-compose.yml down",
     "testnet:start": "./scripts/dev/start-testnet.sh",
-    "testnet:stop": "./scripts/dev/stop-testnet.sh"
+    "testnet:stop": "./scripts/dev/stop-testnet.sh",
+    "test": "npm run build & mocha -r ts-node/register mappings/**.spec.ts utils/**.spec.ts"
   },
   "dependencies": {
     "@polkadot/types": "^6.5.2",
     "@subsquid/hydra-common": "^4.1.0",
     "@subsquid/hydra-processor": "5.0.0-alpha.6",
     "@subsquid/openreader": "^0.2.0",
-    "hydradx-js": "git+https://github.com/galacticcouncil/HydraDX-js",
+    "@types/sinon": "^10.0.6",
+    "hydradx-js": "git+https://github.com/galacticcouncil/HydraDX-js#feature/integrate-lbp-functionality",
     "inflected": "^2.1.0",
     "lodash": "^4.17.21",
     "simple-linear-scale": "^1.0.1",
-    "typeorm": "^0.2.38"
+    "typeorm": "^0.2.38",
+    "yaml": "^1.10.2"
   },
   "devDependencies": {
     "@polkadot/typegen": "^6.5.2",
@@ -49,6 +52,7 @@
     "@types/pg": "^8.6.1",
     "chai": "^4.3.4",
     "mocha": "^9.1.0",
+    "sinon": "^12.0.1",
     "typescript": "~4.4.4"
   }
 }
