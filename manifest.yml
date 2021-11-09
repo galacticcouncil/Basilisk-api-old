@@ -9,14 +9,9 @@ typegen:
     source: ws://localhost:9988
   events:
     - tokens.Transfer
-    - tokens.Endowed
     - balances.Transfer
-    - lbp.BuyExecuted
-    - lbp.LiquidityAdded
-    - lbp.LiquidityRemoved
     - lbp.PoolCreated
-    - lbp.SellExecuted
-    - currencies.Transferred
+    - lbp.PoolUpdated
   customTypes:
     lib: ../chain
     typedefsLoc: types.json
@@ -28,24 +23,14 @@ mappings:
 
   # events handled by the processor
   eventHandlers:
-    - event: tokens.Transfer
-      handler: handleTokensTransfer
-    - event: tokens.Endowed
-      handler: handleTokensEndowed
-    - event: balances.Transfer
-      handler: handleBalanceTransfer
-    - event: lbp.BuyExecuted
-      handler: handleBuyExecuted
-    - event: lbp.LiquidityAdded
-      handler: handleLiquidityAdded
-    - event: lbp.LiquidityRemoved
-      handler: handleLiquidityRemoved
     - event: lbp.PoolCreated
       handler: handlePoolCreated
-    - event: lbp.SellExecuted
-      handler: handleSellExecuted
-    - event: currencies.Transferred
-      handler: handleCurrenciesTransferred
-    - event: system.ExtrinsicSuccess
-      handler: handleExtrinsicSuccess
+    - event: tokens.Transfer
+      handler: handleTokensTransfer
+    - event: balances.Transfer
+      handler: handleBalancesTransfer
+    - event: lbp.PoolUpdated
+      handler: handlePoolUpdated
+  postBlockHooks:
+    - handler: handlePostBlock
 
