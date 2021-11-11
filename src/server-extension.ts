@@ -1,82 +1,97 @@
-import {Resolver, ObjectType, Field, Query, Arg} from "type-graphql"
-import {InjectManager} from "typeorm-typedi-extensions"
-import {EntityManager, getManager} from "typeorm"
-import {TestBlock as Block} from "./generated/model/testBlock.model"
+import { Resolver, ObjectType, Field, Query, Arg, ID } from "type-graphql"
+import { InjectManager } from "typeorm-typedi-extensions"
+import { Entity, EntityManager, EntityTarget, getManager } from "typeorm"
+import { TestBlock as TestBlockModel } from './generated/model/testBlock.model';
 
-@ObjectType()
-export class Entry{
-  @Field({ nullable: false })
-  height!: string
-
-  @Field({ nullable: false })
-  liquidity!: string
-
-  @Field({ nullable: false })
-  at!: string
-
-  constructor(h: string,l: string, at: string) {
-    this.height = h;
-    this.liquidity = h;
-    this.at = at;
-  }
+function newEntity(entity: any) {
+  return new (Function.prototype.bind.apply(entity, arguments as any));
 }
 
-type QueryResult = {
-  block_height: string,
-  created_at: Date,
-}
+export const defaultTimeField = 'created_at';
 
-@Resolver()
-export class LiquidityOverTimeResolver {
-  TABLE: string = "test_block";
-  TIME_FIELD: string = "created_at";
+export const entityOverTimeResolverFactory = <TObject>(
+  entity: any,
+  entityModel: any,
+  entityName: string, 
+  table: string,
+  timeField: string = defaultTimeField
+) => {
+  @Resolver()
+  class EntityOverTimeResolver {
 
-  constructor(
-      @InjectManager() private db: EntityManager,
-  ) {}
+    public TABLE: string = table;
+    public TIME_FIELD: string = timeField;
 
-  chunk_size_in_seconds(from: string, to:string, quantity: number): number{
+    chunkSizeInSeconds(from: string, to: string, quantity: number): number {
 
-    let diff = new Date(to).getTime() - new Date(from).getTime();
+      let diff = new Date(to).getTime() - new Date(from).getTime();
 
-    if (diff < 0){
-      throw new Error("Incorrect range");
+      if (diff < 0) {
+        throw new Error("Incorrect range");
+      }
+
+      return diff / 1000 / quantity;
     }
 
-    return diff / 1000 / quantity;
+    @Query(() => [entity])
+    async [entityName](
+      @Arg("quantity", { nullable: false }) quantity: number,
+      @Arg("from", { defaultValue: new Date().toISOString() }) from: string,
+      @Arg("to", { defaultValue: new Date().toISOString() }) to: string,
+    ): Promise<TObject[]> {
+      let manager = getManager();
+
+      // How this was built: https://dbfiddle.uk/?rdbms=postgres_13&fiddle=b2a5aa63ddaf6ac8c773e5f9172724b9
+      let results: any[] = await manager.getRepository(entityModel).query(`
+        SELECT
+          b.*
+        FROM
+          ${this.TABLE} AS b
+            INNER JOIN (
+            SELECT
+              min(${this.TIME_FIELD}) AS t, (EXTRACT(EPOCH FROM bb.${this.TIME_FIELD})::integer/${this.chunkSizeInSeconds(from, to, quantity)}) AS p
+            FROM
+              ${this.TABLE} AS bb
+            WHERE
+              (bb.${this.TIME_FIELD} between '${from}' AND '${to}')
+            GROUP BY p
+          ) t
+            ON
+             b.${this.TIME_FIELD} = t.t
+        ORDER BY b.${this.TIME_FIELD};
+      `);
+
+      return results.map(result => (<any>newEntity)(entity, result));
+    }
   }
 
-  @Query(() => [Entry])
-  async liquidityOverTime(
-      @Arg("quantity", { nullable: false}) quantity: number,
-      @Arg("from", { defaultValue: new Date().toISOString() }) from: string,
-      @Arg("to", { defaultValue: new Date().toISOString()}) to: string,
-  ): Promise<Entry[]> {
+  return EntityOverTimeResolver
+}
 
-    let manager  = getManager(); // note: this.db does not work for some reason.
+/**
+ * To define a custom over time resolver for a new entity, you first
+ * need to define an @ObjectType() to be served as a response from your resolver.
+ * 
+ * Then you can create a new class that extends a generic over time resolver class from
+ * the factory.
+ */
+@ObjectType()
+export class TestBlock {
 
-    let results:QueryResult[] = await manager.getRepository(Block).query(`
+  @Field({ nullable: false })
+  block_height!: bigint
 
-      SELECT
-        b.*
-      FROM
-        ${this.TABLE} AS b
-          INNER JOIN (
-          SELECT
-            min(${this.TIME_FIELD}) AS t, (EXTRACT(EPOCH FROM bb.${this.TIME_FIELD})::integer/${this.chunk_size_in_seconds(from,to,quantity)}) AS p
-          FROM
-            ${this.TABLE} AS bb
-          WHERE
-            (bb.${this.TIME_FIELD} between '${from}' AND '${to}')
-          GROUP BY p
-        ) t
-          ON
-           b.${this.TIME_FIELD} = t.t
-      ORDER BY b.${this.TIME_FIELD};
-    `);
+  @Field({ nullable: false })
+  created_at!: Date
 
-    return results.map(val => {
-      return new Entry(val.block_height, "200", val.created_at.toISOString())
-    })
+  constructor(props: any) {
+    Object.assign(this, props);
   }
 }
+@Resolver()
+export class TestBlockOverTimeResolver extends entityOverTimeResolverFactory<TestBlock>(
+  TestBlock, 
+  TestBlockModel, 
+  'testBlocksOverTime', 
+  'test_block'
+) {}
