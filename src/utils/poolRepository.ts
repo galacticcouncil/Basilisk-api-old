@@ -73,11 +73,10 @@ export const savePoolUpdated = async (
     const pool = await store.get(LBPPool, {
         where: { id: poolId },
     });
-    console.log("pooladdressis", poolId);
     if (!pool) return;
     pool.saleEndAtRelayChainBlockHeight = end;
     pool.saleEnded = false;
-    console.log("saving pool updated");
+
     await store.save(pool);
 };
 
@@ -87,7 +86,7 @@ export const setSaleEnded = async (store: DatabaseManager, poolId: string) => {
     });
     if (!pool) return;
     pool.saleEnded = true;
-    console.log("saleEnded");
+    
     await store.save(pool);
 };
 

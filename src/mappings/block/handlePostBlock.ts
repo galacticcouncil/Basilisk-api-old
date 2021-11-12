@@ -1,32 +1,12 @@
 import {
     BlockContext,
     StoreContext,
-    DatabaseManager,
 } from "@subsquid/hydra-common";
-import { Chronicle, LBPPool } from "../../generated/model";
-import { ensure } from "../../utils/ensure";
+import { LBPPool } from "../../generated/model";
 import { createHistoricalBalance } from "../../utils/historicalBalance";
 import { Basilisk } from "../../utils/basiliskApi";
-import { BasiliskSDK } from "../../utils/basiliskSDK";
 import { createBlockHeightPairing } from "../../utils/createBlockHeightPairing";
-
-const ensureChronicle = async (store: DatabaseManager) => {
-    const chronicle = await ensure(store, Chronicle, "chronicleId", {
-        // just a starting value for the Chronicle
-        lastProcessedBlock: BigInt(0),
-    });
-
-    await store.save(chronicle);
-    return chronicle;
-};
-const updateChronicle = async (
-    store: DatabaseManager,
-    chronicleUpdate: Partial<Chronicle>
-) => {
-    const chronicle = await ensureChronicle(store);
-    Object.assign(chronicle, chronicleUpdate);
-    await store.save(chronicle);
-};
+import { updateChronicle } from "../../utils/chronicle";
 
 const handlePostBlock = async ({
     store,
@@ -40,7 +20,6 @@ const handlePostBlock = async ({
     const paraChainBlockHeight = BigInt(block.height.toString());
     
     let dataBaseQueries;
-
     dataBaseQueries = [updateChronicle(store, {
         lastProcessedBlock: paraChainBlockHeight,
     })];
