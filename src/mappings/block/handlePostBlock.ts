@@ -7,7 +7,6 @@ import { Chronicle, LBPPool } from "../../generated/model";
 import { ensure } from "../../utils/ensure";
 import { createHistoricalBalance } from "../../utils/historicalBalance";
 import { Basilisk } from "../../utils/basiliskApi";
-import { BasiliskSDK } from "../../utils/basiliskSDK";
 import { createBlockHeightPairing } from "../../utils/createBlockHeightPairing";
 
 const ensureChronicle = async (store: DatabaseManager) => {

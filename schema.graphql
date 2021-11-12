@@ -40,7 +40,7 @@ type HistoricalBalance @entity {
 }
 
 type Chronicle @entity {
-  id: ID!
-  # TODO: use stateSubscription.lastCompletedBlock instead
-  lastProcessedBlock: BigInt!
+    id: ID!
+    # TODO: use stateSubscription.lastCompletedBlock instead
+    lastProcessedBlock: BigInt!
 }
