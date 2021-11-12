@@ -51,14 +51,13 @@ export const entityOverTimeResolverFactory = <TObject>(
                     SELECT min(${this.TIME_FIELD})                                                                             AS t,
                            (EXTRACT(EPOCH FROM bb.${this.TIME_FIELD})::integer/${this.chunkSizeInSeconds(from, to, quantity)}) AS p
                     FROM ${this.TABLE} AS bb
-                    WHERE (bb.${this.TIME_FIELD} between '${from}' AND '${to}')
+                    WHERE (bb.${this.TIME_FIELD} between $1  AND $2)
                     GROUP BY p
                 ) t
                                     ON
                                         b.${this.TIME_FIELD} = t.t
                 ORDER BY b.${this.TIME_FIELD};
-            `);
-
+            `, [from, to]);
             return results.map(result => (<any>newEntity)(entity, result));
         }
     }
