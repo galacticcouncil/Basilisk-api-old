@@ -46,7 +46,7 @@ export const entityOverTimeResolverFactory = <TObject>(
                 throw new Error("Invalid quantity.")
             }
 
-            // Simple validation - it throws "RangeError: Invalid date or time" error in invalid dates is provided
+            // Simple validation - it throws "RangeError: Invalid date or time" error if invalid date is provided
             let start = new Date(from).toISOString();
             let end = new Date(to).toISOString();
 
@@ -54,18 +54,16 @@ export const entityOverTimeResolverFactory = <TObject>(
 
             // How this was built: https://dbfiddle.uk/?rdbms=postgres_13&fiddle=b2a5aa63ddaf6ac8c773e5f9172724b9
             let results: any[] = await manager.getRepository(entityModel).query(`
-                SELECT b.*
-                FROM ${this.TABLE} AS b
+                SELECT main_t.*
+                FROM ${this.TABLE} AS main_t
                          INNER JOIN (
-                    SELECT min(${this.TIME_FIELD})                                                                             AS t,
-                           (EXTRACT(EPOCH FROM bb.${this.TIME_FIELD})::integer/${this.chunkSizeInSeconds(start, end, quantity)}) AS p
-                    FROM ${this.TABLE} AS bb
-                    WHERE (bb.${this.TIME_FIELD} between $1  AND $2)
-                    GROUP BY p
-                ) t
-                                    ON
-                                        b.${this.TIME_FIELD} = t.t
-                ORDER BY b.${this.TIME_FIELD};
+                    SELECT min(${this.TIME_FIELD}) AS min_time,
+                           (EXTRACT(EPOCH FROM j_main_t.${this.TIME_FIELD})::integer/${this.chunkSizeInSeconds(start, end, quantity)}) AS bucket
+                    FROM ${this.TABLE} AS j_main_t
+                    WHERE (j_main_t.${this.TIME_FIELD} between $1  AND $2)
+                    GROUP BY bucket
+                ) grouped_main_t ON main_t.${this.TIME_FIELD} = grouped_main_t.min_time
+                ORDER BY main_t.${this.TIME_FIELD};
             `, [start, end]);
             return results.map(result => (<any>newEntity)(entity, result));
         }
