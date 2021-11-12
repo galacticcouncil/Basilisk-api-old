@@ -1,9 +1,8 @@
-import {parse} from "graphql"
 import {Client as PgClient, ClientBase, Pool} from "pg"
 import path from "path";
-import { serve, ServerOptions , ListeningServer} from '@subsquid/openreader/dist/server'
+import {ListeningServer, serve, ServerOptions} from '@subsquid/openreader/dist/server'
 
-import { loadModel } from '@subsquid/openreader/dist/tools'
+import {loadModel} from '@subsquid/openreader/dist/tools'
 import {Client} from "./client";
 
 
@@ -11,13 +10,13 @@ const db_config = () => {
     return {
         host: process.env.DB_HOST || 'localhost',
         port:
-        process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
+            process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
         database:
-        process.env.DB_NAME || 'postgres',
+            process.env.DB_NAME || 'postgres',
         user:
-        process.env.DB_USER || 'postgres',
+            process.env.DB_USER || 'postgres',
         password:
-        process.env.DB_PASS || 'postgres',
+            process.env.DB_PASS || 'postgres',
     }
 };
 
@@ -55,13 +54,13 @@ export function useDatabase(sql: string[]): void {
 
 
 export function useServer(): Client {
-      const model = loadModel(path.join(__dirname, '../../../schema.graphql'))
-      let extensionModule: string | undefined
-      try {
-        extensionModule = require.resolve('../../server-extension')
-      } catch (e) {
+    const model = loadModel(path.join(__dirname, '../../../schema.graphql'))
+    let extensionModule: string | undefined
+    try {
+        extensionModule = require.resolve('../../resolvers/test.resolver.ts')
+    } catch (e) {
         // ignore
-      }
+    }
 
     let client = new Client('not defined')
     let db: Pool;
@@ -76,7 +75,7 @@ export function useServer(): Client {
             port: process.env.GRAPHQL_SERVER_PORT || 3000,
         }
 
-        if ( extensionModule) {
+        if (extensionModule) {
             await require('../../generated/type-graphql').setup(extensionModule, options)
         }
         info = await serve(options);

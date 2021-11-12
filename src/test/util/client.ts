@@ -3,9 +3,10 @@ import expect from "expect"
 
 
 export class Client {
-    constructor(public endpoint: string) {}
+    constructor(public endpoint: string) {
+    }
 
-    async query<R=any>(q: string): Promise<R> {
+    async query<R = any>(q: string): Promise<R> {
         let response = await fetch(this.endpoint, {
             method: 'POST',
             body: JSON.stringify({query: q}),
