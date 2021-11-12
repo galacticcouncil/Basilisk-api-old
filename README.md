@@ -73,3 +73,69 @@ cd hydra && ./scripts/docker-build.sh --target indexer-gateway -t subsquid/hydra
 ## Development processor
 
 Run `npm run processor:clean-and-setup` to setup the development environment. Then run `npm run processor:start` to start the processor.
+
+## Entity over time resolver
+
+Resolvers have to be placed in the same module called `server-extension` ( `src/server-extension.ts` )
+
+A generic factory is provided in order to simplify creation of 'Entity Over Time' resolvers. ( `src/resolvers/factory.ts` )
+
+Model used in this resolver has to have at least one timestamp field.
+
+Creating new resolver is simple as creating new class in the server-extension module:
+
+```typescript
+
+@Resolver()
+export class TestBlockOverTimeResolver extends entityOverTimeResolverFactory<TestBlock>(
+    EntityType,
+    EntityModel,
+    'resolverName',
+    'db_name',
+    'time_fieldname'
+) {
+}
+```
+
+###Parameters:
+
+- `EntityType` is ObjectType class which will be returned from the resolver,eg:
+
+```typescript
+@ObjectType()
+export class EntityType{
+
+    @Field({nullable: false})
+    block_height!: bigint
+
+    @Field({nullable: false})
+    created_at!: Date
+
+    constructor(props: any) {
+        Object.assign(this, props);
+    }
+}
+```
+
+- `EntityModel` is Entity type class representing model in the DB. This should be auto-generated from the given graphql schema. Eg:
+
+```typescript
+@Entity_()
+export class EntityModel{
+  constructor(props?: Partial<TestBlock>) {
+    Object.assign(this, props)
+  }
+
+  @PrimaryColumn_()
+  id!: string
+
+  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+  blockHeight!: bigint
+
+  @Column_("timestamp with time zone", {nullable: false})
+  createdAt!: Date
+}
+```
+
+- `db_name` is exact table name in the database.
+- `time_fieldname` is exact field name of timestamp field in the table.
