@@ -20,6 +20,15 @@ type LBPPool implements Pool @entity {
     historicalBalances: [HistoricalBalance!]! @derivedFrom(field: "pool")
 }
 
+type XYKPool implements Pool @entity {
+    "PoolId"
+    id: ID!
+    assetAId: BigInt
+    assetBId: BigInt
+    assetABalance: BigInt!
+    assetBBalance: BigInt!
+}
+
 type BlockHeightPairing @entity {
     "paraChainBlockHash"
     id: ID!

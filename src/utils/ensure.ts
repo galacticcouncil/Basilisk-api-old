@@ -1,9 +1,5 @@
 import { DatabaseManager } from '@subsquid/hydra-common';
-
-// subset of a standard generated entity/model
-type EntityConstructor<T> = {
-    new (...args: any[]): T
-};
+import { EntityConstructor } from './types';
 
 /**
  * Get or Create the provided entity with the given ID

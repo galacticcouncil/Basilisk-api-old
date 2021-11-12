@@ -12,6 +12,9 @@ typegen:
     - balances.Transfer
     - lbp.PoolCreated
     - lbp.PoolUpdated
+    - xyk.PoolCreated
+    # this is not a typo, do not remove next line
+    - xYK.PoolCreated
   customTypes:
     lib: ../chain
     typedefsLoc: types.json
@@ -31,6 +34,8 @@ mappings:
       handler: handleBalancesTransfer
     - event: lbp.PoolUpdated
       handler: handlePoolUpdated
+    - event: xyk.PoolCreated
+      handler: handleXykPoolCreated
   postBlockHooks:
     - handler: handlePostBlock
 

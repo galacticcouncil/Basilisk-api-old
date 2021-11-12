@@ -29,3 +29,8 @@ export type poolUpdatedParameters = {
 export type poolId = string;
 
 export type blockHeight = bigint;
+
+// subset of a standard generated entity/model
+export type EntityConstructor<T> = {
+    new (...args: any[]): T
+};

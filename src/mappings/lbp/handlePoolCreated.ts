@@ -4,6 +4,7 @@ import {
     StoreContext,
     SubstrateEvent,
 } from "@subsquid/hydra-common";
+import { LBPPool } from "../../generated/model";
 import { create } from "../../types/_registry";
 import { toBasiliskFormattedAddress } from "../../utils/account";
 import { ensurePool } from "../../utils/poolRepository";
@@ -32,7 +33,7 @@ const handlePoolCreated = async ({
         getPoolCreatedParameters(event);
 
     // create a new pool
-    await ensurePool(store, poolCreatedParameters);
+    await ensurePool(store, LBPPool, poolCreatedParameters);
 };
 
 export default handlePoolCreated;
