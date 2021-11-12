@@ -38,8 +38,8 @@ export const entityOverTimeResolverFactory = <TObject>(
         @Query(() => [entity])
         async [entityName](
             @Arg("quantity", {nullable: false}) quantity: number,
-            @Arg("from", {defaultValue: new Date().toISOString()}) from: string,
-            @Arg("to", {defaultValue: new Date().toISOString()}) to: string,
+            @Arg("from", {nullable: false}) from: string,
+            @Arg("to", {nullable: false}) to: string,
         ): Promise<TObject[]> {
 
             if (quantity <= 0) {

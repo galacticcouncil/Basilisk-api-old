@@ -25,7 +25,7 @@
     "indexer:start": "docker-compose -f ./indexer/docker-compose.yml up",
     "indexer:stop": "docker-compose -f ./indexer/docker-compose.yml down",
     "testnet:start": "./scripts/dev/start-testnet.sh",
-    "testnet:stop": "./scripts/dev/stop-testnet.sh",
+    "testnet:stop": "./scripts/dev/stop-testnet.sh"
   },
   "dependencies": {
     "@polkadot/types": "^6.5.2",
