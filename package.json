@@ -29,7 +29,7 @@
     "test": "npm run build & mocha -r ts-node/register mappings/**.spec.ts utils/**.spec.ts"
   },
   "dependencies": {
-    "@polkadot/types": "^6.5.2",
+    "@polkadot/types": "6.5.2",
     "@subsquid/hydra-common": "^4.1.0",
     "@subsquid/hydra-processor": "5.0.0-alpha.6",
     "@subsquid/openreader": "^0.2.0",
@@ -42,7 +42,7 @@
     "yaml": "^1.10.2"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^6.5.2",
+    "@polkadot/typegen": "6.5.2",
     "@subsquid/hydra-cli": "5.0.0-alpha.6",
     "@subsquid/hydra-typegen": "5.0.0-alpha.6",
     "@types/chai": "^4.2.21",

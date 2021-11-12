@@ -6,7 +6,7 @@ import {
 import { Chronicle, LBPPool } from "../../generated/model";
 import { ensure } from "../../utils/ensure";
 import { createHistoricalBalance } from "../../utils/historicalBalance";
-import { updateSaleEnded } from "../../utils/poolRepository";
+import { Basilisk } from "../../utils/basiliskApi";
 import { BasiliskSDK } from "../../utils/basiliskSDK";
 import { createBlockHeightPairing } from "../../utils/createBlockHeightPairing";
 
@@ -32,7 +32,7 @@ const handlePostBlock = async ({
     store,
     block,
 }: BlockContext & StoreContext) => {
-    const basiliskAPI = await BasiliskSDK.getInstance();
+    const basiliskAPI = await Basilisk.getInstance();
 
     // TODO wait for SDK update to have proper error handling here; BigInt(0) is wrong
     const relayBlockHeight = await basiliskAPI!.basilisk.query.getBlockHeightRelayChain(block.hash) || BigInt(0);
