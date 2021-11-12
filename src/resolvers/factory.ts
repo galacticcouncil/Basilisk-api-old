@@ -41,6 +41,15 @@ export const entityOverTimeResolverFactory = <TObject>(
             @Arg("from", {defaultValue: new Date().toISOString()}) from: string,
             @Arg("to", {defaultValue: new Date().toISOString()}) to: string,
         ): Promise<TObject[]> {
+
+            if (quantity <= 0) {
+                throw new Error("Invalid quantity.")
+            }
+
+            // Simple validation - it throws "RangeError: Invalid date or time" error in invalid dates is provided
+            let start = new Date(from).toISOString();
+            let end = new Date(to).toISOString();
+
             let manager = getManager();
 
             // How this was built: https://dbfiddle.uk/?rdbms=postgres_13&fiddle=b2a5aa63ddaf6ac8c773e5f9172724b9
@@ -49,7 +58,7 @@ export const entityOverTimeResolverFactory = <TObject>(
                 FROM ${this.TABLE} AS b
                          INNER JOIN (
                     SELECT min(${this.TIME_FIELD})                                                                             AS t,
-                           (EXTRACT(EPOCH FROM bb.${this.TIME_FIELD})::integer/${this.chunkSizeInSeconds(from, to, quantity)}) AS p
+                           (EXTRACT(EPOCH FROM bb.${this.TIME_FIELD})::integer/${this.chunkSizeInSeconds(start, end, quantity)}) AS p
                     FROM ${this.TABLE} AS bb
                     WHERE (bb.${this.TIME_FIELD} between $1  AND $2)
                     GROUP BY p
