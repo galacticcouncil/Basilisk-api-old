@@ -66,7 +66,7 @@ export const entityOverTimeResolverFactory = <TObject>(
                                     ON
                                         b.${this.TIME_FIELD} = t.t
                 ORDER BY b.${this.TIME_FIELD};
-            `, [from, to]);
+            `, [start, end]);
             return results.map(result => (<any>newEntity)(entity, result));
         }
     }
