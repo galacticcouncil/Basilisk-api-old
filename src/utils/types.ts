@@ -25,3 +25,7 @@ export type poolUpdatedParameters = {
     poolId: string;
     end: bigint;
 };
+
+export type poolId = string;
+
+export type blockHeight = bigint;

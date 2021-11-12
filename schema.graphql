@@ -20,6 +20,14 @@ type LBPPool implements Pool @entity {
     historicalBalances: [HistoricalBalance!]! @derivedFrom(field: "pool")
 }
 
+type BlockHeightPairing @entity {
+    "paraChainBlockHash"
+    id: ID!
+    paraChainBlockHeight: BigInt!
+    relayChainBlockHeight: BigInt!
+    createdAt: DateTime!
+}
+
 # TODO generalize LBPPool reference to Pool; consider using union for XYKPool | LBPPool
 type HistoricalBalance @entity {
     "PoolId-paraChainBlockHeight"
