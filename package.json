@@ -7,6 +7,7 @@
   "license": "ISC",
   "scripts": {
     "build": "rm -rf lib && tsc",
+    "migrate:lbp": "ts-node ./migrations/01_lbp.ts",
     "processor:typegen": "hydra-typegen typegen manifest.yml",
     "processor:codegen": "hydra-cli codegen",
     "processor:db:create": "hydra-cli db:create",
