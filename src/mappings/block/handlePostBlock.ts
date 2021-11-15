@@ -7,6 +7,7 @@ import { createHistoricalBalance } from "../../utils/historicalBalance";
 import { Basilisk } from "../../utils/basiliskApi";
 import { createBlockHeightPairing } from "../../utils/createBlockHeightPairing";
 import { updateChronicle } from "../../utils/chronicle";
+import { MoreThanOrEqual, Not, MoreThan } from "typeorm";
 
 const handlePostBlock = async ({
     store,
@@ -19,15 +20,17 @@ const handlePostBlock = async ({
     const relayChainBlockHeight = BigInt(relayBlockHeight.toString());
     const paraChainBlockHeight = BigInt(block.height.toString());
     
-    let dataBaseQueries;
-    dataBaseQueries = [updateChronicle(store, {
+    let databaseQueries;
+
+    databaseQueries = [updateChronicle(store, {
         lastProcessedBlock: paraChainBlockHeight,
     })];
 
-    const pools = await store.getMany<LBPPool>(LBPPool, {
-        where: { saleEnded: false },
-    });
-    dataBaseQueries = pools.map((pool: LBPPool) => {
+    const options = {
+        saleEndAtRelayChainBlockHeight: MoreThanOrEqual(Number(relayChainBlockHeight))
+    };
+    const pools = await store.getMany<LBPPool>(LBPPool, options as any);
+    databaseQueries = pools.map((pool: LBPPool) => {
         return [
             createHistoricalBalance(
                 store,
@@ -48,9 +51,9 @@ const handlePostBlock = async ({
             relayChainBlockHeight
         ),
     ];
-    dataBaseQueries = [blockHeightQuery, ...dataBaseQueries];
+    databaseQueries = [blockHeightQuery, ...databaseQueries];
 
-    await Promise.all(dataBaseQueries);
+    await Promise.all(databaseQueries);
 };
 
 export default handlePostBlock;

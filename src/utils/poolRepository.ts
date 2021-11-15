@@ -75,7 +75,7 @@ export const savePoolUpdated = async (
         where: { id: poolId },
     });
     if (!pool) return;
-    pool.saleEndAtRelayChainBlockHeight = end;
+    pool.saleEndAtRelayChainBlockHeight = Number(end);
     pool.saleEnded = false;
 
     await store.save(pool);

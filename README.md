@@ -4,15 +4,14 @@ This project serves as the API for [Basilisk's](https://bsx.fi) UIs, Dashboards 
 
 ## Prerequisites
 
-* Node v16.x
-* Docker
-* Built [Basilisk node](https://github.com/galacticcouncil/Basilisk-node) in `./../Basilisk-node`
-* Built [Polkadot node](https://github.com/paritytech/polkadot) in `./../polkadot`
-
+-   Node v16.x
+-   Docker
+-   Built [Basilisk node](https://github.com/galacticcouncil/Basilisk-node) in `./../Basilisk-node`
+-   Built [Polkadot node](https://github.com/paritytech/polkadot) in `./../polkadot`
 
 > ⚠️ Make sure to have both the `Basilisk-node` and `polkadot` accessible and built using `cargo build --release` in the aforementioned directories. Otherwise the testnet scripts available in `package.json` won't work.
 
-## Quick start  
+## Quick start
 
 ```zsh
 # Start the local basilisk testnet
@@ -27,12 +26,15 @@ npm run processor:clean-and-setup
 
 # Start processing the indexed data
 npm run processor:start
+
+# Start graphql server for processed data
+npm run processor:query-node:start
 ```
 
 ## Generate custom types
+
 1. define custom types in `./chain/definitions.ts`
 2. run `processor:gen-chain-types`
-
 
 ## Configuration
 
