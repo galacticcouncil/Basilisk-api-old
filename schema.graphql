@@ -31,20 +31,20 @@ type XYKPool implements Pool @entity {
 type BlockHeightPairing @entity {
     "paraChainBlockHash"
     id: ID!
+    createdAt: DateTime!
     paraChainBlockHeight: BigInt!
     relayChainBlockHeight: BigInt!
-    createdAt: DateTime!
 }
 
 # TODO generalize LBPPool reference to Pool; consider using union for XYKPool | LBPPool
 type HistoricalBalance @entity {
     "PoolId-paraChainBlockHeight"
     id: ID!
-    pool: LBPPool!
     assetABalance: BigInt!
     assetBBalance: BigInt!
-    relayChainBlockHeight: BigInt!
     createdAt: DateTime!
+    pool: LBPPool!
+    relayChainBlockHeight: BigInt!
 }
 
 type Chronicle @entity {

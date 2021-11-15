@@ -34,3 +34,8 @@ export type blockHeight = bigint;
 export type EntityConstructor<T> = {
     new (...args: any[]): T
 };
+
+export type currentBlockNumbersParameters = {
+    relayChainBlockHeight: bigint,
+    paraChainBlockHeight: bigint
+};

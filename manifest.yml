@@ -15,6 +15,7 @@ typegen:
     - xyk.PoolCreated
     # this is not a typo, do not remove next line
     - xYK.PoolCreated
+    - relayChainInfo.CurrentBlockNumbers
   customTypes:
     lib: ../chain
     typedefsLoc: types.json
@@ -36,6 +37,7 @@ mappings:
       handler: handlePoolUpdated
     - event: xyk.PoolCreated
       handler: handleXykPoolCreated
+    - event: relayChainInfo.CurrentBlockNumbers
+      handler: handleCurrentBlockNumbers
   postBlockHooks:
     - handler: handlePostBlock
-
