@@ -7,6 +7,7 @@ import { createHistoricalBalance } from "../../utils/historicalBalance";
 import { Basilisk } from "../../utils/basiliskApi";
 import { createBlockHeightPairing } from "../../utils/createBlockHeightPairing";
 import { updateChronicle } from "../../utils/chronicle";
+import { MoreThanOrEqual, Not, MoreThan } from "typeorm";
 
 const handlePostBlock = async ({
     store,
@@ -25,8 +26,9 @@ const handlePostBlock = async ({
     })];
 
     const pools = await store.getMany<LBPPool>(LBPPool, {
-        where: { saleEnded: false },
+        where: { saleEndAtRelayChainBlockHeight: MoreThanOrEqual(3) },
     });
+      
     dataBaseQueries = pools.map((pool: LBPPool) => {
         return [
             createHistoricalBalance(
