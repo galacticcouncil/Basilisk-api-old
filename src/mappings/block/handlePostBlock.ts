@@ -20,8 +20,9 @@ const handlePostBlock = async ({
     const relayChainBlockHeight = BigInt(relayBlockHeight.toString());
     const paraChainBlockHeight = BigInt(block.height.toString());
     
-    let dataBaseQueries;
-    dataBaseQueries = [updateChronicle(store, {
+    let databaseQueries;
+
+    databaseQueries = [updateChronicle(store, {
         lastProcessedBlock: paraChainBlockHeight,
     })];
 
@@ -29,7 +30,7 @@ const handlePostBlock = async ({
         where: { saleEndAtRelayChainBlockHeight: MoreThanOrEqual(3) },
     });
       
-    dataBaseQueries = pools.map((pool: LBPPool) => {
+    databaseQueries = pools.map((pool: LBPPool) => {
         return [
             createHistoricalBalance(
                 store,
@@ -50,9 +51,9 @@ const handlePostBlock = async ({
             relayChainBlockHeight
         ),
     ];
-    dataBaseQueries = [blockHeightQuery, ...dataBaseQueries];
+    databaseQueries = [blockHeightQuery, ...databaseQueries];
 
-    await Promise.all(dataBaseQueries);
+    await Promise.all(databaseQueries);
 };
 
 export default handlePostBlock;
