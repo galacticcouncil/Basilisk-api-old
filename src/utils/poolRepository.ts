@@ -76,18 +76,7 @@ export const savePoolUpdated = async (
     });
     if (!pool) return;
     pool.saleEndAtRelayChainBlockHeight = Number(end);
-    pool.saleEnded = false;
 
-    await store.save(pool);
-};
-
-export const setSaleEnded = async (store: DatabaseManager, poolId: string) => {
-    const pool = await store.get(LBPPool, {
-        where: { id: poolId },
-    });
-    if (!pool) return;
-    pool.saleEnded = true;
-    
     await store.save(pool);
 };
 
@@ -119,14 +108,4 @@ export const updatePoolBalance = async (
             transferParameters.assetId
         );
     }
-};
-
-export const updateSaleEnded = async (
-    store: DatabaseManager,
-    pool: LBPPool,
-    relayChainBlockHeight: bigint
-) => {
-    if (!pool.saleEndAtRelayChainBlockHeight) return;
-    if (pool.saleEndAtRelayChainBlockHeight <= relayChainBlockHeight)
-        return setSaleEnded(store, pool.id);
 };

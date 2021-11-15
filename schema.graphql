@@ -16,7 +16,6 @@ type LBPPool implements Pool @entity {
     assetABalance: BigInt!
     assetBBalance: BigInt!
     saleEndAtRelayChainBlockHeight: Int
-    saleEnded: Boolean
     historicalBalances: [HistoricalBalance!]! @derivedFrom(field: "pool")
 }
 
