@@ -16,7 +16,7 @@ type LBPPool implements Pool @entity {
     assetABalance: BigInt!
     assetBBalance: BigInt!
     saleEndAtRelayChainBlockHeight: Int
-    historicalBalances: [HistoricalBalance!]! @derivedFrom(field: "pool")
+    historicalBalances: [HistoricalBalanceLBP!]! @derivedFrom(field: "pool")
 }
 
 type XYKPool implements Pool @entity {
@@ -26,6 +26,7 @@ type XYKPool implements Pool @entity {
     assetBId: BigInt
     assetABalance: BigInt!
     assetBBalance: BigInt!
+    historicalBalances: [HistoricalBalanceXYK!]! @derivedFrom(field: "pool")
 }
 
 type BlockHeightPairing @entity {
@@ -37,14 +38,24 @@ type BlockHeightPairing @entity {
 }
 
 # TODO generalize LBPPool reference to Pool; consider using union for XYKPool | LBPPool
-type HistoricalBalance @entity {
+type HistoricalBalanceLBP @entity {
     "PoolId-paraChainBlockHeight"
     id: ID!
     assetABalance: BigInt!
     assetBBalance: BigInt!
     createdAt: DateTime!
     pool: LBPPool!
-    relayChainBlockHeight: BigInt!
+    blockHeight: BlockHeightPairing!
+}
+
+type HistoricalBalanceXYK @entity {
+    "PoolId-paraChainBlockHeight"
+    id: ID!
+    assetABalance: BigInt!
+    assetBBalance: BigInt!
+    createdAt: DateTime!
+    pool: XYKPool!
+    blockHeight: BlockHeightPairing!
 }
 
 type Chronicle @entity {

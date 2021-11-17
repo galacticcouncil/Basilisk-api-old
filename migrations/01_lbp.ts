@@ -24,7 +24,7 @@ type poolData = {
 
 // asset pair
 const assetA = "0";
-const assetB = "2";
+const assetB = "1";
 
 async function main(): Promise<void> {
     return new Promise(async (resolve, reject) => {

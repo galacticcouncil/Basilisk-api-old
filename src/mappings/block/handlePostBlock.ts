@@ -1,6 +1,6 @@
 import { BlockContext, StoreContext } from "@subsquid/hydra-common";
-import { BlockHeightPairing, LBPPool } from "../../generated/model";
-import { createHistoricalBalance } from "../../utils/historicalBalance";
+import { BlockHeightPairing, LBPPool, XYKPool } from "../../generated/model";
+import { createHistoricalBalanceLBP, createHistoricalBalanceXYK } from "../../utils/historicalBalance";
 import { updateChronicle } from "../../utils/chronicle";
 import { MoreThanOrEqual } from "typeorm";
 
@@ -37,14 +37,26 @@ const handlePostBlock = async ({
             Number(relayChainBlockHeight)
         ),
     };
-    const pools = await store.getMany<LBPPool>(LBPPool, options as any);
-    databaseQueries = pools.map((pool: LBPPool) => {
+    const lbpPools = await store.getMany<LBPPool>(LBPPool, options as any);
+    // TODO proper error handling for undefined
+    databaseQueries = lbpPools.map((pool: LBPPool) => {
         return [
-            createHistoricalBalance(
+            createHistoricalBalanceLBP(
                 store,
                 pool,
-                paraChainBlockHeight,
-                relayChainBlockHeight,
+                currentBlockHeightPairing!,
+                block.timestamp
+            ),
+        ];
+    });
+
+    const xykPools = await store.getMany<XYKPool>(XYKPool, {});
+    databaseQueries = xykPools.map((pool: XYKPool) => {
+        return [
+            createHistoricalBalanceXYK(
+                store,
+                pool,
+                currentBlockHeightPairing!,
                 block.timestamp
             ),
         ];
