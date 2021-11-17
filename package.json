@@ -8,7 +8,6 @@
   "scripts": {
     "build": "rm -rf lib && tsc",
     "migrate:lbp": "ts-node ./migrations/01_lbp.ts",
-    "migrate:lbppda": "ts-node ./migrations/01_lbp_polkadotapi.ts",
     "migrate:xyk": "ts-node ./migrations/02_xyk.ts",
     "processor:typegen": "hydra-typegen typegen manifest.yml",
     "processor:codegen": "hydra-cli codegen",
@@ -35,7 +34,7 @@
   "dependencies": {
     "@polkadot/api": "6.8.1",
     "@polkadot/keyring": "6.8.1",
-    "@polkadot/types": "6.8.1",
+    "@polkadot/types": "6.5.1",
     "@subsquid/hydra-common": "^4.1.0",
     "@subsquid/hydra-processor": "5.0.0-alpha.6",
     "@subsquid/openreader": "^0.2.0",
@@ -56,7 +55,6 @@
     "@types/mocha": "^9.0.0",
     "@types/pg": "^8.6.1",
     "chai": "^4.3.4",
-    "hydradx-js": "^0.1.0",
     "mocha": "^9.1.0",
     "sinon": "^12.0.1",
     "ts-node": "^10.4.0",

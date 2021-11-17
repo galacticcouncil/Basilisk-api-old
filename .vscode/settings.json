@@ -3,6 +3,8 @@
         "polkadot",
         "subsquid",
         "typedefs",
-        "typegen"
+        "typegen",
+        "typeorm",
+        "unsub"
     ]
 }
