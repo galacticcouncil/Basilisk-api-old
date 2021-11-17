@@ -8,6 +8,7 @@
   "scripts": {
     "build": "rm -rf lib && tsc",
     "migrate:lbp": "ts-node ./migrations/01_lbp.ts",
+    "migrate:lbppda": "ts-node ./migrations/01_lbp_polkadotapi.ts",
     "migrate:xyk": "ts-node ./migrations/02_xyk.ts",
     "processor:typegen": "hydra-typegen typegen manifest.yml",
     "processor:codegen": "hydra-cli codegen",
