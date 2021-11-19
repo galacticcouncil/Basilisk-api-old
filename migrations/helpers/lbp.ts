@@ -5,7 +5,6 @@ import { toBasiliskFormattedAddress } from "../../src/utils/account";
 import { Basilisk } from "./api";
 import { assetPair } from "./types";
 import { getSigner } from "./utils";
-import { BigNumber } from "bignumber.js";
 
 const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
     return {
@@ -74,6 +73,7 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                                                 method == "PoolCreated"
                                             ) {
                                                 unsub();
+                                                // set pool's address
                                                 this.address =
                                                     data[0].toString();
                                                 resolve(data[0].toString());
