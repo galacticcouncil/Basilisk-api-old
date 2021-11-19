@@ -8,18 +8,39 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
     return {
         assetPair,
         signer,
+        api,
         createPool: async function () {
             // create pool tx
-            const tx = await api.tx.xyk.createPool(
-                assetPair.assetA,
-                assetPair.assetB,
+            const tx = await this.api.tx.xyk.createPool(
+                this.assetPair.assetA,
+                this.assetPair.assetB,
                 "10000000000000000", // assetAAmount
                 "123456" // initialPrice
             );
             // sign and announce tx
-            const hash = await tx.signAndSend(signer);
+            const hash = await tx.signAndSend(this.signer);
             console.log("Create XYK Pool transaction hash:", hash.toString());
         },
+        buy: async function () {
+            const tx = await this.api.tx.xyk.buy(
+                this.assetPair.assetA, // assetOut
+                this.assetPair.assetB, // assetIn
+                "10000", // amount
+                "10000", // max limit
+                false //discount
+            );
+            await tx.signAndSend(this.signer);
+        },
+        sell: async function () {
+            const tx = await this.api.tx.xyk.sell(
+                this.assetPair.assetB, // assetOut
+                this.assetPair.assetA, // assetIn
+                "10000", // amount
+                "10000", // max limit
+                false //discount
+            );
+            await tx.signAndSend(this.signer);
+        }
     };
 };
 
