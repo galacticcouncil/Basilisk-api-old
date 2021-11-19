@@ -64,7 +64,7 @@ export const entityOverTimeResolverFactory = <TObject>(
                     GROUP BY bucket
                 ) grouped_main_t ON main_t.${this.TIME_FIELD} = grouped_main_t.min_time
                 ORDER BY main_t.${this.TIME_FIELD};
-            `, [start, end]);
+            `, [from, to]);
             return results.map(result => (<any>newEntity)(entity, result));
         }
     }

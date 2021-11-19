@@ -163,43 +163,43 @@ describe('Resolver tests', function () {
 
         it("can fetch 6 points 10 minutes apart", function () {
 
-            client.test(`
+            return client.test(`
         query {
-          liquidityOverTime(quantity: 6, from: "2021-07-11T11:00", to: "2021-07-11T12:00") {
-            height
-            at
+          testBlocksOverTime(quantity: 6, from: "2021-07-11T11:00", to: "2021-07-11T12:00") {
+            block_height
+            created_at
           }
         }
 
         `, {
-                "liquidityOverTime": [
+                "testBlocksOverTime": [
                     {
-                        "height": "0",
-                        "at": "2021-07-11T11:00:00.000Z"
+                        "block_height": "0",
+                        "created_at": "2021-07-11T11:00:00.000Z"
                     },
                     {
-                        "height": "6",
-                        "at": "2021-07-11T11:11:00.000Z"
+                        "block_height": "6",
+                        "created_at": "2021-07-11T11:11:00.000Z"
                     },
                     {
-                        "height": "8",
-                        "at": "2021-07-11T11:21:00.000Z"
+                        "block_height": "8",
+                        "created_at": "2021-07-11T11:21:00.000Z"
                     },
                     {
-                        "height": "10",
-                        "at": "2021-07-11T11:30:00.000Z"
+                        "block_height": "10",
+                        "created_at": "2021-07-11T11:30:00.000Z"
                     },
                     {
-                        "height": "12",
-                        "at": "2021-07-11T11:40:00.000Z"
+                        "block_height": "12",
+                        "created_at": "2021-07-11T11:40:00.000Z"
                     },
                     {
-                        "height": "14",
-                        "at": "2021-07-11T11:50:00.000Z"
+                        "block_height": "14",
+                        "created_at": "2021-07-11T11:50:00.000Z"
                     },
                     {
-                        "height": "16",
-                        "at": "2021-07-11T12:00:00.000Z"
+                        "block_height": "16",
+                        "created_at": "2021-07-11T12:00:00.000Z"
                     }
                 ]
 
@@ -211,78 +211,78 @@ describe('Resolver tests', function () {
 
         it("can fetch 10 points over time", function () {
 
-            client.test(`
+            return client.test(`
         query {
-          liquidityOverTime(quantity: 60, from: "2021-07-11T11:00", to: "2021-07-11T12:00") {
-            height
-            at
+          testBlocksOverTime(quantity: 60, from: "2021-07-11T11:00", to: "2021-07-11T12:00") {
+            block_height
+            created_at
           }
         }
         `, {
-                "liquidityOverTime": [
+                "testBlocksOverTime": [
                     {
-                        "height": "0",
-                        "at": "2021-07-11T11:00:00.000Z"
+                        "block_height": "0",
+                        "created_at": "2021-07-11T11:00:00.000Z"
                     },
                     {
-                        "height": "2",
-                        "at": "2021-07-11T11:01:00.000Z"
+                        "block_height": "2",
+                        "created_at": "2021-07-11T11:01:00.000Z"
                     },
                     {
-                        "height": "3",
-                        "at": "2021-07-11T11:01:00.000Z"
+                        "block_height": "3",
+                        "created_at": "2021-07-11T11:01:00.000Z"
                     },
                     {
-                        "height": "4",
-                        "at": "2021-07-11T11:01:00.000Z"
+                        "block_height": "4",
+                        "created_at": "2021-07-11T11:01:00.000Z"
                     },
                     {
-                        "height": "5",
-                        "at": "2021-07-11T11:05:00.000Z"
+                        "block_height": "5",
+                        "created_at": "2021-07-11T11:05:00.000Z"
                     },
                     {
-                        "height": "6",
-                        "at": "2021-07-11T11:11:00.000Z"
+                        "block_height": "6",
+                        "created_at": "2021-07-11T11:11:00.000Z"
                     },
                     {
-                        "height": "7",
-                        "at": "2021-07-11T11:12:00.000Z"
+                        "block_height": "7",
+                        "created_at": "2021-07-11T11:12:00.000Z"
                     },
                     {
-                        "height": "8",
-                        "at": "2021-07-11T11:21:00.000Z"
+                        "block_height": "8",
+                        "created_at": "2021-07-11T11:21:00.000Z"
                     },
                     {
-                        "height": "9",
-                        "at": "2021-07-11T11:28:00.000Z"
+                        "block_height": "9",
+                        "created_at": "2021-07-11T11:28:00.000Z"
                     },
                     {
-                        "height": "10",
-                        "at": "2021-07-11T11:30:00.000Z"
+                        "block_height": "10",
+                        "created_at": "2021-07-11T11:30:00.000Z"
                     },
                     {
-                        "height": "11",
-                        "at": "2021-07-11T11:38:00.000Z"
+                        "block_height": "11",
+                        "created_at": "2021-07-11T11:38:00.000Z"
                     },
                     {
-                        "height": "12",
-                        "at": "2021-07-11T11:40:00.000Z"
+                        "block_height": "12",
+                        "created_at": "2021-07-11T11:40:00.000Z"
                     },
                     {
-                        "height": "13",
-                        "at": "2021-07-11T11:45:00.000Z"
+                        "block_height": "13",
+                        "created_at": "2021-07-11T11:45:00.000Z"
                     },
                     {
-                        "height": "14",
-                        "at": "2021-07-11T11:50:00.000Z"
+                        "block_height": "14",
+                        "created_at": "2021-07-11T11:50:00.000Z"
                     },
                     {
-                        "height": "15",
-                        "at": "2021-07-11T11:55:00.000Z"
+                        "block_height": "15",
+                        "created_at": "2021-07-11T11:55:00.000Z"
                     },
                     {
-                        "height": "16",
-                        "at": "2021-07-11T12:00:00.000Z"
+                        "block_height": "16",
+                        "created_at": "2021-07-11T12:00:00.000Z"
                     }
                 ]
 
@@ -292,34 +292,34 @@ describe('Resolver tests', function () {
 
         it("can fetch 4 hourly points ", function () {
 
-            client.test(`
+            return client.test(`
         query {
-          liquidityOverTime(quantity: 4, from: "2021-07-11T11:00", to: "2021-07-11T15:00") {
-            height
-            at
+          testBlocksOverTime(quantity: 4, from: "2021-07-11T11:00", to: "2021-07-11T15:00") {
+            block_height
+            created_at
           }
         }
         `, {
-                    "liquidityOverTime": [
+                    "testBlocksOverTime": [
                         {
-                            "height": "0",
-                            "at": "2021-07-11T11:00:00.000Z"
+                            "block_height": "0",
+                            "created_at": "2021-07-11T11:00:00.000Z"
                         },
                         {
-                            "height": "16",
-                            "at": "2021-07-11T12:00:00.000Z"
+                            "block_height": "16",
+                            "created_at": "2021-07-11T12:00:00.000Z"
                         },
                         {
-                            "height": "18",
-                            "at": "2021-07-11T13:00:00.000Z"
+                            "block_height": "18",
+                            "created_at": "2021-07-11T13:00:00.000Z"
                         },
                         {
-                            "height": "20",
-                            "at": "2021-07-11T14:00:00.000Z"
+                            "block_height": "20",
+                            "created_at": "2021-07-11T14:00:00.000Z"
                         },
                         {
-                            "height": "22",
-                            "at": "2021-07-11T15:00:00.000Z"
+                            "block_height": "22",
+                            "created_at": "2021-07-11T15:00:00.000Z"
                         }
                     ]
 
