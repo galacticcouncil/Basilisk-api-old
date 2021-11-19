@@ -39,6 +39,7 @@
     "@subsquid/hydra-processor": "5.0.0-alpha.6",
     "@subsquid/openreader": "^0.2.0",
     "@types/sinon": "^10.0.6",
+    "bignumber.js": "^9.0.1",
     "inflected": "^2.1.0",
     "lodash": "^4.17.21",
     "simple-linear-scale": "^1.0.1",
