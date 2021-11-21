@@ -25,7 +25,7 @@ export const getPoolCreatedParameters = (
     };
 };
 
-const handlePoolCreated = async ({
+const handleLbpPoolCreated = async ({
     event,
     store,
 }: EventContext & StoreContext): Promise<void> => {
@@ -36,4 +36,4 @@ const handlePoolCreated = async ({
     await ensurePool(store, LBPPool, poolCreatedParameters);
 };
 
-export default handlePoolCreated;
+export default handleLbpPoolCreated;
