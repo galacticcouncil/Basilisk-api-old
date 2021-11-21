@@ -1,7 +1,12 @@
 import { DatabaseManager } from "@subsquid/hydra-common";
+import { initialBalance } from "../constants";
 import { LBPPool, XYKPool } from "../generated/model";
 import { ensure } from "./ensure";
-import { EntityConstructor, poolCreatedParameters, transferParameters } from "./types";
+import {
+    EntityConstructor,
+    poolCreatedParameters,
+    transferParameters,
+} from "./types";
 
 /**
  * Find or create a pool with default values,
@@ -10,13 +15,13 @@ import { EntityConstructor, poolCreatedParameters, transferParameters } from "./
 export const ensurePool = async (
     store: DatabaseManager,
     entityConstructor: EntityConstructor<LBPPool | XYKPool>,
-    poolCreatedParameters: poolCreatedParameters,
+    poolCreatedParameters: poolCreatedParameters
 ): Promise<LBPPool | XYKPool> => {
     const assetAId = poolCreatedParameters.assetAId;
     const assetBId = poolCreatedParameters.assetBId;
     // ensure the pool with default parameters
-    const initAssetABalance = BigInt(0);
-    const initAssetBBalance = BigInt(0);
+    const initAssetABalance = initialBalance;
+    const initAssetBBalance = initialBalance;
 
     const pool = await ensure<LBPPool | XYKPool>(
         store,
@@ -34,9 +39,8 @@ export const ensurePool = async (
     return pool;
 };
 
-export const increasePoolBalanceForAssetId = async (
-    store: DatabaseManager,
-    pool: LBPPool,
+export const increasePoolBalanceForAssetId = (
+    pool: LBPPool | XYKPool,
     balanceToAdd: bigint,
     assetId: bigint
 ) => {
@@ -47,12 +51,11 @@ export const increasePoolBalanceForAssetId = async (
         pool.assetBBalance += balanceToAdd;
     }
 
-    await store.save(pool);
+    return pool;
 };
 
-export const decreasePoolBalanceForAssetId = async (
-    store: DatabaseManager,
-    pool: LBPPool,
+export const decreasePoolBalanceForAssetId = (
+    pool: LBPPool | XYKPool,
     balanceToRemove: bigint,
     assetId: bigint
 ) => {
@@ -63,10 +66,10 @@ export const decreasePoolBalanceForAssetId = async (
         pool.assetBBalance -= balanceToRemove;
     }
 
-    await store.save(pool);
+    return pool;
 };
 
-export const savePoolUpdated = async (
+export const saveLbpPoolSaleEnd = async (
     store: DatabaseManager,
     poolId: string,
     end: bigint
@@ -80,32 +83,43 @@ export const savePoolUpdated = async (
     await store.save(pool);
 };
 
-export const updatePoolBalance = async (
+export const updatePoolsBalances = async (
     store: DatabaseManager,
     transferParameters: transferParameters
 ) => {
+    const databaseQueriesLBP = updatePoolBalance(store, LBPPool, transferParameters);
+
+    const databaseQueries = [databaseQueriesLBP, databaseQueriesXYK];
+    await Promise.all(databaseQueries);
+};
+
+async function updatePoolBalance(
+    store: DatabaseManager,
+    entity: EntityConstructor<LBPPool | XYKPool>,
+    transferParameters: transferParameters
+) {
     // Increase pool's asset balance in case the pool was recipient of an asset.
-    const poolRecipient = await store.get(LBPPool, {
+    let poolToReceive = await store.get(entity, {
         where: { id: transferParameters.to },
     });
-    if (poolRecipient) {
-        await increasePoolBalanceForAssetId(
-            store,
-            poolRecipient,
+    if (poolToReceive) {
+        const pool = increasePoolBalanceForAssetId(
+            poolToReceive,
             transferParameters.balance,
             transferParameters.assetId
         );
+        await store.save(pool);
     }
     // Decrease pool's asset balance in case the pool was the sender of an asset.
-    const poolSender = await store.get(LBPPool, {
+    let poolToSend = await store.get(entity, {
         where: { id: transferParameters.from },
     });
-    if (poolSender) {
-        await decreasePoolBalanceForAssetId(
-            store,
-            poolSender,
+    if (poolToSend) {
+        const pool = decreasePoolBalanceForAssetId(
+            poolToSend,
             transferParameters.balance,
             transferParameters.assetId
         );
+        await store.save(pool);
     }
-};
+}

@@ -10,7 +10,7 @@ import { toBasiliskFormattedAddress } from "../../utils/account";
 import { ensurePool } from "../../utils/poolRepository";
 import { poolCreatedParameters, poolCreatedParams1 } from "../../utils/types";
 
-const getPoolCreatedParameters = (
+export const getPoolCreatedParameters = (
     event: SubstrateEvent
 ): poolCreatedParameters => {
     const poolAddress = create("AccountId32", event.params[0].value);

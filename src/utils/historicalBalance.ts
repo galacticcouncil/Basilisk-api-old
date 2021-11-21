@@ -1,10 +1,12 @@
 import { DatabaseManager } from "@subsquid/hydra-common";
 import { BlockHeightPairing, HistoricalBalanceLBP, HistoricalBalanceXYK, LBPPool, XYKPool } from "../generated/model";
 import { ensure } from "./ensure";
+import { EntityConstructor } from "./types";
 
-export const createHistoricalBalanceLBP = async (
+export const createHistoricalBalance = async (
     store: DatabaseManager,
-    pool: LBPPool,
+    pool: LBPPool | XYKPool,
+    entity: EntityConstructor<HistoricalBalanceLBP | HistoricalBalanceXYK>,
     blockHeightPairing: BlockHeightPairing,
     blockTimeStamp: number,
 ) => {
@@ -15,34 +17,7 @@ export const createHistoricalBalanceLBP = async (
     
     const historicalBalance = await ensure(
         store,
-        HistoricalBalanceLBP,
-        `${pool.id}-${paraChainBlockHeight}`,
-        {
-            assetABalance,
-            assetBBalance,
-            pool,
-            blockHeight: blockHeightPairing,
-            createdAt
-        }
-    );
-
-    await store.save(historicalBalance);
-};
-
-export const createHistoricalBalanceXYK = async (
-    store: DatabaseManager,
-    pool: XYKPool,
-    blockHeightPairing: BlockHeightPairing,
-    blockTimeStamp: number,
-) => {
-    const assetABalance = pool.assetABalance;
-    const assetBBalance = pool.assetBBalance;
-    const createdAt = new Date(blockTimeStamp);
-    const paraChainBlockHeight = blockHeightPairing.paraChainBlockHeight.toString();
-
-    const historicalBalance = await ensure(
-        store,
-        HistoricalBalanceXYK,
+        entity,
         `${pool.id}-${paraChainBlockHeight}`,
         {
             assetABalance,
