@@ -5,11 +5,11 @@ import {
 } from "@subsquid/hydra-common";
 import { create } from "../../types/_registry";
 import { toBasiliskFormattedAddress } from "../../utils/account";
-import { savePoolUpdated } from "../../utils/poolRepository";
+import { saveLbpPoolSaleEnd } from "../../utils/poolRepository";
 import { u32 } from "@polkadot/types";
 import { poolUpdatedParams1, poolUpdatedParameters } from "../../utils/types";
 
-const getPoolUpdatedParameters = (
+export const getPoolUpdatedParameters = (
     event: SubstrateEvent
 ): poolUpdatedParameters => {
     const poolAddress = create("AccountId32", event.params[0].value);
@@ -28,7 +28,7 @@ const handlePoolUpdated = async ({
     const poolUpdatedParameters: poolUpdatedParameters =
         getPoolUpdatedParameters(event);
 
-    await savePoolUpdated(
+    await saveLbpPoolSaleEnd(
         store,
         poolUpdatedParameters.poolId,
         poolUpdatedParameters.end

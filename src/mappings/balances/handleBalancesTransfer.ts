@@ -6,7 +6,7 @@ import {
 import { Balances } from "../../types";
 import { toBasiliskFormattedAddress } from "../../utils/account";
 import { nativeAssetId } from "../../constants";
-import { updatePoolBalance } from "../../utils/poolRepository";
+import { updatePoolsBalances } from "../../utils/poolRepository";
 import { transferParameters } from "../../utils/types";
 
 export const getBalanceTransferParameters = (
@@ -28,7 +28,7 @@ const handleBalancesTransfer = async ({
     const transferParameters: transferParameters =
         getBalanceTransferParameters(event);
 
-    await updatePoolBalance(store, transferParameters);
+    await updatePoolsBalances(store, transferParameters);
 };
 
 export default handleBalancesTransfer;
