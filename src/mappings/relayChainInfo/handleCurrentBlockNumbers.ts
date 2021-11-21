@@ -7,7 +7,7 @@ import { RelayChainInfo } from "../../types";
 import { createBlockHeightPairing } from "../../utils/createBlockHeightPairing";
 import { currentBlockNumbersParameters } from "../../utils/types";
 
-const getCurrentBlockNumbersParameters = (
+export const getCurrentBlockNumbersParameters = (
     event: SubstrateEvent
 ): currentBlockNumbersParameters => {
     const [paraChainBlockHeight, relayChainBlockHeight] =

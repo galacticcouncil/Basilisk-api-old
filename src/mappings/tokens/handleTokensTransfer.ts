@@ -8,7 +8,7 @@ import {
     SubstrateEvent,
 } from "@subsquid/hydra-common";
 
-const getTokensTransferParameters = (
+export const getTokensTransferParameters = (
     event: SubstrateEvent
 ): transferParameters => {
     const [assetId, from, to, balance] = new Tokens.TransferEvent(event).params;
