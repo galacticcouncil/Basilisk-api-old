@@ -10,7 +10,7 @@ import { currentBlockNumbersParameters } from "../../utils/types";
 const getCurrentBlockNumbersParameters = (
     event: SubstrateEvent
 ): currentBlockNumbersParameters => {
-    const [relayChainBlockHeight, paraChainBlockHeight] =
+    const [paraChainBlockHeight, relayChainBlockHeight] =
         new RelayChainInfo.CurrentBlockNumbersEvent(event).params;
     return {
         relayChainBlockHeight: relayChainBlockHeight.toBigInt(),
