@@ -28,7 +28,7 @@ mappings:
   # events handled by the processor
   eventHandlers:
     - event: lbp.PoolCreated
-      handler: handlePoolCreated
+      handler: handleLbpPoolCreated
     - event: tokens.Transfer
       handler: handleTokensTransfer
     - event: balances.Transfer
