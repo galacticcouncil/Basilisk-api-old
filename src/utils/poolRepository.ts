@@ -88,6 +88,7 @@ export const updatePoolsBalances = async (
     transferParameters: transferParameters
 ) => {
     const databaseQueriesLBP = updatePoolBalance(store, LBPPool, transferParameters);
+    const databaseQueriesXYK = updatePoolBalance(store, XYKPool, transferParameters);
 
     const databaseQueries = [databaseQueriesLBP, databaseQueriesXYK];
     await Promise.all(databaseQueries);
