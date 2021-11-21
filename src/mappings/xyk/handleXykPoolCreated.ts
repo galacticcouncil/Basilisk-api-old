@@ -9,7 +9,7 @@ import { toBasiliskFormattedAddress } from "../../utils/account";
 import { ensurePool } from "../../utils/poolRepository";
 import { poolCreatedParameters } from "../../utils/types";
 
-const getXykPoolCreatedParameters = (
+export const getXykPoolCreatedParameters = (
     event: SubstrateEvent
 ): poolCreatedParameters => {
     const [who, assetAId, assetBId, initialShares, shareToken, poolAddress] =
