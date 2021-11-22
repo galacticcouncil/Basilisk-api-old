@@ -11,8 +11,8 @@ interface Pool {
 type LBPPool implements Pool @entity {
     "PoolId"
     id: ID!
-    assetAId: BigInt
-    assetBId: BigInt
+    assetAId: BigInt!
+    assetBId: BigInt!
     assetABalance: BigInt!
     assetBBalance: BigInt!
     saleEndAtRelayChainBlockHeight: Int
@@ -22,8 +22,8 @@ type LBPPool implements Pool @entity {
 type XYKPool implements Pool @entity {
     "PoolId"
     id: ID!
-    assetAId: BigInt
-    assetBId: BigInt
+    assetAId: BigInt!
+    assetBId: BigInt!
     assetABalance: BigInt!
     assetBBalance: BigInt!
     historicalBalances: [HistoricalBalanceXYK!]! @derivedFrom(field: "pool")
