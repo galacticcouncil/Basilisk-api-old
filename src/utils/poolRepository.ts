@@ -44,6 +44,7 @@ export const increasePoolBalanceForAssetId = (
     balanceToAdd: bigint,
     assetId: bigint
 ) => {
+    // it is not possible to create a pool where both asset ids are the same
     if (pool.assetAId === assetId) {
         pool.assetABalance += balanceToAdd;
     }
@@ -59,10 +60,11 @@ export const decreasePoolBalanceForAssetId = (
     balanceToRemove: bigint,
     assetId: bigint
 ) => {
-    if (pool.assetAId == assetId) {
+    // it is not possible to create a pool where both asset ids are the same
+    if (pool.assetAId === assetId) {
         pool.assetABalance -= balanceToRemove;
     }
-    if (pool.assetBId == assetId) {
+    if (pool.assetBId === assetId) {
         pool.assetBBalance -= balanceToRemove;
     }
 
