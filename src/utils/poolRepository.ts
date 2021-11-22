@@ -1,7 +1,11 @@
-import { DatabaseManager } from "@subsquid/hydra-common";
-import { LBPPool, XYKPool } from "../generated/model";
-import { ensure } from "./ensure";
-import { EntityConstructor, poolCreatedParameters, transferParameters } from "./types";
+import { DatabaseManager } from '@subsquid/hydra-common';
+import { LBPPool, XYKPool } from '../generated/model';
+import { ensure } from './ensure';
+import {
+    EntityConstructor,
+    poolCreatedParameters,
+    transferParameters,
+} from './types';
 
 /**
  * Find or create a pool with default values,
@@ -10,7 +14,7 @@ import { EntityConstructor, poolCreatedParameters, transferParameters } from "./
 export const ensurePool = async (
     store: DatabaseManager,
     entityConstructor: EntityConstructor<LBPPool | XYKPool>,
-    poolCreatedParameters: poolCreatedParameters,
+    poolCreatedParameters: poolCreatedParameters
 ): Promise<LBPPool | XYKPool> => {
     const assetAId = poolCreatedParameters.assetAId;
     const assetBId = poolCreatedParameters.assetBId;

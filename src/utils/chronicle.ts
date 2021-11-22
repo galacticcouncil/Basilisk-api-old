@@ -1,9 +1,9 @@
-import { DatabaseManager } from "@subsquid/hydra-common";
-import { Chronicle } from "../generated/model";
-import { ensure } from "./ensure";
+import { DatabaseManager } from '@subsquid/hydra-common';
+import { Chronicle } from '../generated/model';
+import { ensure } from './ensure';
 
 const ensureChronicle = async (store: DatabaseManager) => {
-    const chronicle = await ensure(store, Chronicle, "chronicleId", {
+    const chronicle = await ensure(store, Chronicle, 'chronicleId', {
         // just a starting value for the Chronicle
         lastProcessedBlock: BigInt(0),
     });

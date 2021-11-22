@@ -2,12 +2,12 @@ import {
     EventContext,
     StoreContext,
     SubstrateEvent,
-} from "@subsquid/hydra-common";
-import { XYKPool } from "../../generated/model";
-import { XYK } from "../../types";
-import { toBasiliskFormattedAddress } from "../../utils/account";
-import { ensurePool } from "../../utils/poolRepository";
-import { poolCreatedParameters } from "../../utils/types";
+} from '@subsquid/hydra-common';
+import { XYKPool } from '../../generated/model';
+import { XYK } from '../../types';
+import { toBasiliskFormattedAddress } from '../../utils/account';
+import { ensurePool } from '../../utils/poolRepository';
+import { poolCreatedParameters } from '../../utils/types';
 
 const getXykPoolCreatedParameters = (
     event: SubstrateEvent

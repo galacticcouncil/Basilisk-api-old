@@ -1,12 +1,12 @@
-import { Tokens } from "../../types";
-import { toBasiliskFormattedAddress } from "../../utils/account";
-import { transferParameters } from "../../utils/types";
-import { updatePoolBalance } from "../../utils/poolRepository";
+import { Tokens } from '../../types';
+import { toBasiliskFormattedAddress } from '../../utils/account';
+import { transferParameters } from '../../utils/types';
+import { updatePoolBalance } from '../../utils/poolRepository';
 import {
     EventContext,
     StoreContext,
     SubstrateEvent,
-} from "@subsquid/hydra-common";
+} from '@subsquid/hydra-common';
 
 const getTokensTransferParameters = (
     event: SubstrateEvent

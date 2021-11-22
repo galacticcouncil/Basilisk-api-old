@@ -1,9 +1,8 @@
-import {Resolver} from "type-graphql"
-import {TestBlock as TestBlockModel} from './generated/model/testBlock.model';
-import {entityOverTimeResolverFactory} from "./resolvers/factory";
+import { Resolver } from 'type-graphql';
+import { TestBlock as TestBlockModel } from './generated/model/testBlock.model';
+import { entityOverTimeResolverFactory } from './resolvers/factory';
 
-import {TestBlock} from './resolvers/test.resolver';
-
+import { TestBlock } from './resolvers/test.resolver';
 
 @Resolver()
 export class TestBlockOverTimeResolver extends entityOverTimeResolverFactory<TestBlock>(
@@ -11,6 +10,5 @@ export class TestBlockOverTimeResolver extends entityOverTimeResolverFactory<Tes
     TestBlockModel,
     'testBlocksOverTime',
     'test_block',
-    'pool_id',
-) {
-}
+    'pool_id'
+) {}

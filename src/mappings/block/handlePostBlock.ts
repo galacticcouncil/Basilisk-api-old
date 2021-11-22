@@ -1,8 +1,11 @@
-import { BlockContext, StoreContext } from "@subsquid/hydra-common";
-import { BlockHeightPairing, LBPPool, XYKPool } from "../../generated/model";
-import { createHistoricalBalanceLBP, createHistoricalBalanceXYK } from "../../utils/historicalBalance";
-import { updateChronicle } from "../../utils/chronicle";
-import { MoreThanOrEqual } from "typeorm";
+import { BlockContext, StoreContext } from '@subsquid/hydra-common';
+import { BlockHeightPairing, LBPPool, XYKPool } from '../../generated/model';
+import {
+    createHistoricalBalanceLBP,
+    createHistoricalBalanceXYK,
+} from '../../utils/historicalBalance';
+import { updateChronicle } from '../../utils/chronicle';
+import { MoreThanOrEqual } from 'typeorm';
 
 const handlePostBlock = async ({
     block,

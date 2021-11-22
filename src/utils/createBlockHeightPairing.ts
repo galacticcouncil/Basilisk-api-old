@@ -1,7 +1,7 @@
-import { DatabaseManager } from "@subsquid/hydra-common";
-import { BlockHeightPairing } from "../generated/model";
-import { ensure } from "./ensure";
-import { currentBlockNumbersParameters } from "./types";
+import { DatabaseManager } from '@subsquid/hydra-common';
+import { BlockHeightPairing } from '../generated/model';
+import { ensure } from './ensure';
+import { currentBlockNumbersParameters } from './types';
 
 export const createBlockHeightPairing = async (
     store: DatabaseManager,
