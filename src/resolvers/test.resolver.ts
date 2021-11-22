@@ -1,6 +1,6 @@
-import {Field, ObjectType, Resolver} from "type-graphql"
-import {TestBlock as TestBlockModel} from './../generated/model/testBlock.model';
-import {entityOverTimeResolverFactory} from "./factory";
+import { Field, ObjectType, Resolver } from 'type-graphql';
+import { TestBlock as TestBlockModel } from './../generated/model/testBlock.model';
+import { entityOverTimeResolverFactory } from './factory';
 
 /**
  * To define a custom over time resolver for a new entity, you first
@@ -11,21 +11,19 @@ import {entityOverTimeResolverFactory} from "./factory";
  */
 @ObjectType()
 export class TestBlock {
+    @Field({ nullable: false })
+    block_height!: bigint;
 
-    @Field({nullable: false})
-    block_height!: bigint
+    @Field({ nullable: false })
+    created_at!: Date;
 
-    @Field({nullable: false})
-    created_at!: Date
-
-    @Field({nullable: false})
-    pool_id!: number
+    @Field({ nullable: false })
+    pool_id!: number;
 
     constructor(props: any) {
         Object.assign(this, props);
     }
 }
-
 @Resolver()
 export class TestBlockOverTimeResolver extends entityOverTimeResolverFactory<TestBlock>(
     TestBlock,
@@ -33,5 +31,4 @@ export class TestBlockOverTimeResolver extends entityOverTimeResolverFactory<Tes
     'testBlocksOverTime',
     'test_block',
     'pool_id'
-) {
-}
+) {}
