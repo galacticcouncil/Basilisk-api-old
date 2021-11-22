@@ -21,7 +21,7 @@
     "processor:start": "hydra-processor run",
     "processor:query-node:start": "node ./lib/generated/server.js",
     "processor:clean-and-setup": "./scripts/dev/clean-and-setup.sh",
-    "processor:test": "mocha -r ts-node/register src/mappings/**.spec.ts src/utils/**.spec.ts src/test/**.spec.ts",
+    "processor:test": "mocha -r ts-node/register src/**/**.spec.ts",
     "processor:test:watch": "mocha -r ts-node/register --watch --watch-files src/mappings/**.ts,utils/**.ts mappings/**.spec.ts src/utils/**.spec.ts",
     "processor:gen-chain-types": "./scripts/dev/gen-chain-types.sh",
     "indexer:start": "docker-compose -f ./indexer/docker-compose.yml up",
@@ -39,12 +39,13 @@
     "@subsquid/hydra-processor": "5.0.0-alpha.6",
     "@subsquid/openreader": "^0.2.0",
     "@types/sinon": "^10.0.6",
+    "bignumber.js": "^9.0.1",
     "inflected": "^2.1.0",
     "lodash": "^4.17.21",
     "simple-linear-scale": "^1.0.1",
+    "type-graphql": "^1.1.1",
     "typeorm": "^0.2.39",
     "typeorm-typedi-extensions": "^0.4.1",
-    "type-graphql": "^1.1.1",
     "yaml": "^1.10.2"
   },
   "devDependencies": {
