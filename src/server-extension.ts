@@ -10,6 +10,7 @@ export class TestBlockOverTimeResolver extends entityOverTimeResolverFactory<Tes
     TestBlock,
     TestBlockModel,
     'testBlocksOverTime',
-    'test_block'
+    'test_block',
+    'pool_id',
 ) {
 }

@@ -10,56 +10,56 @@ describe('Resolver tests', function () {
 
         useDatabase([
             //`CREATE TABLE ${table_name} ("id" character varying NOT NULL, "block_height" numeric NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT "pk_constraint" PRIMARY KEY ("id"))`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (0, 0, '2021-07-11T11:00:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (1, 1, '2021-07-11T11:00:20')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (2, 2, '2021-07-11T11:01:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (3, 3, '2021-07-11T11:01:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (4, 4, '2021-07-11T11:01:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (5, 5, '2021-07-11T11:05:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (6, 6, '2021-07-11T11:11:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (7, 7, '2021-07-11T11:12:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (8, 8, '2021-07-11T11:21:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (9, 9, '2021-07-11T11:28:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (10, 10, '2021-07-11T11:30:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (11, 11, '2021-07-11T11:38:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (12, 12, '2021-07-11T11:40:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (13, 13, '2021-07-11T11:45:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (14, 14, '2021-07-11T11:50:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (15, 15, '2021-07-11T11:55:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (16, 16, '2021-07-11T12:00:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (17, 17, '2021-07-11T12:30:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (18, 18, '2021-07-11T13:00:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (19, 19, '2021-07-11T13:30:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (20, 20, '2021-07-11T14:00:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (21, 21, '2021-07-11T14:30:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (22, 22, '2021-07-11T15:00:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (23, 23, '2021-07-11T15:30:00')`,
-            `insert into ${table_name} (id, block_height, created_at)
-             values (24, 24, '2021-07-11T16:00:00')`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (0, 0, '2021-07-11T11:00:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (1, 1, '2021-07-11T11:00:20', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (2, 2, '2021-07-11T11:01:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (3, 3, '2021-07-11T11:01:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (4, 4, '2021-07-11T11:01:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (5, 5, '2021-07-11T11:05:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (6, 6, '2021-07-11T11:11:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (7, 7, '2021-07-11T11:12:00', 2)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (8, 8, '2021-07-11T11:21:00', 2)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (9, 9, '2021-07-11T11:28:00', 2)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (10, 10, '2021-07-11T11:30:00', 2)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (11, 11, '2021-07-11T11:38:00', 2)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (12, 12, '2021-07-11T11:40:00', 2)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (13, 13, '2021-07-11T11:45:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (14, 14, '2021-07-11T11:50:00', 2)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (15, 15, '2021-07-11T11:55:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (16, 16, '2021-07-11T12:00:00', 2)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (17, 17, '2021-07-11T12:30:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (18, 18, '2021-07-11T13:00:00', 2)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (19, 19, '2021-07-11T13:30:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (20, 20, '2021-07-11T14:00:00', 2)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (21, 21, '2021-07-11T14:30:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (22, 22, '2021-07-11T15:00:00', 2)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (23, 23, '2021-07-11T15:30:00', 1)`,
+            `insert into ${table_name} (id, block_height, created_at, pool_id)
+             values (24, 24, '2021-07-11T16:00:00', 2)`,
         ])
 
         it('can compute chunk size', function () {
@@ -327,5 +327,42 @@ describe('Resolver tests', function () {
             )
         });
 
+        it("can fetch 4 hourly points for pool id 1", function () {
+
+            return client.test(`
+        query {
+          testBlocksOverTime(quantity: 4, from: "2021-07-11T11:00", to: "2021-07-11T15:00", pool_id: "1") {
+            block_height
+            created_at
+            pool_id
+          }
+        }
+        `, {
+                    "testBlocksOverTime": [
+                        {
+                            "block_height": "0",
+                            "created_at": "2021-07-11T11:00:00.000Z",
+                            "pool_id": 1
+                        },
+                        {
+                            "block_height": "17",
+                            "created_at": "2021-07-11T12:30:00.000Z",
+                            "pool_id": 1
+                        },
+                        {
+                            "block_height": "19",
+                            "created_at": "2021-07-11T13:30:00.000Z",
+                            "pool_id": 1
+                        },
+                        {
+                            "block_height": "21",
+                            "created_at": "2021-07-11T14:30:00.000Z",
+                            "pool_id": 1
+                        }
+                    ]
+
+                }
+            )
+        });
     }
 );

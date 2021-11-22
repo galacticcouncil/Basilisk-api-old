@@ -12,8 +12,10 @@ export const entityOverTimeResolverFactory = <TObject>(
     entityModel: any,
     entityName: string,
     table: string,
+    where_field: string, // Additional field name tobe used in where condition ( only 1 field supported atm)
     timeField: string = defaultTimeField
 ) => {
+
     @Resolver()
     class EntityOverTimeResolver {
 
@@ -40,6 +42,7 @@ export const entityOverTimeResolverFactory = <TObject>(
             @Arg("quantity", {nullable: false}) quantity: number,
             @Arg("from", {nullable: false}) from: string,
             @Arg("to", {nullable: false}) to: string,
+            @Arg(where_field, {nullable: true}) where?: string,
         ): Promise<TObject[]> {
 
             if (quantity <= 0) {
@@ -52,6 +55,14 @@ export const entityOverTimeResolverFactory = <TObject>(
 
             let manager = getManager();
 
+            let queryParams = [from, to];
+            let maybeCondition = "";
+
+            if (where !== undefined ){
+                maybeCondition= `AND ${where_field} = $3`;
+                queryParams.push(where);
+            }
+
             // How this was built: https://dbfiddle.uk/?rdbms=postgres_13&fiddle=b2a5aa63ddaf6ac8c773e5f9172724b9
             let results: any[] = await manager.getRepository(entityModel).query(`
                 SELECT main_t.*
@@ -60,11 +71,11 @@ export const entityOverTimeResolverFactory = <TObject>(
                     SELECT min(${this.TIME_FIELD}) AS min_time,
                            (EXTRACT(EPOCH FROM j_main_t.${this.TIME_FIELD})::integer/${this.chunkSizeInSeconds(start, end, quantity)}) AS bucket
                     FROM ${this.TABLE} AS j_main_t
-                    WHERE (j_main_t.${this.TIME_FIELD} between $1  AND $2)
+                    WHERE (j_main_t.${this.TIME_FIELD} between $1  AND $2) ${maybeCondition}
                     GROUP BY bucket
                 ) grouped_main_t ON main_t.${this.TIME_FIELD} = grouped_main_t.min_time
                 ORDER BY main_t.${this.TIME_FIELD};
-            `, [from, to]);
+            `, queryParams);
             return results.map(result => (<any>newEntity)(entity, result));
         }
     }

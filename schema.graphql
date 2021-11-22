@@ -66,5 +66,6 @@ type Chronicle @entity {
 
 type TestBlock @entity {
   blockHeight: BigInt!,
-  createdAt: DateTime!
+  createdAt: DateTime!,
+  poolId: Int!
 }

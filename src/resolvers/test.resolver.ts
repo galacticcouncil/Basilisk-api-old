@@ -18,6 +18,9 @@ export class TestBlock {
     @Field({nullable: false})
     created_at!: Date
 
+    @Field({nullable: false})
+    pool_id!: number
+
     constructor(props: any) {
         Object.assign(this, props);
     }
@@ -28,6 +31,7 @@ export class TestBlockOverTimeResolver extends entityOverTimeResolverFactory<Tes
     TestBlock,
     TestBlockModel,
     'testBlocksOverTime',
-    'test_block'
+    'test_block',
+    'pool_id'
 ) {
 }
