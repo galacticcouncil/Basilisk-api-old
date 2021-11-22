@@ -85,7 +85,7 @@ export const saveLbpPoolSaleEnd = async (
     await store.save(pool);
 };
 
-export const updatePoolsBalances = async (
+export const updateMultiplePoolBalances = async (
     store: DatabaseManager,
     transferParameters: transferParameters
 ) => {

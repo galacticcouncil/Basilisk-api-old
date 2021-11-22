@@ -1,7 +1,7 @@
 import { Tokens } from "../../types";
 import { toBasiliskFormattedAddress } from "../../utils/account";
 import { transferParameters } from "../../utils/types";
-import { updatePoolsBalances } from "../../utils/poolRepository";
+import { updateMultiplePoolBalances } from "../../utils/poolRepository";
 import {
     EventContext,
     StoreContext,
@@ -27,7 +27,7 @@ const handleTokensTransfer = async ({
     const transferParameters: transferParameters =
         getTokensTransferParameters(event);
 
-    await updatePoolsBalances(store, transferParameters);
+    await updateMultiplePoolBalances(store, transferParameters);
 };
 
 export default handleTokensTransfer;
