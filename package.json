@@ -21,7 +21,7 @@
     "processor:start": "hydra-processor run",
     "processor:query-node:start": "node ./lib/generated/server.js",
     "processor:clean-and-setup": "./scripts/dev/clean-and-setup.sh",
-    "processor:test": "mocha -r ts-node/register src/**/**.spec.ts",
+    "processor:test": "mocha -r ts-node/register src/**/**.spec.ts src/**/**/**.spec.ts",
     "processor:test:watch": "mocha -r ts-node/register --watch --watch-files src/mappings/**.ts,utils/**.ts mappings/**.spec.ts src/utils/**.spec.ts",
     "processor:gen-chain-types": "./scripts/dev/gen-chain-types.sh",
     "indexer:start": "docker-compose -f ./indexer/docker-compose.yml up",
