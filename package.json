@@ -21,7 +21,7 @@
     "processor:start": "hydra-processor run",
     "processor:query-node:start": "node ./lib/generated/server.js",
     "processor:clean-and-setup": "./scripts/dev/clean-and-setup.sh",
-    "processor:test": "mocha -r ts-node/register src/mappings/**/**.spec.ts src/utils/**.spec.ts",
+    "processor:test": "mocha -r ts-node/register src/**/**.spec.ts",
     "processor:test:watch": "mocha -r ts-node/register --watch --watch-files src/mappings/**.ts,utils/**.ts mappings/**.spec.ts src/utils/**.spec.ts",
     "processor:gen-chain-types": "./scripts/dev/gen-chain-types.sh",
     "indexer:start": "docker-compose -f ./indexer/docker-compose.yml up",
@@ -43,7 +43,9 @@
     "inflected": "^2.1.0",
     "lodash": "^4.17.21",
     "simple-linear-scale": "^1.0.1",
-    "typeorm": "^0.2.38",
+    "type-graphql": "^1.1.1",
+    "typeorm": "^0.2.39",
+    "typeorm-typedi-extensions": "^0.4.1",
     "yaml": "^1.10.2"
   },
   "devDependencies": {
@@ -56,9 +58,11 @@
     "@types/mocha": "^9.0.0",
     "@types/pg": "^8.6.1",
     "chai": "^4.3.4",
+    "expect": "^27.3.1",
     "mocha": "^9.1.0",
     "sinon": "^12.0.1",
     "ts-node": "^10.4.0",
+    "tslint": "^6.1.3",
     "typescript": "~4.4.4"
   }
 }

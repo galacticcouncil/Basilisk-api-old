@@ -63,3 +63,9 @@ type Chronicle @entity {
     # TODO: use stateSubscription.lastCompletedBlock instead
     lastProcessedBlock: BigInt!
 }
+
+type TestBlock @entity {
+  blockHeight: BigInt!,
+  createdAt: DateTime!,
+  poolId: Int!
+}

@@ -13,5 +13,5 @@ export {
     handleLbpPoolCreated,
     handlePoolUpdated,
     handleXykPoolCreated,
-    handleCurrentBlockNumbers
+    handleCurrentBlockNumbers,
 };

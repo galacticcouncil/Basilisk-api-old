@@ -6,7 +6,7 @@ import {
     EventContext,
     StoreContext,
     SubstrateEvent,
-} from "@subsquid/hydra-common";
+} from '@subsquid/hydra-common';
 
 export const getTokensTransferParameters = (
     event: SubstrateEvent

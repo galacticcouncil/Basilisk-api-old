@@ -8,13 +8,14 @@ export const createHistoricalBalance = async (
     pool: LBPPool | XYKPool,
     entity: EntityConstructor<HistoricalBalanceLBP | HistoricalBalanceXYK>,
     blockHeightPairing: BlockHeightPairing,
-    blockTimeStamp: number,
+    blockTimeStamp: number
 ) => {
     const assetABalance = pool.assetABalance;
     const assetBBalance = pool.assetBBalance;
     const createdAt = new Date(blockTimeStamp);
-    const paraChainBlockHeight = blockHeightPairing.paraChainBlockHeight.toString();
-    
+    const paraChainBlockHeight =
+        blockHeightPairing.paraChainBlockHeight.toString();
+
     const historicalBalance = await ensure(
         store,
         entity,
@@ -24,7 +25,7 @@ export const createHistoricalBalance = async (
             assetBBalance,
             pool,
             blockHeight: blockHeightPairing,
-            createdAt
+            createdAt,
         }
     );
 

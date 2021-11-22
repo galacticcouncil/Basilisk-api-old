@@ -2,10 +2,10 @@ import {
     EventContext,
     StoreContext,
     SubstrateEvent,
-} from "@subsquid/hydra-common";
-import { RelayChainInfo } from "../../types";
-import { createBlockHeightPairing } from "../../utils/createBlockHeightPairing";
-import { currentBlockNumbersParameters } from "../../utils/types";
+} from '@subsquid/hydra-common';
+import { RelayChainInfo } from '../../types';
+import { createBlockHeightPairing } from '../../utils/createBlockHeightPairing';
+import { currentBlockNumbersParameters } from '../../utils/types';
 
 export const getCurrentBlockNumbersParameters = (
     event: SubstrateEvent

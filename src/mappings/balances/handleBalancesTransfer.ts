@@ -2,12 +2,12 @@ import {
     EventContext,
     StoreContext,
     SubstrateEvent,
-} from "@subsquid/hydra-common";
-import { Balances } from "../../types";
-import { toBasiliskFormattedAddress } from "../../utils/account";
-import { nativeAssetId } from "../../constants";
-import { updatePoolsBalances } from "../../utils/poolRepository";
-import { transferParameters } from "../../utils/types";
+} from '@subsquid/hydra-common';
+import { Balances } from '../../types';
+import { toBasiliskFormattedAddress } from '../../utils/account';
+import { nativeAssetId } from '../../constants';
+import { updatePoolBalance } from '../../utils/poolRepository';
+import { transferParameters } from '../../utils/types';
 
 export const getBalanceTransferParameters = (
     event: SubstrateEvent
