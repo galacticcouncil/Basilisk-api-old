@@ -10,7 +10,7 @@ async function main(): Promise<void> {
     // update pool
     const offsetBlocks = {
         start: 10,
-        end: 50
+        end: 20
     }
     await lbpPoolInstance.updatePool(offsetBlocks);
 }

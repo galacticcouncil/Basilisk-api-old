@@ -29,7 +29,8 @@
     "testnet:start": "./scripts/dev/start-testnet.sh",
     "testnet:stop": "./scripts/dev/stop-testnet.sh",
     "testnet:restart": "npm run testnet:stop && npm run testnet:start",
-    "test": "npm run build & mocha -r ts-node/register mappings/**.spec.ts utils/**.spec.ts"
+    "test": "npm run build & mocha -r ts-node/register mappings/**.spec.ts utils/**.spec.ts",
+    "test:integration": "mocha -r ts-node/register e2e/**/**.spec.ts"
   },
   "dependencies": {
     "@polkadot/api": "6.8.1",
