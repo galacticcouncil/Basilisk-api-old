@@ -91,7 +91,7 @@ describe('Integration LBP', () => {
         const responseSaleEnded = await client.query(
             `
             query MyQuery {
-                historicalBalanceLBPs(orderBy: pool_saleEndAtRelayChainBlockHeight_ASC) {
+                historicalBalanceLBPs(orderBy: pool_saleEndAtRelayChainBlockHeight_DESC) {
                     pool {
                         saleEndAtRelayChainBlockHeight
                     }
@@ -105,7 +105,7 @@ describe('Integration LBP', () => {
         const response = await client.query(
             `
             query MyQuery {
-                historicalBalanceLBPs(where: {blockHeight: {relayChainBlockHeight_gte: ${lbpWithHighestSaleEndBlockHeight}}, pool: {saleEndAtRelayChainBlockHeight_gte: ${lbpWithHighestSaleEndBlockHeight}}}) {
+                historicalBalanceLBPs(where: {blockHeight: {relayChainBlockHeight_gt: ${lbpWithHighestSaleEndBlockHeight}}, pool: {saleEndAtRelayChainBlockHeight_gt: ${lbpWithHighestSaleEndBlockHeight}}}) {
                     pool {
                         saleEndAtRelayChainBlockHeight
                     }

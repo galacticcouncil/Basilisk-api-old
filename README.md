@@ -141,3 +141,27 @@ export class EntityModel{
 
 - `db_name` is exact table name in the database.
 - `time_fieldname` is exact field name of timestamp field in the table.
+
+## Testing
+
+Make sure to have Basilisk-node with XYK pools enabled. Use `make build` to build `releases/testing-basilisk` binary and launch in `rococo-local` folder `polkadot-launch testing-config.json`.
+
+Do not run `npm run processor:query-node:start`, because we need to keep port `4000` free.
+
+```
+# migrate test data
+npm run migrate:lbp
+npm run migrate:xyk
+
+# start indexer and processor
+npm run processor:clean-and-setup
+npm run indexer:start
+npm run processor:start
+
+# run all tests
+npm run test
+
+# alternative
+npm run test:unit
+npm run test:integration
+```
