@@ -1,10 +1,15 @@
-import { useDatabase, useServer } from '../utils/db/setup';
+import { DBClient, useDatabase } from '../utils/db/setup';
 import expect from 'expect';
 import { getChunkSizeInSeconds } from './factory';
+import { Client } from 'pg';
+
 
 describe('Resolver tests', function () {
     const table_name = 'public.test_block';
-
+    let client: any;
+    before(async () => {
+        client = await DBClient.getInstance();
+    })
     useDatabase([
         //`CREATE TABLE ${table_name} ("id" character varying NOT NULL, "block_height" numeric NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT "pk_constraint" PRIMARY KEY ("id"))`,
         `insert into ${table_name} (id, block_height, created_at, pool_id)
@@ -70,7 +75,7 @@ describe('Resolver tests', function () {
             getChunkSizeInSeconds('2021-11-11T10:00', '2021-11-11T14:00', 4)
         ).toStrictEqual(3600);
     });
-    const client = useServer();
+    
 
     it('can fetch all blocks', async () => {
         await client.test(
@@ -364,4 +369,8 @@ describe('Resolver tests', function () {
             }
         );
     });
+
+    after(async () => {
+        await DBClient.close();
+    })
 });

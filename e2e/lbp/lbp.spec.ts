@@ -1,8 +1,13 @@
 import { expect } from 'chai';
-import { useServer } from '../../src/utils/db/setup';
+import { DBClient } from '../../src/utils/db/setup';
 
 describe('Integration LBP', () => {
-    const client = useServer();
+    let client: any;
+
+    before(async () => {
+        client = await DBClient.getInstance();
+    });
+
     // TODO read address from migration
     const lbpPoolAddress = 'bXikYFVEuifjmPT3j41zwqwrGAJTzMv69weEqrvAotP9VfHxS';
     it('can handle lbp.PoolCreated event', async () => {
@@ -111,7 +116,7 @@ describe('Integration LBP', () => {
             }              
             `
         );
-        expect(response.data.historicalBalanceLBPs).to.be.an('array')
-            .and.to.be.empty;
+        expect(response.data.historicalBalanceLBPs).to.be.an('array').and.to.be
+            .empty;
     });
 });

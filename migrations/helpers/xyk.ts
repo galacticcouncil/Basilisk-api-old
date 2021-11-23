@@ -1,8 +1,17 @@
-import { ApiPromise } from "@polkadot/api";
-import { KeyringPair } from "@polkadot/keyring/types";
-import { Basilisk } from "./api";
-import { getSigner } from "./utils";
-import { assetPair } from "./types";
+import { ApiPromise } from '@polkadot/api';
+import { KeyringPair } from '@polkadot/keyring/types';
+import { Basilisk } from './api';
+import { getSigner } from './utils';
+import { assetPair } from './types';
+import { BigNumber } from 'bignumber.js';
+
+export const assetAAmount = new BigNumber('1000000')
+    .multipliedBy(new BigNumber('10').pow('12'))
+    .toString();
+
+export const assetBAmount = new BigNumber('2')
+    .multipliedBy(new BigNumber('10').pow('18'))
+    .toString();
 
 const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
     return {
@@ -14,19 +23,19 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
             const tx = await this.api.tx.xyk.createPool(
                 this.assetPair.assetA,
                 this.assetPair.assetB,
-                "10000000000000000", // assetAAmount
-                "123456" // initialPrice
+                assetAAmount, // assetAAmount = 10 000
+                assetBAmount // initialPrice
             );
             // sign and announce tx
             const hash = await tx.signAndSend(this.signer);
-            console.log("Create XYK Pool transaction hash:", hash.toString());
+            console.log('Create XYK Pool transaction hash:', hash.toString());
         },
         buy: async function () {
             const tx = await this.api.tx.xyk.buy(
                 this.assetPair.assetA, // assetOut
                 this.assetPair.assetB, // assetIn
-                "10000", // amount
-                "10000", // max limit
+                '10000', // amount
+                '10000', // max limit
                 false //discount
             );
             await tx.signAndSend(this.signer);
@@ -35,12 +44,12 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
             const tx = await this.api.tx.xyk.sell(
                 this.assetPair.assetB, // assetOut
                 this.assetPair.assetA, // assetIn
-                "10000", // amount
-                "10000", // max limit
+                '10000', // amount
+                '10000', // max limit
                 false //discount
             );
             await tx.signAndSend(this.signer);
-        }
+        },
     };
 };
 

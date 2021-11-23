@@ -53,22 +53,43 @@ export function useDatabase(sql: string[]): void {
     });
 }
 
-export function useServer(): Client {
-    const model = loadModel(path.join(__dirname, '../../../schema.graphql'));
-    let extensionModule: string | undefined;
-    try {
-        extensionModule = require.resolve('../../resolvers/index.ts');
-    } catch (e) {
-        // ignore
+class PGdbClient {
+    public instance: Client | undefined = undefined;
+    private isConnected: boolean;
+    private db: Pool | undefined;
+    private info: ListeningServer | undefined;
+
+    constructor() {
+        this.isConnected = false;
     }
 
-    let client = new Client('not defined');
-    let db: Pool;
-    let info: ListeningServer;
+    private async connect() {
+        if (this.isConnected) {
+            return;
+        }
 
-    before(async () => {
+        await this.initialize();
+        this.isConnected = true;
+    }
+
+    public async getInstance() {
+        await this.connect();
+        return this.instance;
+    }
+
+    private initialize = async () => {
+        const model = loadModel(path.join(__dirname, '../../../schema.graphql'));
+        let extensionModule: string | undefined;
+        try {
+            extensionModule = require.resolve('../../resolvers/index.ts');
+        } catch (e) {
+            // ignore
+        }
+
+        let client = new Client('not defined');
         require('dotenv').config();
-        db = new Pool(db_config());
+        this.db = new Pool(db_config());
+        const db = this.db
         const options: ServerOptions = {
             model,
             db,
@@ -81,10 +102,17 @@ export function useServer(): Client {
                 options
             );
         }
-        info = await serve(options);
-        client.endpoint = `http://localhost:${info.port}/graphql`;
-    });
-    after(() => info?.stop());
-    after(() => db.end());
-    return client;
+        this.info = await serve(options);
+        client.endpoint = `http://localhost:${this.info!.port}/graphql`;
+
+        this.instance = client
+    };
+
+    public async close() {
+        await this.info!.stop();
+        await this.db!.end();
+    }
+
 }
+
+export const DBClient = new PGdbClient();
