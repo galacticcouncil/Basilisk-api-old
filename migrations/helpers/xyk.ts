@@ -27,8 +27,25 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                 assetBAmount // initialPrice
             );
             // sign and announce tx
-            const hash = await tx.signAndSend(this.signer);
-            console.log('Create XYK Pool transaction hash:', hash.toString());
+            await new Promise<void>(async (resolve, reject) => {
+                await tx.signAndSend(
+                    this.signer, 
+                    {},
+                    ({status, events: _events, dispatchError}) => {
+                        if(status.isBroadcast) {
+                            console.log('tx hash:', status.hash.toString())
+                        }
+                        if(status.isFinalized) {
+                            console.log('operation finalized')
+                            resolve()
+                        }
+                        if(dispatchError){
+                            console.log('dispatchError', api.registry.findMetaError(dispatchError.asModule))
+                            reject()
+                        }
+                    }
+                );
+            });
         },
         buy: async function () {
             const tx = await this.api.tx.xyk.buy(
