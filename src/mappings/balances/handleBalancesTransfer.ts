@@ -8,6 +8,7 @@ import { toBasiliskFormattedAddress } from '../../utils/account';
 import { nativeAssetId } from '../../constants';
 import { updateMultiplePoolBalances } from '../../utils/poolRepository';
 import { transferParameters } from '../../utils/types';
+import { updateMultipleHistoricalVolumes } from '../../utils/historicalVolume';
 
 export const getBalanceTransferParameters = (
     event: SubstrateEvent
@@ -22,6 +23,7 @@ export const getBalanceTransferParameters = (
 };
 
 const handleBalancesTransfer = async ({
+    block,
     event,
     store,
 }: EventContext & StoreContext) => {
@@ -29,6 +31,7 @@ const handleBalancesTransfer = async ({
         getBalanceTransferParameters(event);
 
     await updateMultiplePoolBalances(store, transferParameters);
+    await updateMultipleHistoricalVolumes(store, block, transferParameters);
 };
 
 export default handleBalancesTransfer;

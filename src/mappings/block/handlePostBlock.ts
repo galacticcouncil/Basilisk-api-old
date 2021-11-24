@@ -9,6 +9,7 @@ import {
 import { createHistoricalBalance } from '../../utils/historicalBalance';
 import { updateChronicle } from '../../utils/chronicle';
 import { MoreThanOrEqual } from 'typeorm';
+import { createHistoricalVolume } from '../../utils/historicalVolume';
 
 const handlePostBlock = async ({
     block,
@@ -54,6 +55,12 @@ const handlePostBlock = async ({
                 currentBlockHeightPairing!,
                 block.timestamp
             ),
+            createHistoricalVolume(
+                store,
+                pool,
+                currentBlockHeightPairing!,
+                block.timestamp
+            ),
         ];
     });
 
@@ -64,6 +71,12 @@ const handlePostBlock = async ({
                 store,
                 pool,
                 HistoricalBalanceXYK,
+                currentBlockHeightPairing!,
+                block.timestamp
+            ),
+            createHistoricalVolume(
+                store,
+                pool,
                 currentBlockHeightPairing!,
                 block.timestamp
             ),

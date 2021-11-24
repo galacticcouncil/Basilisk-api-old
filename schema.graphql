@@ -58,6 +58,30 @@ type HistoricalBalanceXYK @entity {
     blockHeight: BlockHeightPairing!
 }
 
+type HistoricalVolumeLBP @entity {
+    "PoolId-paraChainBlockHeight-volume"
+    id: ID!
+    assetABalanceIn: BigInt!
+    assetABalanceOut: BigInt!
+    assetBBalanceIn: BigInt!
+    assetBBalanceOut: BigInt!
+    createdAt: DateTime!
+    pool: LBPPool!
+    blockHeight: BlockHeightPairing!
+}
+
+type HistoricalVolumeXYK @entity {
+    "PoolId-paraChainBlockHeight-volume"
+    id: ID!
+    assetABalanceIn: BigInt!
+    assetABalanceOut: BigInt!
+    assetBBalanceIn: BigInt!
+    assetBBalanceOut: BigInt!
+    createdAt: DateTime!
+    pool: XYKPool!
+    blockHeight: BlockHeightPairing!
+}
+
 type Chronicle @entity {
     id: ID!
     # TODO: use stateSubscription.lastCompletedBlock instead
