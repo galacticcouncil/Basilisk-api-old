@@ -7,6 +7,7 @@ import {
     StoreContext,
     SubstrateEvent,
 } from '@subsquid/hydra-common';
+import { updateMultipleHistoricalVolumes } from "../../utils/historicalVolume";
 
 export const getTokensTransferParameters = (
     event: SubstrateEvent
@@ -21,6 +22,7 @@ export const getTokensTransferParameters = (
 };
 
 const handleTokensTransfer = async ({
+    block,
     event,
     store,
 }: EventContext & StoreContext) => {
@@ -28,6 +30,7 @@ const handleTokensTransfer = async ({
         getTokensTransferParameters(event);
 
     await updateMultiplePoolBalances(store, transferParameters);
+    await updateMultipleHistoricalVolumes(store, block, transferParameters);
 };
 
 export default handleTokensTransfer;
