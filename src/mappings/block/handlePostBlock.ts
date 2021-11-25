@@ -14,7 +14,6 @@ const handlePostBlock = async ({
     block,
     store,
 }: BlockContext & StoreContext) => {
-    // TODO proper error handling for undefined
     const currentBlockHeightPairing = await store.get<BlockHeightPairing>(
         BlockHeightPairing,
         {
@@ -23,11 +22,12 @@ const handlePostBlock = async ({
             },
         }
     );
-
+    if(!currentBlockHeightPairing) throw(`Can't process data without block height pairing`);
+    
     const relayChainBlockHeight =
-        currentBlockHeightPairing?.relayChainBlockHeight || BigInt(0);
+        currentBlockHeightPairing.relayChainBlockHeight;
     const paraChainBlockHeight =
-        currentBlockHeightPairing?.paraChainBlockHeight || BigInt(0);
+        currentBlockHeightPairing.paraChainBlockHeight;
 
     let databaseQueries;
     // update chronicle
@@ -37,14 +37,13 @@ const handlePostBlock = async ({
         }),
     ];
 
-    // create historical balance
+    // create historical balances for LBP and XYK
     const options = {
         saleEndAtRelayChainBlockHeight: MoreThanOrEqual(
             Number(relayChainBlockHeight)
         ),
     };
     const lbpPools = await store.getMany<LBPPool>(LBPPool, options as any);
-    // TODO proper error handling for undefined
     databaseQueries = lbpPools.map((pool: LBPPool) => {
         return [
             createHistoricalBalance(
@@ -56,7 +55,6 @@ const handlePostBlock = async ({
             ),
         ];
     });
-
     const xykPools = await store.getMany<XYKPool>(XYKPool, {});
     databaseQueries = xykPools.map((pool: XYKPool) => {
         return [
