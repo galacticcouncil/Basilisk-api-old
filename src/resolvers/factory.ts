@@ -30,8 +30,10 @@ export function getChunkSizeInSeconds(
     if (diff < 0) {
         throw new Error('Incorrect range');
     }
+    // Remove decimals for sql query, because it accepts only integer
+    const chunkSizeInSeconds = Math.floor(diff / millisecond / quantity);
 
-    return diff / millisecond / quantity;
+    return chunkSizeInSeconds;
 }
 
 export const entityOverTimeResolverFactory = <TObject>(
