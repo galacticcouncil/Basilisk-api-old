@@ -1,6 +1,6 @@
 import { DatabaseManager } from '@subsquid/hydra-common';
 import { BlockHeightPairing } from '../generated/model';
-import { ensure } from './ensure';
+import { getOrCreate } from './getOrCreate';
 import { currentBlockNumbersParameters } from './types';
 
 export const createBlockHeightPairing = async (
@@ -15,7 +15,7 @@ export const createBlockHeightPairing = async (
     const relayChainBlockHeight =
         currentBlockNumbersParameters.relayChainBlockHeight;
 
-    const blockHeightPairing = await ensure(
+    const blockHeightPairing = await getOrCreate(
         store,
         BlockHeightPairing,
         paraChainBlockHash,

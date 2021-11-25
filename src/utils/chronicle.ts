@@ -1,9 +1,9 @@
 import { DatabaseManager } from '@subsquid/hydra-common';
 import { Chronicle } from '../generated/model';
-import { ensure } from './ensure';
+import { getOrCreate } from './getOrCreate';
 
 const ensureChronicle = async (store: DatabaseManager) => {
-    const chronicle = await ensure(store, Chronicle, 'chronicleId', {
+    const chronicle = await getOrCreate(store, Chronicle, 'chronicleId', {
         // just a starting value for the Chronicle
         lastProcessedBlock: BigInt(0),
     });

@@ -1,6 +1,6 @@
 import { DatabaseManager } from "@subsquid/hydra-common";
 import { BlockHeightPairing, HistoricalBalanceLBP, HistoricalBalanceXYK, LBPPool, XYKPool } from "../generated/model";
-import { ensure } from "./ensure";
+import { getOrCreate } from "./getOrCreate";
 import { EntityConstructor } from "./types";
 
 export const createHistoricalBalance = async (
@@ -16,7 +16,7 @@ export const createHistoricalBalance = async (
     const paraChainBlockHeight =
         blockHeightPairing.paraChainBlockHeight.toString();
 
-    const historicalBalance = await ensure(
+    const historicalBalance = await getOrCreate(
         store,
         entity,
         `${pool.id}-${paraChainBlockHeight}`,

@@ -1,7 +1,7 @@
 import { DatabaseManager } from "@subsquid/hydra-common";
 import { initialBalance } from "../constants";
 import { LBPPool, XYKPool } from "../generated/model";
-import { ensure } from "./ensure";
+import { getOrCreate } from "./getOrCreate";
 import {
     EntityConstructor,
     poolCreatedParameters,
@@ -12,7 +12,7 @@ import {
  * Find or create a pool with default values,
  * using the `poolId` as the unique ID
  */
-export const ensurePool = async (
+export const getOrCreatePool = async (
     store: DatabaseManager,
     entityConstructor: EntityConstructor<LBPPool | XYKPool>,
     poolCreatedParameters: poolCreatedParameters
@@ -23,7 +23,7 @@ export const ensurePool = async (
     const initAssetABalance = initialBalance;
     const initAssetBBalance = initialBalance;
 
-    const pool = await ensure<LBPPool | XYKPool>(
+    const pool = await getOrCreate<LBPPool | XYKPool>(
         store,
         entityConstructor,
         poolCreatedParameters.poolId,
