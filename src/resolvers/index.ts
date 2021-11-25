@@ -1,11 +1,11 @@
-import { TestBlockOverTimeResolver } from './test.resolver';
+import { TestBlockOverTimeResolver } from './test/test.resolver';
 import {
-    historicalBalancesLbpGroupedResolver,
-    historicalBalancesXykGroupedResolver,
-} from './historicalBalances';
+    HistoricalBalancesLbpGroupedResolver,
+    HistoricalBalancesXykGroupedResolver,
+} from '../server-extension';
 
 export {
     TestBlockOverTimeResolver,
-    historicalBalancesLbpGroupedResolver,
-    historicalBalancesXykGroupedResolver,
+    HistoricalBalancesLbpGroupedResolver,
+    HistoricalBalancesXykGroupedResolver,
 };
