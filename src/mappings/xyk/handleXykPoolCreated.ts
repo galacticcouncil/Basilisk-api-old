@@ -6,7 +6,7 @@ import {
 import { XYKPool } from '../../generated/model';
 import { XYK } from '../../types';
 import { toBasiliskFormattedAddress } from '../../utils/account';
-import { getOrCreatePool } from '../../utils/poolRepository';
+import { createPool } from '../../utils/pools';
 import { poolCreatedParameters } from '../../utils/types';
 
 export const getXykPoolCreatedParameters = (
@@ -29,7 +29,7 @@ const handleXykPoolCreated = async ({
     const poolCreatedParameters: poolCreatedParameters =
         getXykPoolCreatedParameters(event);
 
-    await getOrCreatePool(store, XYKPool, poolCreatedParameters);
+    await createPool(store, XYKPool, poolCreatedParameters);
 };
 
 export default handleXykPoolCreated;

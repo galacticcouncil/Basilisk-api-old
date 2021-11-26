@@ -2,40 +2,19 @@ import { Arg, Query, Resolver } from 'type-graphql';
 import { getManager } from 'typeorm';
 import { defaultTimeField, millisecond } from '../constants';
 
-function newEntity(entity: any) {
-    return new (Function.prototype.bind.apply(entity, arguments as any))();
-}
-
-function throwsForInvalidQuantity(quantity: number) {
-    if (quantity <= 0) {
-        throw new Error('Invalid quantity.');
-    }
-}
-
-export function getChunkSizeInSeconds(
-    from: string,
-    to: string,
-    quantity: number
-): number {
-    throwsForInvalidQuantity(quantity);
-
-    /**
-     * Simple validation - it throws "RangeError: Invalid date or time"
-     * error if invalid date is provided
-     */
-    let start = new Date(from).toISOString();
-    let end = new Date(to).toISOString();
-
-    let diff = new Date(end).getTime() - new Date(start).getTime();
-    if (diff < 0) {
-        throw new Error('Incorrect range');
-    }
-    // Remove decimals for sql query, because it accepts only integer
-    const chunkSizeInSeconds = Math.floor(diff / millisecond / quantity);
-
-    return chunkSizeInSeconds;
-}
-
+/**
+ * Creates a resolver that makes it possible to query on: 
+ * A time-range for the createdAt field of the entities.
+ * Provide an additional 'where' condition on one property.
+ * 
+ * @param entity the ObjectType class to be returned from the resolver.
+ * @param entityModel represents the entity type class in the DB. Auto-generated from graphql schema.
+ * @param entityName of the resolver.
+ * @param table exact name of the table.
+ * @param where_field exact field name of the optional 'where' query condition
+ * @param timeField exact field name of timestamp field in the table.
+ * @returns 
+ */
 export const entityOverTimeResolverFactory = <TObject>(
     entity: any,
     entityModel: any,
@@ -63,13 +42,15 @@ export const entityOverTimeResolverFactory = <TObject>(
                 to,
                 quantity
             );
-
             let queryParams = [from, to, chunkSizeInSeconds];
+
+            // Additional 'where' condition for one property that is optional
             let maybeCondition = '';
             if (where !== undefined) {
                 maybeCondition = `AND ${where_field} = $4`;
                 queryParams = [...queryParams, where];
             }
+
             let manager = getManager();
             // How this was built: https://dbfiddle.uk/?rdbms=postgres_13&fiddle=b2a5aa63ddaf6ac8c773e5f9172724b9
             let results: any[] = await manager.getRepository(entityModel).query(
@@ -93,3 +74,45 @@ export const entityOverTimeResolverFactory = <TObject>(
 
     return EntityOverTimeResolver;
 };
+
+/**
+ * Calculates the length of each bucket or chunk in seconds.
+ * 
+ * @param from timestamp of query start
+ * @param to timestamp of query stop
+ * @param quantity number of chunks
+ * @returns length of each chunk in seconds
+ */
+ export function getChunkSizeInSeconds(
+    from: string,
+    to: string,
+    quantity: number
+): number {
+    throwsForInvalidQuantity(quantity);
+
+    /**
+     * Simple validation - it throws "RangeError: Invalid date or time"
+     * error if invalid date is provided
+     */
+    let start = new Date(from).toISOString();
+    let end = new Date(to).toISOString();
+
+    let diff = new Date(end).getTime() - new Date(start).getTime();
+    if (diff < 0) {
+        throw new Error('Incorrect range');
+    }
+    // Remove decimals for sql query, because it accepts only integer
+    const chunkSizeInSeconds = Math.floor(diff / millisecond / quantity);
+
+    return chunkSizeInSeconds;
+}
+
+function throwsForInvalidQuantity(quantity: number) {
+    if (quantity <= 0) {
+        throw new Error('Invalid quantity.');
+    }
+}
+
+function newEntity(entity: any) {
+    return new (Function.prototype.bind.apply(entity, arguments as any))();
+}

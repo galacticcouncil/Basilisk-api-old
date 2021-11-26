@@ -2,9 +2,9 @@ import { expect } from "chai";
 import {
     increasePoolBalanceForAssetId,
     decreasePoolBalanceForAssetId,
-} from "./poolRepository";
+} from "./pools";
 
-describe("utils/poolRepository", () => {
+describe("utils/pools", () => {
     describe("increasePoolBalanceForAssetId", () => {
         const poolInit = () => ({
             assetAId: BigInt(0),

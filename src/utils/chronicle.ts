@@ -2,7 +2,7 @@ import { DatabaseManager } from '@subsquid/hydra-common';
 import { Chronicle } from '../generated/model';
 import { getOrCreate } from './getOrCreate';
 
-const ensureChronicle = async (store: DatabaseManager) => {
+const getOrCreateChronicle = async (store: DatabaseManager) => {
     const chronicle = await getOrCreate(store, Chronicle, 'chronicleId', {
         // just a starting value for the Chronicle
         lastProcessedBlock: BigInt(0),
@@ -11,11 +11,16 @@ const ensureChronicle = async (store: DatabaseManager) => {
     await store.save(chronicle);
     return chronicle;
 };
+
+/**
+ * Updates the continuos chronicle variable that keeps track of the
+ * last block height the processor finished processing.
+ */
 export const updateChronicle = async (
     store: DatabaseManager,
     chronicleUpdate: Partial<Chronicle>
 ) => {
-    const chronicle = await ensureChronicle(store);
+    const chronicle = await getOrCreateChronicle(store);
     Object.assign(chronicle, chronicleUpdate);
     await store.save(chronicle);
 };

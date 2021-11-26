@@ -3,6 +3,10 @@ import { BlockHeightPairing } from '../generated/model';
 import { getOrCreate } from './getOrCreate';
 import { currentBlockNumbersParameters } from './types';
 
+/**
+ * Creates a block height pairing between the
+ * block heights of the relay- and para-chain.
+ */
 export const createBlockHeightPairing = async (
     store: DatabaseManager,
     paraChainBlockHash: string,

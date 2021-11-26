@@ -6,6 +6,10 @@ import {
     HistoricalBalanceXYK as HistoricalBalanceXykModel,
 } from './generated/model';
 
+/**
+ * Custom resolver to query a set of historical balances by
+ * providing a time-range, the number of results and the poolId.
+ */
 @Resolver()
 export class HistoricalBalancesLbpGroupedResolver extends entityOverTimeResolverFactory<HistoricalBalance>(
     HistoricalBalance,
@@ -15,6 +19,10 @@ export class HistoricalBalancesLbpGroupedResolver extends entityOverTimeResolver
     'pool_id'
 ) {}
 
+/**
+ * Custom resolver to query a set of historical balances by
+ * providing a time-range, the number of results and the poolId.
+ */
 @Resolver()
 export class HistoricalBalancesXykGroupedResolver extends entityOverTimeResolverFactory<HistoricalBalance>(
     HistoricalBalance,

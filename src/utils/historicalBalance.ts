@@ -1,8 +1,18 @@
-import { DatabaseManager } from "@subsquid/hydra-common";
-import { BlockHeightPairing, HistoricalBalanceLBP, HistoricalBalanceXYK, LBPPool, XYKPool } from "../generated/model";
-import { getOrCreate } from "./getOrCreate";
-import { EntityConstructor } from "./types";
+import { DatabaseManager } from '@subsquid/hydra-common';
+import {
+    BlockHeightPairing,
+    HistoricalBalanceLBP,
+    HistoricalBalanceXYK,
+    LBPPool,
+    XYKPool,
+} from '../generated/model';
+import { getOrCreate } from './getOrCreate';
+import { EntityConstructor } from './types';
 
+/**
+ * This function saves a snapshot of the pool's 
+ * balance in a new historical balance entity.
+ */
 export const createHistoricalBalance = async (
     store: DatabaseManager,
     pool: LBPPool | XYKPool,
@@ -12,9 +22,9 @@ export const createHistoricalBalance = async (
 ) => {
     const assetABalance = pool.assetABalance;
     const assetBBalance = pool.assetBBalance;
-    const createdAt = new Date(blockTimeStamp);
     const paraChainBlockHeight =
         blockHeightPairing.paraChainBlockHeight.toString();
+    const createdAt = new Date(blockTimeStamp);
 
     const historicalBalance = await getOrCreate(
         store,

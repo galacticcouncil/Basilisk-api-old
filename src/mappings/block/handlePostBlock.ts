@@ -22,14 +22,15 @@ const handlePostBlock = async ({
             },
         }
     );
-    if(!currentBlockHeightPairing) throw(`Can't process data without block height pairing`);
-    
+    if (!currentBlockHeightPairing)
+        throw `Can't process data without block height pairing`;
+
     const relayChainBlockHeight =
         currentBlockHeightPairing.relayChainBlockHeight;
-    const paraChainBlockHeight =
-        currentBlockHeightPairing.paraChainBlockHeight;
+    const paraChainBlockHeight = currentBlockHeightPairing.paraChainBlockHeight;
 
-    let databaseQueries;
+    let databaseQueries = [];
+
     // update chronicle
     databaseQueries = [
         updateChronicle(store, {
@@ -37,7 +38,7 @@ const handlePostBlock = async ({
         }),
     ];
 
-    // create historical balances for LBP and XYK
+    // create historical balances for LBP
     const options = {
         saleEndAtRelayChainBlockHeight: MoreThanOrEqual(
             Number(relayChainBlockHeight)
@@ -55,6 +56,8 @@ const handlePostBlock = async ({
             ),
         ];
     });
+
+    // create historical balances for XYK pools
     const xykPools = await store.getMany<XYKPool>(XYKPool, {});
     databaseQueries = xykPools.map((pool: XYKPool) => {
         return [
@@ -68,6 +71,7 @@ const handlePostBlock = async ({
         ];
     });
 
+    // resolve concurrently all database queries
     await Promise.all(databaseQueries);
 };
 

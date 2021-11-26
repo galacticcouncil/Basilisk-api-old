@@ -6,7 +6,7 @@ import {
 import { Balances } from '../../types';
 import { toBasiliskFormattedAddress } from '../../utils/account';
 import { nativeAssetId } from '../../constants';
-import { updateMultiplePoolBalances } from '../../utils/poolRepository';
+import { updateMultiplePoolBalances } from '../../utils/pools';
 import { transferParameters } from '../../utils/types';
 
 export const getBalanceTransferParameters = (

@@ -7,7 +7,7 @@ import {
 import { LBPPool } from '../../generated/model';
 import { create } from '../../types/_registry';
 import { toBasiliskFormattedAddress } from '../../utils/account';
-import { getOrCreatePool } from '../../utils/poolRepository';
+import { createPool } from '../../utils/pools';
 import { poolCreatedParameters, poolCreatedParams1 } from '../../utils/types';
 
 export const getPoolCreatedParameters = (
@@ -33,7 +33,7 @@ const handleLbpPoolCreated = async ({
         getPoolCreatedParameters(event);
 
     // create a new pool
-    await getOrCreatePool(store, LBPPool, poolCreatedParameters);
+    await createPool(store, LBPPool, poolCreatedParameters);
 };
 
 export default handleLbpPoolCreated;

@@ -9,17 +9,18 @@ import {
 } from "./types";
 
 /**
- * Find or create a pool with default values,
- * using the `poolId` as the unique ID
+ * Create a pool with the provided assetIds
+ * and default values for asset balances 
+ * using the `poolId` as the unique ID.
  */
-export const getOrCreatePool = async (
+export const createPool = async (
     store: DatabaseManager,
     entityConstructor: EntityConstructor<LBPPool | XYKPool>,
     poolCreatedParameters: poolCreatedParameters
-): Promise<LBPPool | XYKPool> => {
+) => {
     const assetAId = poolCreatedParameters.assetAId;
     const assetBId = poolCreatedParameters.assetBId;
-    // ensure the pool with default parameters
+    // default values for the asset balances
     const initAssetABalance = initialBalance;
     const initAssetBBalance = initialBalance;
 
@@ -34,9 +35,8 @@ export const getOrCreatePool = async (
             assetBBalance: initAssetBBalance,
         }
     );
-
+    
     await store.save(pool);
-    return pool;
 };
 
 export const increasePoolBalanceForAssetId = (
@@ -44,10 +44,15 @@ export const increasePoolBalanceForAssetId = (
     balanceToAdd: bigint,
     assetId: bigint
 ) => {
-    // it is not possible to create a pool where both asset ids are the same
+    /**
+     * It is not possible to create a pool where both asset ids 
+     * are the same on protocol level. That's why we are not handling 
+     * the case where assetAId = assetBId
+     */
     if (pool.assetAId === assetId) {
         pool.assetABalance += balanceToAdd;
     }
+
     if (pool.assetBId === assetId) {
         pool.assetBBalance += balanceToAdd;
     }
@@ -60,10 +65,15 @@ export const decreasePoolBalanceForAssetId = (
     balanceToRemove: bigint,
     assetId: bigint
 ) => {
-    // it is not possible to create a pool where both asset ids are the same
+    /**
+     * It is not possible to create a pool where both asset ids 
+     * are the same on protocol level. That's why we are not handling 
+     * the case where assetAId = assetBId
+     */
     if (pool.assetAId === assetId) {
         pool.assetABalance -= balanceToRemove;
     }
+
     if (pool.assetBId === assetId) {
         pool.assetBBalance -= balanceToRemove;
     }
@@ -71,6 +81,7 @@ export const decreasePoolBalanceForAssetId = (
     return pool;
 };
 
+// Saves LBP sale start expressed as relaychain block height
 export const saveLbpPoolSaleEnd = async (
     store: DatabaseManager,
     poolId: string,
@@ -85,6 +96,11 @@ export const saveLbpPoolSaleEnd = async (
     await store.save(pool);
 };
 
+/**
+ * This function updates the balance of one assetId for one pool.
+ * However, the way entities are searched, we need to call the 
+ * queries for each entity separately.
+ */
 export const updateMultiplePoolBalances = async (
     store: DatabaseManager,
     transferParameters: transferParameters
@@ -96,12 +112,19 @@ export const updateMultiplePoolBalances = async (
     await Promise.all(databaseQueries);
 };
 
+/**
+ * Update pool by either increasing or decreasing of its 
+ * balance depending on receiving or sending assets.
+ */
 async function updatePoolBalance(
     store: DatabaseManager,
     entity: EntityConstructor<LBPPool | XYKPool>,
     transferParameters: transferParameters
 ) {
-    // Increase pool's asset balance in case the pool was recipient of an asset.
+    /**
+     * Increase pool's asset balance in case the 
+     * pool is the recipient of an asset.
+     */
     let poolToReceive = await store.get(entity, {
         where: { id: transferParameters.to },
     });
@@ -113,7 +136,11 @@ async function updatePoolBalance(
         );
         await store.save(pool);
     }
-    // Decrease pool's asset balance in case the pool was the sender of an asset.
+
+    /**
+     * Decrease pool's asset balance in case the 
+     * pool is the sender of an asset.
+     */
     let poolToSend = await store.get(entity, {
         where: { id: transferParameters.from },
     });
