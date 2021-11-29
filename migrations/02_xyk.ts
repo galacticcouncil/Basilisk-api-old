@@ -1,9 +1,9 @@
-import xykPool from "./helpers/xyk";
-import { assetPair } from "./helpers/types";
+import xykPool from './helpers/xyk';
+import { assetPair } from './helpers/types';
 
 async function main(): Promise<void> {
     // create pool
-    const assetPair: assetPair = { assetA: "0", assetB: "1" };
+    const assetPair: assetPair = { assetA: '0', assetB: '1' };
     const xykPoolInstance = await xykPool.createPool(assetPair);
 }
 

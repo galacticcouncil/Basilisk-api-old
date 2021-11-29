@@ -1,17 +1,17 @@
-import { ApiPromise } from "@polkadot/api";
-import { AddressOrPair } from "@polkadot/api/types";
-import { KeyringPair } from "@polkadot/keyring/types";
-import { toBasiliskFormattedAddress } from "../../src/utils/account";
-import { Basilisk } from "./api";
-import { assetPair } from "./types";
-import { getSigner } from "./utils";
+import { ApiPromise } from '@polkadot/api';
+import { AddressOrPair } from '@polkadot/api/types';
+import { KeyringPair } from '@polkadot/keyring/types';
+import { toBasiliskFormattedAddress } from '../../src/utils/account';
+import { Basilisk } from './api';
+import { assetPair } from './types';
+import { getSigner } from './utils';
 
 const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
     return {
         assetPair,
         api,
         signer,
-        address: "",
+        address: '',
         getSignerAddress: function (): string {
             return toBasiliskFormattedAddress(this.signer.address);
         },
@@ -25,17 +25,18 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                     const tx = await this.api.tx.lbp.createPool(
                         aliceAddress,
                         this.assetPair.assetA,
-                        "10000000000000",
+                        '10000000000000',
                         this.assetPair.assetB,
-                        "10000000000000",
-                        "10000000",
-                        "90000000",
-                        "Linear",
+                        '10000000000000',
+                        '10000000',
+                        '90000000',
+                        'Linear',
                         {
-                            numerator: "1",
-                            denominator: "10",
+                            numerator: '1',
+                            denominator: '10',
                         },
-                        aliceAddress
+                        aliceAddress,
+                        '0'
                     );
                     const unsub = await this.api.tx.sudo
                         .sudo(tx)
@@ -69,8 +70,8 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                                             phase,
                                         }) => {
                                             if (
-                                                section === "lbp" &&
-                                                method == "PoolCreated"
+                                                section === 'lbp' &&
+                                                method == 'PoolCreated'
                                             ) {
                                                 unsub();
                                                 // set pool's address
@@ -111,6 +112,7 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                             null,
                             null,
                             null,
+                            null,
                             null
                         )
                         .signAndSend(
@@ -121,16 +123,16 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                                         event: { data, method, section },
                                         phase,
                                     }) => {
-                                        if (method === "ExtrinsicFailed") {
+                                        if (method === 'ExtrinsicFailed') {
                                             unsub();
                                             reject(1);
                                         }
                                         if (
-                                            section === "lbp" &&
-                                            method == "PoolUpdated"
+                                            section === 'lbp' &&
+                                            method == 'PoolUpdated'
                                         ) {
                                             console.log(
-                                                "[3/3] >>> Pool has been updated successfully."
+                                                '[3/3] >>> Pool has been updated successfully.'
                                             );
                                             unsub();
                                             resolve();
@@ -162,7 +164,7 @@ export default {
 
         await lbpPool.createPool();
         console.log(
-            "[1/3] >>> Pool has been created with address - ",
+            '[1/3] >>> Pool has been created with address - ',
             lbpPool.address
         );
 
