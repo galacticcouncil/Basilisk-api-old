@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { DBClient } from '../../src/utils/db/setup';
+import migration from '../../pools/lbp/lbp.json'
 
 describe('Integration LBP', () => {
     let client: any;
@@ -8,13 +9,12 @@ describe('Integration LBP', () => {
         client = await DBClient.getInstance();
     });
 
-    // TODO read address from migration
-    const lbpPoolAddress = 'bXikYFVEuifjmPT3j41zwqwrGAJTzMv69weEqrvAotP9VfHxS';
+    const lbpPoolAddress = migration.address;
     it('can handle lbp.PoolCreated event', async () => {
         await client.test(
             `
             query MyQuery {
-                lBPPools {
+                lBPPools(where: {id_eq: "${lbpPoolAddress}"}) {
                     id
                     assetAId
                     assetBId
@@ -25,8 +25,8 @@ describe('Integration LBP', () => {
                 lBPPools: [
                     {
                         id: lbpPoolAddress,
-                        assetAId: '0',
-                        assetBId: '1',
+                        assetAId: migration.assetAId,
+                        assetBId: migration.assetBId,
                     },
                 ],
             }
@@ -48,12 +48,11 @@ describe('Integration LBP', () => {
         );
     });
 
-    // TODO replace expected values with migration storage, see https://github.com/galacticcouncil/Basilisk-api/issues/18
     it('can handle balances.Transfer and tokens.Transfer events', async () => {
         await client.test(
-            `
+        `
             query MyQuery {
-                    lBPPools {
+                lBPPools(where: {id_eq: "${lbpPoolAddress}"}) {
                         id
                         assetABalance
                         assetBBalance
@@ -64,8 +63,8 @@ describe('Integration LBP', () => {
                 lBPPools: [
                     {
                         id: lbpPoolAddress,
-                        assetABalance: '10000000000000',
-                        assetBBalance: '10000000000000',
+                        assetABalance: migration.assetABalance,
+                        assetBBalance: migration.assetBBalance,
                     },
                 ],
             }
@@ -74,7 +73,7 @@ describe('Integration LBP', () => {
 
     it('can create historical balances', async () => {
         const response = await client.query(
-            `
+        `
             query MyQuery {
                 historicalBalanceLBPs(where: {pool: {id_eq: "${lbpPoolAddress}"}}) {
                     assetABalance
