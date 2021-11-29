@@ -68,8 +68,11 @@ query MyQuery {
 For Apple M1 support you need to build the indexer docker image locally:
 
 ```
-git clone clone https://github.com/subsquid/hydra
-cd hydra && ./scripts/docker-build.sh --target indexer-gateway -t subsquid/hydra-indexer-gateway:4
+git clone https://github.com/subsquid/hydra
+cd hydra 
+./scripts/docker-build.sh --target indexer-gateway -t subsquid/hydra-indexer-gateway:4
+./scripts/docker-build.sh --target indexer -t subsquid/hydra-indexer:4
+./scripts/docker-build.sh --target indexer-status-service -t subsquid/hydra-indexer-status-service:4
 ```
 
 ## Development processor
