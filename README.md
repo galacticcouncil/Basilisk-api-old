@@ -8,6 +8,7 @@ This project serves as the API for [Basilisk's](https://bsx.fi) UIs, Dashboards 
 * Docker
 * Built [Basilisk node](https://github.com/galacticcouncil/Basilisk-node) in `./../Basilisk-node`
 * Built [Polkadot node](https://github.com/paritytech/polkadot) in `./../polkadot`
+* `npm link` to built [Polkadot Launch v1.9.0](https://github.com/paritytech/polkadot-launch)
 
 
 > ⚠️ Make sure to have both the `Basilisk-node` and `polkadot` accessible and built using `cargo build --release` in the aforementioned directories. Otherwise the testnet scripts available in `package.json` won't work.
