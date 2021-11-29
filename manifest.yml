@@ -9,6 +9,13 @@ typegen:
     source: ws://localhost:9988
   events:
     - tokens.Transfer
+    - balances.Transfer
+    - lbp.PoolCreated
+    - lbp.PoolUpdated
+    - xyk.PoolCreated
+    # this is not a typo, do not remove next line
+    - xYK.PoolCreated
+    - relayChainInfo.CurrentBlockNumbers
   customTypes:
     lib: ../chain
     typedefsLoc: types.json
@@ -16,9 +23,21 @@ typegen:
 mappings:
   mappingsModule: lib/mappings
 
-  range: '[0, )'
+  range: '[1, )'
 
   # events handled by the processor
   eventHandlers:
-    - event: system.ExtrinsicSuccess
-      handler: handleExtrinsicSuccess
+    - event: lbp.PoolCreated
+      handler: handleLbpPoolCreated
+    - event: tokens.Transfer
+      handler: handleTokensTransfer
+    - event: balances.Transfer
+      handler: handleBalancesTransfer
+    - event: lbp.PoolUpdated
+      handler: handlePoolUpdated
+    - event: xyk.PoolCreated
+      handler: handleXykPoolCreated
+    - event: relayChainInfo.CurrentBlockNumbers
+      handler: handleCurrentBlockNumbers
+  postBlockHooks:
+    - handler: handlePostBlock

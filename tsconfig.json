@@ -10,9 +10,12 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "migrations",
+    "e2e"
   ]
 }

@@ -1,14 +1,17 @@
-import {EventContext, StoreContext} from "@subsquid/hydra-common"
-import {Extrinsic} from "../generated/model/extrinsic.model"
+import handlePostBlock from "./block/handlePostBlock";
+import handleBalancesTransfer from "./balances/handleBalancesTransfer";
+import handleTokensTransfer from "./tokens/handleTokensTransfer";
+import handleLbpPoolCreated from "./lbp/handleLbpPoolCreated";
+import handlePoolUpdated from "./lbp/handlePoolUpdated";
+import handleXykPoolCreated from "./xyk/handleXykPoolCreated";
+import handleCurrentBlockNumbers from "./relayChainInfo/handleCurrentBlockNumbers";
 
-
-export async function handleExtrinsicSuccess({
-    block,
-    event,
-    store
-}: StoreContext & EventContext): Promise<void> {
-    let extrinsic = new Extrinsic()
-    extrinsic.id = event.id
-    extrinsic.name = event.extrinsic?.section + '.' + event.extrinsic?.method
-    await store.save(extrinsic)
-}
+export {
+    handlePostBlock,
+    handleTokensTransfer,
+    handleBalancesTransfer,
+    handleLbpPoolCreated,
+    handlePoolUpdated,
+    handleXykPoolCreated,
+    handleCurrentBlockNumbers,
+};
