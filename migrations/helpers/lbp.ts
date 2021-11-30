@@ -1,41 +1,52 @@
-import { ApiPromise } from "@polkadot/api";
-import { AddressOrPair } from "@polkadot/api/types";
-import { KeyringPair } from "@polkadot/keyring/types";
-import { toBasiliskFormattedAddress } from "../../src/utils/account";
-import { Basilisk } from "./api";
-import { assetPair } from "./types";
-import { getSigner } from "./utils";
+import { ApiPromise } from '@polkadot/api';
+import { AddressOrPair } from '@polkadot/api/types';
+import { KeyringPair } from '@polkadot/keyring/types';
+import BigNumber from 'bignumber.js';
+import { toBasiliskFormattedAddress } from '../../src/utils/account';
+import { Basilisk } from './api';
+import { assetPair } from './types';
+import { get12DecimalsFormat, getSigner, saveLbpMigration } from './utils';
 
 const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
     return {
         assetPair,
         api,
         signer,
-        address: "",
+        address: '',
+        assetABalance12e: '',
+        assetBBalance12e: '',
         getSignerAddress: function (): string {
             return toBasiliskFormattedAddress(this.signer.address);
         },
-        createPool: async function (): Promise<AddressOrPair> {
+        createPool: async function (
+            assetAAmount: BigNumber,
+            assetBAmount: BigNumber
+        ): Promise<AddressOrPair> {
             return new Promise<AddressOrPair>(async (resolve, reject) => {
                 try {
                     const aliceAddress = await toBasiliskFormattedAddress(
                         signer.address
                     );
+                    this.assetABalance12e =
+                        get12DecimalsFormat(assetAAmount).toString();
+                    this.assetBBalance12e =
+                        get12DecimalsFormat(assetBAmount).toString();
 
                     const tx = await this.api.tx.lbp.createPool(
                         aliceAddress,
                         this.assetPair.assetA,
-                        "10000000000000",
+                        this.assetABalance12e,
                         this.assetPair.assetB,
-                        "10000000000000",
-                        "10000000",
-                        "90000000",
-                        "Linear",
+                        this.assetBBalance12e,
+                        '10000000',
+                        '90000000',
+                        'Linear',
                         {
-                            numerator: "1",
-                            denominator: "10",
+                            numerator: '1',
+                            denominator: '10',
                         },
-                        aliceAddress
+                        aliceAddress,
+                        '0'
                     );
                     const unsub = await this.api.tx.sudo
                         .sudo(tx)
@@ -69,13 +80,24 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                                             phase,
                                         }) => {
                                             if (
-                                                section === "lbp" &&
-                                                method == "PoolCreated"
+                                                section === 'lbp' &&
+                                                method == 'PoolCreated'
                                             ) {
                                                 unsub();
                                                 // set pool's address
                                                 this.address =
                                                     data[0].toString();
+                                                saveLbpMigration({
+                                                    address: this.address,
+                                                    assetAId:
+                                                        this.assetPair.assetA,
+                                                    assetBId:
+                                                        this.assetPair.assetB,
+                                                    assetABalance:
+                                                        this.assetABalance12e,
+                                                    assetBBalance:
+                                                        this.assetBBalance12e,
+                                                });
                                                 resolve(data[0].toString());
                                             }
                                         }
@@ -111,6 +133,7 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                             null,
                             null,
                             null,
+                            null,
                             null
                         )
                         .signAndSend(
@@ -121,16 +144,16 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                                         event: { data, method, section },
                                         phase,
                                     }) => {
-                                        if (method === "ExtrinsicFailed") {
+                                        if (method === 'ExtrinsicFailed') {
                                             unsub();
                                             reject(1);
                                         }
                                         if (
-                                            section === "lbp" &&
-                                            method == "PoolUpdated"
+                                            section === 'lbp' &&
+                                            method == 'PoolUpdated'
                                         ) {
                                             console.log(
-                                                "[3/3] >>> Pool has been updated successfully."
+                                                '[2/2] >>> Pool has been updated successfully.'
                                             );
                                             unsub();
                                             resolve();
@@ -154,15 +177,19 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
 };
 
 export default {
-    createPool: async function (assetPair: assetPair) {
+    createPool: async function (
+        assetPair: assetPair,
+        assetAAmount: BigNumber,
+        assetBAmount: BigNumber
+    ) {
         const api = await Basilisk.getInstance();
         if (!api) return;
         const signer = getSigner();
         const lbpPool = lbp(assetPair, api, signer);
 
-        await lbpPool.createPool();
+        await lbpPool.createPool(assetAAmount, assetBAmount);
         console.log(
-            "[1/3] >>> Pool has been created with address - ",
+            '[1/2] >>> Pool has been created with address - ',
             lbpPool.address
         );
 

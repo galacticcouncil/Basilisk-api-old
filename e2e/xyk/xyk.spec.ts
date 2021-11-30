@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { DBClient } from '../../src/utils/db/setup';
-import { assetAAmount as assetABalance, assetBAmount as assetBBalance} from '../../migrations/helpers/xyk';
+import migration from '../../pools/xyk/xyk.json';
 
 describe('Integration XYK', () => {
     let client: any;
@@ -9,35 +9,33 @@ describe('Integration XYK', () => {
         client = await DBClient.getInstance();
     });
 
-    // TODO read address from migration
-    const xykPoolAddress = 'bXn6KCrv8k2JV7B2c5jzLttBDqL4BurPCTcLa3NQk5SWDVXCJ';
+    const xykPoolAddress = migration.address;
     it('can handle xyk.PoolCreated event', async () => {
         await client.test(
-            `
-                query MyQuery {
-                    xYKPools {
-                        id
-                        assetAId
-                        assetBId
-                    }
+        `
+            query MyQuery {
+                xYKPools(where: {id_eq: "${xykPoolAddress}"}) {
+                    id
+                    assetAId
+                    assetBId
                 }
+            }
         `,
             {
                 xYKPools: [
                     {
                         id: xykPoolAddress,
-                        assetAId: '0',
-                        assetBId: '1',
+                        assetAId: migration.assetAId,
+                        assetBId: migration.assetBId,
                     },
                 ],
             }
         );
     });
 
-    // TODO replace expected values with migration storage, see https://github.com/galacticcouncil/Basilisk-api/issues/18
     it('can handle balances.Transfer and tokens.Transfer events', async () => {
         await client.test(
-            `
+        `
             query MyQuery {
                 xYKPools(where: {id_eq: "${xykPoolAddress}"}) {
                     assetABalance
@@ -48,8 +46,8 @@ describe('Integration XYK', () => {
             {
                 xYKPools: [
                     {
-                        assetABalance,
-                        assetBBalance,
+                        assetABalance: migration.assetABalance,
+                        assetBBalance: migration.assetBBalance,
                     },
                 ],
             }

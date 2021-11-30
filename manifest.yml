@@ -23,7 +23,7 @@ typegen:
 mappings:
   mappingsModule: lib/mappings
 
-  range: '[0, )'
+  range: '[1, )'
 
   # events handled by the processor
   eventHandlers:

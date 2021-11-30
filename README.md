@@ -15,20 +15,20 @@ This project serves as the API for [Basilisk's](https://bsx.fi) UIs, Dashboards 
 
 ```zsh
 # Start the local basilisk testnet
-npm run testnet:start
+yarn run testnet:start
 
 # Start the local indexer targeting the basilisk node from the previous step
 # If you need to debug the indexer, omit the `-d` option
-npm run indexer:start -- -d
+yarn run indexer:start -- -d
 
 # Prepare the dev environment for the processor
-npm run processor:clean-and-setup
+yarn run processor:clean-and-setup
 
 # Start processing the indexed data
-npm run processor:start
+yarn run processor:start
 
 # Start graphql server for processed data
-npm run processor:query-node:start
+yarn run processor:query-node:start
 ```
 
 ## Generate custom types
@@ -43,11 +43,11 @@ and `manifest.yml`. For more details see https://docs.subsquid.io.
 
 ## Local testnet
 
-Run `npm run testnet:start` and visit the [Polkadot apps](https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9988#/explorer) UI to observe new blocks being produced after a while.
+Run `yarn run testnet:start` and visit the [Polkadot apps](https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9988#/explorer) UI to observe new blocks being produced after a while.
 
 ## Development indexer
 
-Run `npm run indexer:start` to start a local indexer, which will index the locally running Basilisk node.
+Run `yarn run indexer:start` to start a local indexer, which will index the locally running Basilisk node.
 Open [Graphiql Online](https://graphiql-online.com/graphiql) and use `http://localhost:4010/v1/graphql` as the GraphQL endpoint
 to interact with the indexer.
 
@@ -68,13 +68,16 @@ query MyQuery {
 For Apple M1 support you need to build the indexer docker image locally:
 
 ```
-git clone clone https://github.com/subsquid/hydra
-cd hydra && ./scripts/docker-build.sh --target indexer-gateway -t subsquid/hydra-indexer-gateway:4
+git clone https://github.com/subsquid/hydra
+cd hydra 
+./scripts/docker-build.sh --target indexer-gateway -t subsquid/hydra-indexer-gateway:4
+./scripts/docker-build.sh --target indexer -t subsquid/hydra-indexer:4
+./scripts/docker-build.sh --target indexer-status-service -t subsquid/hydra-indexer-status-service:4
 ```
 
 ## Development processor
 
-Run `npm run processor:clean-and-setup` to setup the development environment. Then run `npm run processor:start` to start the processor.
+Run `yarn run processor:clean-and-setup` to setup the development environment. Then run `yarn run processor:start` to start the processor.
 
 ## Entity over time resolver
 
@@ -99,7 +102,7 @@ export class TestBlockOverTimeResolver extends entityOverTimeResolverFactory<Tes
 }
 ```
 
-###Parameters:
+### Parameters:
 
 - `EntityType` is ObjectType class which will be returned from the resolver,eg:
 
@@ -146,22 +149,22 @@ export class EntityModel{
 
 Make sure to have Basilisk-node with XYK pools enabled. Use `make build` to build `releases/testing-basilisk` binary and launch in `rococo-local` folder `polkadot-launch testing-config.json`.
 
-Do not run `npm run processor:query-node:start`, because we need to keep port `4000` free.
+Do not run `yarn run processor:query-node:start`, because we need to keep port `4000` free.
 
 ```
 # migrate test data
-npm run migrate:lbp
-npm run migrate:xyk
+yarn run migrate:lbp
+yarn run migrate:xyk
 
 # start indexer and processor
-npm run processor:clean-and-setup
-npm run indexer:start
-npm run processor:start
+yarn run processor:clean-and-setup
+yarn run indexer:start
+yarn run processor:start
 
 # run all tests
-npm run test
+yarn run test
 
 # alternative
-npm run test:unit
-npm run test:integration
+yarn run test:unit
+yarn run test:e2e
 ```

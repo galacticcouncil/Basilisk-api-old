@@ -1,6 +1,6 @@
 import { Field, ObjectType, Resolver } from 'type-graphql';
-import { TestBlock as TestBlockModel } from './../generated/model/testBlock.model';
-import { entityOverTimeResolverFactory } from './factory';
+import { TestBlock as TestBlockModel } from '../../generated/model';
+import { entityOverTimeResolverFactory } from '../factory';
 
 /**
  * To define a custom over time resolver for a new entity, you first

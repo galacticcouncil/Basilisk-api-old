@@ -1,7 +1,7 @@
 import { Tokens } from "../../types";
 import { toBasiliskFormattedAddress } from "../../utils/account";
 import { transferParameters } from "../../utils/types";
-import { updateMultiplePoolBalances } from "../../utils/poolRepository";
+import { updateMultiplePoolBalances } from "../../utils/pools";
 import {
     EventContext,
     StoreContext,

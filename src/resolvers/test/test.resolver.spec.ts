@@ -1,8 +1,6 @@
-import { DBClient, useDatabase } from '../utils/db/setup';
+import { DBClient, useDatabase } from '../../utils/db/setup';
 import expect from 'expect';
-import { getChunkSizeInSeconds } from './factory';
-import { Client } from 'pg';
-
+import { getChunkSizeInSeconds } from '../factory';
 
 describe('Resolver tests', function () {
     const table_name = 'public.test_block';
@@ -11,7 +9,7 @@ describe('Resolver tests', function () {
         client = await DBClient.getInstance();
     })
     useDatabase([
-        //`CREATE TABLE ${table_name} ("id" character varying NOT NULL, "block_height" numeric NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT "pk_constraint" PRIMARY KEY ("id"))`,
+        //`CREATE TABLE "test_block" ("id" character varying NOT NULL, "block_height" numeric NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL, "pool_id" integer NOT NULL, CONSTRAINT "PK_75f6d437dc71f3e2e90801b213a" PRIMARY KEY ("id"))`,
         `insert into ${table_name} (id, block_height, created_at, pool_id)
              values (0, 0, '2021-07-11T11:00:00', 1)`,
         `insert into ${table_name} (id, block_height, created_at, pool_id)

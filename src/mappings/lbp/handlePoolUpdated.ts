@@ -5,7 +5,7 @@ import {
 } from "@subsquid/hydra-common";
 import { create } from "../../types/_registry";
 import { toBasiliskFormattedAddress } from "../../utils/account";
-import { saveLbpPoolSaleEnd } from "../../utils/poolRepository";
+import { saveLbpPoolSaleEnd } from "../../utils/pools";
 import { u32 } from "@polkadot/types";
 import { poolUpdatedParams1, poolUpdatedParameters } from "../../utils/types";
 
@@ -21,6 +21,11 @@ export const getPoolUpdatedParameters = (
     };
 };
 
+/**
+ * Whenever updatePool() is called on-chain for LBPs 
+ * this function saves the sale start that is expressed
+ * as relaychain block height.
+ */
 const handlePoolUpdated = async ({
     event,
     store,
