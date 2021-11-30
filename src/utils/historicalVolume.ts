@@ -7,20 +7,19 @@ import {
     LBPPool,
     XYKPool,
 } from '../generated/model';
-import { ensure } from './ensure';
+import { getOrCreate } from './getOrCreate';
 import { EntityConstructor, transferParameters } from './types';
 
-const getHistoricalVolumeEntity = (pool: LBPPool | XYKPool) => {
-    let historicalVolumeEntity: EntityConstructor<
-        HistoricalVolumeLBP | HistoricalVolumeXYK
-    >;
-    if (typeof pool === typeof LBPPool) {
-        historicalVolumeEntity = HistoricalVolumeLBP;
-        return historicalVolumeEntity;
+export const getHistoricalVolumeEntity = (
+    pool: LBPPool | XYKPool
+): typeof HistoricalVolumeLBP | typeof HistoricalVolumeXYK => {
+    if (pool instanceof LBPPool) {
+        return HistoricalVolumeLBP;
     }
-    if (typeof pool === typeof XYKPool) {
-        historicalVolumeEntity = HistoricalVolumeXYK;
-        return historicalVolumeEntity;
+    if (pool instanceof XYKPool) {
+        return HistoricalVolumeXYK;
+    } else {
+        throw 'didnt find';
     }
 };
 
@@ -48,29 +47,27 @@ const getHistoricalVolumeInitValues = (
     return init;
 };
 
-export const ensureHistoricalVolume = async (
+export const getOrCreateHistoricalVolume = async (
     store: DatabaseManager,
     pool: LBPPool | XYKPool,
     blockHeightPairing: BlockHeightPairing,
     blockTimeStamp: number
 ) => {
-    // prepare values for ensure
+    // prepare values to create historical volume
     const historicalVolumeEntity = getHistoricalVolumeEntity(pool);
-    const paraChainBlockHeight =
-        blockHeightPairing.paraChainBlockHeight.toString();
+    const paraChainBlockHeight = blockHeightPairing.paraChainBlockHeight;
     const initValues = getHistoricalVolumeInitValues(
         pool,
         blockHeightPairing,
         blockTimeStamp
     );
 
-    const historicalVolume = await ensure(
+    const historicalVolume = await getOrCreate(
         store,
-        historicalVolumeEntity!,
+        historicalVolumeEntity,
         `${pool.id}-${paraChainBlockHeight}-volume`,
         initValues
     );
-
     return historicalVolume;
 };
 
@@ -83,30 +80,31 @@ export const createHistoricalVolume = async (
     const entityConstructor = getHistoricalVolumeEntity(pool);
     const paraChainBlockHeight = blockHeightPairing.paraChainBlockHeight!;
     const id = `${pool.id}-${paraChainBlockHeight}-volume`;
-    let historicalVolumeExists = await store.get(entityConstructor!, {
+    let historicalVolumeExists = await store.get(entityConstructor, {
         where: { id },
     });
-    if(historicalVolumeExists) return
+    if (historicalVolumeExists) return;
     // this is like calling ensure, but we want to avoid writing to DB if it already exists
-    const historicalVolume = await ensureHistoricalVolume(
+    const historicalVolume = await getOrCreateHistoricalVolume(
         store,
         pool,
         blockHeightPairing,
         blockTimeStamp
     );
-    await store.save(historicalVolume);
+    await store.save(historicalVolume!);
 };
 
 export const addIncomingVolumeForAssetId = (
+    pool: LBPPool | XYKPool,
     historicalVolume: HistoricalVolumeLBP | HistoricalVolumeXYK,
     balanceToAdd: bigint,
     assetId: bigint
 ) => {
     // it is not possible to create a pool where both asset ids are the same
-    if (historicalVolume.pool.assetAId === assetId) {
+    if (pool.assetAId === assetId) {
         historicalVolume.assetABalanceIn += balanceToAdd;
     }
-    if (historicalVolume.pool.assetBId === assetId) {
+    if (pool.assetBId === assetId) {
         historicalVolume.assetBBalanceIn += balanceToAdd;
     }
 
@@ -114,15 +112,16 @@ export const addIncomingVolumeForAssetId = (
 };
 
 export const addOutgoingVolumeForAssetId = (
+    pool: LBPPool | XYKPool,
     historicalVolume: HistoricalVolumeLBP | HistoricalVolumeXYK,
     balanceToAdd: bigint,
     assetId: bigint
 ) => {
     // it is not possible to create a pool where both asset ids are the same
-    if (historicalVolume.pool.assetAId === assetId) {
+    if (pool.assetAId === assetId) {
         historicalVolume.assetABalanceOut += balanceToAdd;
     }
-    if (historicalVolume.pool.assetBId === assetId) {
+    if (pool.assetBId === assetId) {
         historicalVolume.assetBBalanceOut += balanceToAdd;
     }
 
@@ -148,13 +147,16 @@ async function updateHistoricalVolume(
         where: { id: transferParameters.to },
     });
     if (poolToReceive) {
-        let historicalVolume = await ensureHistoricalVolume(
+        let historicalVolume = await getOrCreateHistoricalVolume(
             store,
             poolToReceive,
             currentBlockHeightPairing!,
             block.timestamp
         );
+        if (!historicalVolume)
+            throw 'could not find or create historical volume';
         historicalVolume = await addIncomingVolumeForAssetId(
+            poolToReceive,
             historicalVolume,
             transferParameters.balance,
             transferParameters.assetId
@@ -166,13 +168,16 @@ async function updateHistoricalVolume(
         where: { id: transferParameters.from },
     });
     if (poolToSend) {
-        let historicalVolume = await ensureHistoricalVolume(
+        let historicalVolume = await getOrCreateHistoricalVolume(
             store,
             poolToSend,
             currentBlockHeightPairing!,
             block.timestamp
         );
+        if (!historicalVolume)
+            throw 'could not find or create historical volume';
         historicalVolume = await addOutgoingVolumeForAssetId(
+            poolToSend,
             historicalVolume,
             transferParameters.balance,
             transferParameters.assetId

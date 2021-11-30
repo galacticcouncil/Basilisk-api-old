@@ -52,15 +52,15 @@ const handlePostBlock = async ({
                 store,
                 pool,
                 HistoricalBalanceLBP,
-                currentBlockHeightPairing!,
+                currentBlockHeightPairing,
                 block.timestamp
             ),
-            createHistoricalVolume(
-                store,
-                pool,
-                currentBlockHeightPairing!,
-                block.timestamp
-            ),
+            // createHistoricalVolume(
+            //     store,
+            //     pool,
+            //     currentBlockHeightPairing,
+            //     block.timestamp
+            // ),
         ];
     });
 
@@ -72,15 +72,15 @@ const handlePostBlock = async ({
                 store,
                 pool,
                 HistoricalBalanceXYK,
-                currentBlockHeightPairing!,
+                currentBlockHeightPairing,
                 block.timestamp
             ),
-            createHistoricalVolume(
-                store,
-                pool,
-                currentBlockHeightPairing!,
-                block.timestamp
-            ),
+            // createHistoricalVolume(
+            //     store,
+            //     pool,
+            //     currentBlockHeightPairing,
+            //     block.timestamp
+            // ),
         ];
     });
 
