@@ -82,14 +82,46 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
             });
         },
         buy: async function () {
-            const tx = await this.api.tx.xyk.buy(
-                this.assetPair.assetA, // assetOut
-                this.assetPair.assetB, // assetIn
-                '10000', // amount
-                '10000', // max limit
-                false //discount
-            );
-            await tx.signAndSend(this.signer);
+            return new Promise<void>(async (resolve, reject) => {
+                try {
+                    const unsub = await this.api.tx.xyk
+                        .buy(
+                            this.assetPair.assetA, // assetOut
+                            this.assetPair.assetB, // assetIn
+                            '10000', // amount
+                            '20500', // max limit
+                            false //discount
+                        )
+                        .signAndSend(this.signer, ({ events = [], status }) => {
+                            events.forEach(
+                                ({
+                                    event: { data, method, section },
+                                    phase,
+                                }) => {
+                                    if (method === 'ExtrinsicFailed') {
+                                        unsub();
+                                        reject(1);
+                                    }
+                                    if (section === 'xyk' && method == 'Buy') {
+                                        console.log(
+                                            '[1/1] >>> Buy executed on XYK Pool.'
+                                        );
+                                        unsub();
+                                        resolve();
+                                    }
+                                }
+                            );
+
+                            if (status.isFinalized) {
+                                unsub();
+                                resolve();
+                            }
+                        });
+                } catch (e: any) {
+                    console.log(e);
+                    reject(e);
+                }
+            });
         },
         sell: async function () {
             const tx = await this.api.tx.xyk.sell(
