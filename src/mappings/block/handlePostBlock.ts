@@ -55,12 +55,12 @@ const handlePostBlock = async ({
                 currentBlockHeightPairing,
                 block.timestamp
             ),
-            // createHistoricalVolume(
-            //     store,
-            //     pool,
-            //     currentBlockHeightPairing,
-            //     block.timestamp
-            // ),
+            createHistoricalVolume(
+                store,
+                pool,
+                currentBlockHeightPairing,
+                block.timestamp
+            ),
         ];
     });
 
@@ -75,12 +75,12 @@ const handlePostBlock = async ({
                 currentBlockHeightPairing,
                 block.timestamp
             ),
-            // createHistoricalVolume(
-            //     store,
-            //     pool,
-            //     currentBlockHeightPairing,
-            //     block.timestamp
-            // ),
+            createHistoricalVolume(
+                store,
+                pool,
+                currentBlockHeightPairing,
+                block.timestamp
+            ),
         ];
     });
 

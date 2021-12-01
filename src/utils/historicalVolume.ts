@@ -19,7 +19,7 @@ export const getHistoricalVolumeEntity = (
     if (pool instanceof XYKPool) {
         return HistoricalVolumeXYK;
     } else {
-        throw 'didnt find';
+        throw "Can't create Historical Volume entity";
     }
 };
 
@@ -77,21 +77,14 @@ export const createHistoricalVolume = async (
     blockHeightPairing: BlockHeightPairing,
     blockTimeStamp: number
 ) => {
-    const entityConstructor = getHistoricalVolumeEntity(pool);
-    const paraChainBlockHeight = blockHeightPairing.paraChainBlockHeight!;
-    const id = `${pool.id}-${paraChainBlockHeight}-volume`;
-    let historicalVolumeExists = await store.get(entityConstructor, {
-        where: { id },
-    });
-    if (historicalVolumeExists) return;
-    // this is like calling ensure, but we want to avoid writing to DB if it already exists
     const historicalVolume = await getOrCreateHistoricalVolume(
         store,
         pool,
         blockHeightPairing,
         blockTimeStamp
     );
-    await store.save(historicalVolume!);
+    
+    await store.save(historicalVolume);
 };
 
 export const addIncomingVolumeForAssetId = (
