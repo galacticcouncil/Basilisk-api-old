@@ -10,6 +10,7 @@ import { createHistoricalBalance } from '../../utils/historicalBalance';
 import { updateChronicle } from '../../utils/chronicle';
 import { MoreThanOrEqual } from 'typeorm';
 import { createHistoricalVolume } from '../../utils/historicalVolume';
+import { errorInvalidCurrentBlockHeightPairing } from '../../constants';
 
 const handlePostBlock = async ({
     block,
@@ -24,7 +25,7 @@ const handlePostBlock = async ({
         }
     );
     if (!currentBlockHeightPairing)
-        throw `Can't process data without block height pairing`;
+        throw errorInvalidCurrentBlockHeightPairing;
 
     const relayChainBlockHeight =
         currentBlockHeightPairing.relayChainBlockHeight;
