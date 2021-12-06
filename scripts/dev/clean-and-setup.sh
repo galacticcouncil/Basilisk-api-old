@@ -8,7 +8,7 @@ npm run processor:typegen
 npm run build
 
 docker-compose up -d db
-sleep 1
+sleep 5
 
 npm run processor:migrate
 npm run processor:db:create-migration initial
