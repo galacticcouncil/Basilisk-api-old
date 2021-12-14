@@ -4,7 +4,7 @@ import { KeyringPair } from '@polkadot/keyring/types';
 import BigNumber from 'bignumber.js';
 import { toBasiliskFormattedAddress } from '../../src/utils/account';
 import { Basilisk } from './api';
-import { assetPair } from './types';
+import { assetPair, pool } from './types';
 import { get12DecimalsFormat, getSigner, saveLbpMigration } from './utils';
 
 const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
@@ -173,8 +173,64 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                 }
             });
         },
+        buy: async function () {
+            return new Promise<void>(async (resolve, reject) => {
+                try {
+                    const unsub = await this.api.tx.lbp
+                        .buy(
+                            this.assetPair.assetA, // assetOut
+                            this.assetPair.assetB, // assetIn
+                            '100000', // amount
+                            '200000', // max limit
+                        )
+                        .signAndSend(this.signer, ({ events = [], status }) => {
+                            events.forEach(
+                                ({
+                                    event: { data, method, section },
+                                    phase,
+                                }) => {
+                                    if (method === 'ExtrinsicFailed') {
+                                        unsub();
+                                        reject(1);
+                                    }
+                                    if (section === 'lbp' && method == 'BuyExecuted') {
+                                        console.log(
+                                            '[1/1] >>> Buy executed on LBP Pool.'
+                                        );
+                                        unsub();
+                                        resolve();
+                                    }
+                                }
+                            );
+
+                            if (status.isFinalized) {
+                                unsub();
+                                resolve();
+                            }
+                        });
+                } catch (e: any) {
+                    console.log(e);
+                    reject(e);
+                }
+            });
+        },
     };
 };
+
+const loadLbp = (pool: pool, api: ApiPromise, signer: KeyringPair) => {
+    const assetPair: assetPair = {
+        assetA: pool.assetAId,
+        assetB: pool.assetBId,
+    };
+    const lbpPool = lbp(assetPair, api, signer);
+    
+    lbpPool.address = pool.address;
+    lbpPool.assetABalance12e = pool.assetABalance;
+    lbpPool.assetBBalance12e = pool.assetBBalance;
+
+    return lbpPool;
+};
+
 
 export default {
     createPool: async function (
@@ -195,4 +251,12 @@ export default {
 
         return lbpPool;
     },
+    loadPool: async function (pool: pool) {
+        const api = await Basilisk.getInstance();
+        if (!api) throw `Can't load Basilisk API`;
+        const signer = getSigner();
+
+        return loadLbp(pool, api!, signer);
+    },
 };
+

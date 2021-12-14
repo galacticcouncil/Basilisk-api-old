@@ -4,6 +4,7 @@ import { Basilisk } from './api';
 import { get12DecimalsFormat, getSigner, saveXykMigration } from './utils';
 import { assetPair } from './types';
 import { BigNumber } from 'bignumber.js';
+import { pool } from './types';
 
 const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
     return {
@@ -102,9 +103,50 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                                         unsub();
                                         reject(1);
                                     }
-                                    if (section === 'xyk' && method == 'Buy') {
+                                    if (section === 'xyk' && method == 'BuyExecuted') {
                                         console.log(
                                             '[1/1] >>> Buy executed on XYK Pool.'
+                                        );
+                                        unsub();
+                                        resolve();
+                                    }
+                                }
+                            );
+
+                            if (status.isFinalized) {
+                                unsub();
+                                resolve();
+                            }
+                        });
+                } catch (e: any) {
+                    console.log(e);
+                    reject(e);
+                }
+            });
+        },
+        addLiquidity: async function () {
+            return new Promise<void>(async (resolve, reject) => {
+                try {
+                    const unsub = await this.api.tx.xyk
+                        .addLiquidity(
+                            this.assetPair.assetA, // assetA
+                            this.assetPair.assetB, // assetB
+                            '10000', // amount
+                            '22000', // amount B max limit
+                        )
+                        .signAndSend(this.signer, ({ events = [], status }) => {
+                            events.forEach(
+                                ({
+                                    event: { data, method, section },
+                                    phase,
+                                }) => {
+                                    if (method === 'ExtrinsicFailed') {
+                                        unsub();
+                                        reject(1);
+                                    }
+                                    if (section === 'xyk' && method == 'LiquidityAdded') {
+                                        console.log(
+                                            '[1/1] >>> Liquidity added to XYK Pool.'
                                         );
                                         unsub();
                                         resolve();
@@ -136,6 +178,18 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
     };
 };
 
+const loadXyk = (pool: pool, api: ApiPromise, signer: KeyringPair) => {
+    const assetPair: assetPair = {
+        assetA: pool.assetAId,
+        assetB: pool.assetBId,
+    };
+    const xykInstance = xyk(assetPair, api, signer);
+    xykInstance.address = pool.address;
+    xykInstance.assetABalance12e;
+    xykInstance.assetBBalance12e;
+    return xykInstance;
+};
+
 export default {
     createPool: async function (
         assetPair: assetPair,
@@ -150,5 +204,12 @@ export default {
         await xykPool.createPool(assetAAmount, price);
 
         return xykPool;
+    },
+    loadPool: async function (pool: pool) {
+        const api = await Basilisk.getInstance();
+        if(!api) throw(`Can't load Basilisk API`)
+        const signer = getSigner();
+
+        return loadXyk(pool, api!, signer);
     },
 };
