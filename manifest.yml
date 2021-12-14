@@ -19,6 +19,8 @@ typegen:
     ### action log
     # - lbp.AddLiquidity
     # - lbp.RemoveLiquidity
+    - lBP.SellExecuted
+    - lBP.BuyExecuted
     # XYK Pools
     - xYK.BuyExecuted
     - xYK.SellExecuted
@@ -52,5 +54,9 @@ mappings:
     # action log
     - event: xyk.BuyExecuted
       handler: handleXykBuyExecuted
+    - event: lbp.BuyExecuted
+      handler: handleLbpBuyExecuted
+    - event: xyk.LiquidityAdded
+      handler: handleXykLiquidityAdded
   postBlockHooks:
     - handler: handlePostBlock

@@ -2,17 +2,17 @@ import { extrinsics } from "@polkadot/types/interfaces/definitions";
 import { EventContext, StoreContext, SubstrateEvent } from "@subsquid/hydra-common";
 import { XYK } from "../../types";
 import { toBasiliskFormattedAddress } from "../../utils/account";
-import { xykBuyParameters } from "../../utils/types";
-import { createXykBuyUserAction } from "../../utils/userActions";
+import { buyDetails } from "../../utils/types";
+import { createUserActionBuy } from "../../utils/userActions";
 
-export const getXykBuyExecutedParameters = (
+export const getActionDetailsFromXykBuyExecutedEvent = (
     event: SubstrateEvent
-): xykBuyParameters => {
+): buyDetails => {
     const [address, assetOut, assetIn, outAmount, buyPrice, feeAsset, feeAmount, poolId ] =
         new XYK.BuyExecutedEvent(event).params
 
     return {
-        account: address.toString(),
+        account: toBasiliskFormattedAddress(address),
         assetOut: assetOut.toBigInt(),
         assetIn: assetIn.toBigInt(),
         outAmount: outAmount.toBigInt(),
@@ -28,11 +28,10 @@ const handleXykBuyExecuted = async ({
     extrinsic,
     store,
 }: EventContext & StoreContext): Promise<void> => {
-    const xykBuyParameters = getXykBuyExecutedParameters(event)
+    const buyDetails = getActionDetailsFromXykBuyExecutedEvent(event)
         
-    console.log('xyk buy executed called')
     if(!extrinsic) throw('Did not receive exrtinsic for xyk buy event')
-    await createXykBuyUserAction(xykBuyParameters, extrinsic!, BigInt(event.blockNumber), store);
+    await createUserActionBuy(buyDetails, extrinsic!, BigInt(event.blockNumber), store);
 }
 
 export default handleXykBuyExecuted;

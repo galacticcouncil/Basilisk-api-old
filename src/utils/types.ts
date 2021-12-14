@@ -46,7 +46,7 @@ export type currentBlockNumbersParameters = {
     paraChainBlockHeight: bigint;
 };
 
-export type xykBuyParameters = {
+export type buyDetails = {
     account: string,
     assetOut: assetId,
     assetIn: assetId,
