@@ -64,6 +64,78 @@ type Chronicle @entity {
     lastProcessedBlock: BigInt!
 }
 
+### UserActionLog 
+
+type SellActionDetail {
+    poolId: String!
+    assetIn: BigInt!
+    assetOut: BigInt!
+    assetInAmount: BigInt!
+    assetOutAmount: BigInt!
+    sellPrice: BigInt!
+    feeAsset: BigInt!
+    feeAmount: BigInt!
+}
+
+type BuyActionDetail {
+    poolId: String!
+    assetOut: BigInt!
+    assetIn: BigInt!
+    assetOutAmount: BigInt!
+    assetInAmount: BigInt!
+    buyPrice: BigInt!
+    feeAsset: BigInt!
+    feeAmount: BigInt!
+}
+
+type LiquidityAddedActionDetail {
+    poolId: String!
+    assetA: BigInt!
+    assetB: BigInt!
+    assetAAmount: BigInt!
+    assetBAmount: BigInt!
+}
+
+type LiquidityRemovedActionDetail {
+    poolId: String!
+    assetA: BigInt!
+    assetB: BigInt!
+    assetAAmount: BigInt!
+    assetBAmount: BigInt!
+}
+
+union UserActionDetail = SellActionDetail | BuyActionDetail | LiquidityAddedActionDetail | LiquidityRemovedActionDetail
+
+enum UserActionType {
+    Buy, # LBP & XYK
+    Sell, # LBP & XYK
+    AddLiquidity, # XYK
+    RemoveLiquidity, # XYK
+    SetFeeAsset,
+    Transfer,
+    XCM, # cross chain transfer
+}
+
+# Processor will always use isFinalized
+enum Status {
+    isBroadcast
+    isInBlock
+    isFinalized 
+}
+
+type UserAction @entity {
+    # transactionHash
+    id: ID!
+    status: Status!
+    account: String!
+    action: UserActionType!
+    detail: UserActionDetail
+    paraChainBlockHeight: BigInt
+}
+
+
+### Testing
+
 type TestBlock @entity {
   blockHeight: BigInt!,
   createdAt: DateTime!,

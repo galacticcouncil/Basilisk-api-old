@@ -5,6 +5,7 @@ import handleLbpPoolCreated from "./lbp/handleLbpPoolCreated";
 import handlePoolUpdated from "./lbp/handlePoolUpdated";
 import handleXykPoolCreated from "./xyk/handleXykPoolCreated";
 import handleCurrentBlockNumbers from "./relayChainInfo/handleCurrentBlockNumbers";
+import handleXykBuyExecuted from "./xyk/handleXykBuyExecuted";
 
 export {
     handlePostBlock,
@@ -14,4 +15,5 @@ export {
     handlePoolUpdated,
     handleXykPoolCreated,
     handleCurrentBlockNumbers,
+    handleXykBuyExecuted
 };
