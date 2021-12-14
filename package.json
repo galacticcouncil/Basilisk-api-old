@@ -30,8 +30,8 @@
     "testnet:stop": "./scripts/dev/stop-testnet.sh",
     "testnet:restart": "npm run testnet:stop && npm run testnet:start",
     "test": "npm run test:unit & npm run test:e2e",
-    "test:e2e": "mocha -r ts-node/register e2e/**/**.spec.ts",
-    "test:unit": "mocha -r ts-node/register src/**/**.spec.ts src/**/**/**.spec.ts"
+    "test:e2e": "mocha --timeout 10000 -r ts-node/register e2e/**/**.spec.ts",
+    "test:unit": "mocha --timeout 10000 -r ts-node/register src/**/**.spec.ts src/**/**/**.spec.ts"
   },
   "dependencies": {
     "@polkadot/api": "6.8.1",
