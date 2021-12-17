@@ -7,9 +7,7 @@ async function main(): Promise<void> {
     const assetPair: assetPair = { assetA: '0', assetB: '1' };
     const assetAAmount = new BigNumber(1_000_000);
     const price = new BigNumber(2);
-    const xykPoolInstance = await xykPool.createPool(assetPair, assetAAmount, price);
-    if(!xykPoolInstance) return
-    await xykPoolInstance.buy();
+    await xykPool.createPool(assetPair, assetAAmount, price);
 }
 
 main().then(

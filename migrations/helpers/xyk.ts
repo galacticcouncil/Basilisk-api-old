@@ -36,9 +36,13 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                     {},
                     ({ status, events: _events, dispatchError }) => {
                         if (status.isBroadcast) {
-                            console.log('tx hash:', status.hash.toString());
+                            console.log('tx hash is broadcast:', status.hash.toString());
+                        }
+                        if (status.isInBlock) {
+                            console.log('tx hash is in block:', status.hash.toString());
                         }
                         if (status.isFinalized) {
+                            console.log('tx hash is finalized:', status.hash.toString());
                             _events.forEach(
                                 ({
                                     event: { data, method, section },
@@ -166,14 +170,46 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
             });
         },
         sell: async function () {
-            const tx = await this.api.tx.xyk.sell(
-                this.assetPair.assetB, // assetOut
-                this.assetPair.assetA, // assetIn
-                '10000', // amount
-                '10000', // max limit
-                false //discount
-            );
-            await tx.signAndSend(this.signer);
+            return new Promise<void>(async (resolve, reject) => {
+                try {
+                    const unsub = await this.api.tx.xyk
+                        .sell(
+                            this.assetPair.assetB, // assetIn
+                            this.assetPair.assetA, // assetOut
+                            '205000', // amount
+                            '100000', // max limit
+                            false //discount
+                        )
+                        .signAndSend(this.signer, ({ events = [], status }) => {
+                            events.forEach(
+                                ({
+                                    event: { data, method, section },
+                                    phase,
+                                }) => {
+                                    if (method === 'ExtrinsicFailed') {
+                                        unsub();
+                                        reject(1);
+                                    }
+                                    if (section === 'xyk' && method == 'SellExecuted') {
+                                        console.log(
+                                            '[1/1] >>> Sell executed on XYK Pool.'
+                                        );
+                                        unsub();
+                                        resolve();
+                                    }
+                                }
+                            );
+
+                            if (status.isFinalized) {
+                                unsub();
+                                resolve();
+                            }
+                        });
+                } catch (e: any) {
+                    console.log(e);
+                    reject(e);
+                }
+            });
         },
     };
 };
