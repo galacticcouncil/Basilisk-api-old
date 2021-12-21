@@ -27,14 +27,14 @@ const handlePostBlock = async ({
 
     const relayChainBlockHeight =
         currentBlockHeightPairing.relayChainBlockHeight;
-    const paraChainBlockHeight = currentBlockHeightPairing.paraChainBlockHeight;
+    const parachainBlockHeight = currentBlockHeightPairing.parachainBlockHeight;
 
     let databaseQueries = [];
 
     // update chronicle
     databaseQueries = [
         updateChronicle(store, {
-            lastProcessedBlock: paraChainBlockHeight,
+            lastProcessedBlock: parachainBlockHeight,
         }),
     ];
 

@@ -14,8 +14,8 @@ export const createBlockHeightPairing = async (
     currentBlockNumbersParameters: currentBlockNumbersParameters
 ) => {
     const createdAt = new Date(blockTimeStamp);
-    const paraChainBlockHeight =
-        currentBlockNumbersParameters.paraChainBlockHeight;
+    const parachainBlockHeight =
+        currentBlockNumbersParameters.parachainBlockHeight;
     const relayChainBlockHeight =
         currentBlockNumbersParameters.relayChainBlockHeight;
 
@@ -25,7 +25,7 @@ export const createBlockHeightPairing = async (
         paraChainBlockHash,
         {
             createdAt,
-            paraChainBlockHeight,
+            parachainBlockHeight,
             relayChainBlockHeight,
         }
     );

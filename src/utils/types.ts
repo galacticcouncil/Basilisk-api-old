@@ -43,7 +43,7 @@ export type EntityConstructor<T> = {
 
 export type currentBlockNumbersParameters = {
     relayChainBlockHeight: bigint;
-    paraChainBlockHeight: bigint;
+    parachainBlockHeight: bigint;
 };
 
 export type buyDetails = {

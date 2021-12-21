@@ -12,7 +12,7 @@ import { buyDetails } from './types';
 export const createUserActionBuy = async (
     buyDetails: buyDetails,
     extrinsic: SubstrateExtrinsic,
-    paraChainBlockHeight: bigint,
+    parachainBlockHeight: bigint,
     store: DatabaseManager
 ) => {
     const buyActionDetail = new BuyActionDetail();
@@ -33,7 +33,7 @@ export const createUserActionBuy = async (
         account: buyDetails.account,
         action: UserActionType.Buy,
         detail: buyActionDetail,
-        paraChainBlockHeight,
+        parachainBlockHeight,
     };
     const userAction = await getOrCreate(
         store,
@@ -48,7 +48,7 @@ export const createUserActionBuy = async (
 export const createUserActionLiquidityAdded = async (
     liquidityAddedDetails: any,
     extrinsic: SubstrateExtrinsic,
-    paraChainBlockHeight: bigint,
+    parachainBlockHeight: bigint,
     store: DatabaseManager
 ) => {
     const liquidityAddedActionDetail = new LiquidityAddedActionDetail();
@@ -66,7 +66,7 @@ export const createUserActionLiquidityAdded = async (
         account: liquidityAddedDetails.account,
         action: UserActionType.AddLiquidity,
         detail: liquidityAddedActionDetail,
-        paraChainBlockHeight,
+        parachainBlockHeight,
     };
     const userAction = await getOrCreate(
         store,

@@ -10,7 +10,7 @@ const substrateEventStub = {
 };
 
 const expectedBlockNumbersParameters: currentBlockNumbersParameters = {
-    paraChainBlockHeight: BigInt(1),
+    parachainBlockHeight: BigInt(1),
     relayChainBlockHeight: BigInt(12),
 };
 
