@@ -36,7 +36,7 @@
     "simpleParachains": [],
     "parachains": [
       {
-        "bin": "../../basilisk-node/target/release/testing-basilisk",
+        "bin": "../../Basilisk-node/target/release/testing-basilisk",
         "id": "200",
         "chain":"dev",
         "balance": "1000000000000000000000",
