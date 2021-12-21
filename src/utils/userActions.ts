@@ -1,6 +1,7 @@
 import { DatabaseManager, SubstrateExtrinsic } from '@subsquid/hydra-common';
 import {
     BuyActionDetail,
+    LiquidityAddedActionDetail,
     Status,
     UserAction,
     UserActionType,
@@ -44,3 +45,35 @@ export const createUserActionBuy = async (
     await store.save(userAction);
 };
 
+export const createUserActionLiquidityAdded = async (
+    liquidityAddedDetails: any,
+    extrinsic: SubstrateExtrinsic,
+    paraChainBlockHeight: bigint,
+    store: DatabaseManager
+) => {
+    const liquidityAddedActionDetail = new LiquidityAddedActionDetail();
+    Object.assign(liquidityAddedActionDetail, {
+        poolId: liquidityAddedDetails.poolId,
+        assetA: liquidityAddedDetails.assetA,
+        assetB: liquidityAddedDetails.assetB,
+        assetAAmount: liquidityAddedDetails.amountA,
+        assetBAmount: liquidityAddedDetails.amountB
+    });
+
+    const id = extrinsic.hash!.toString();
+    const userActionValues = {
+        status: Status.isFinalized,
+        account: liquidityAddedDetails.account,
+        action: UserActionType.AddLiquidity,
+        detail: liquidityAddedActionDetail,
+        paraChainBlockHeight,
+    };
+    const userAction = await getOrCreate(
+        store,
+        UserAction,
+        id,
+        userActionValues
+    );
+
+    await store.save(userAction);
+};
