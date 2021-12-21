@@ -17,4 +17,9 @@ const buy = async () => {
     await xyk.buy();
 };
 
+const sell = async () => {
+    await init();
+    await xyk.sell();
+};
+
 export { addLiquidity, buy };
