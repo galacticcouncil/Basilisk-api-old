@@ -27,7 +27,7 @@ export const createUserActionBuy = async (
         poolId: buyDetails.poolId,
     });
 
-    const id = extrinsic.hash!.toString();
+    const id = extrinsic.id;
     const userActionValues = {
         status: Status.isFinalized,
         account: buyDetails.account,
@@ -60,7 +60,7 @@ export const createUserActionLiquidityAdded = async (
         assetBAmount: liquidityAddedDetails.amountB
     });
 
-    const id = extrinsic.hash!.toString();
+    const id = extrinsic.id;
     const userActionValues = {
         status: Status.isFinalized,
         account: liquidityAddedDetails.account,
