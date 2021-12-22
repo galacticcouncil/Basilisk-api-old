@@ -54,6 +54,8 @@ mappings:
     # action log
     - event: xyk.BuyExecuted
       handler: handleXykBuyExecuted
+    - event: xyk.SellExecuted
+      handler: handleXykSellExecuted
     - event: lbp.BuyExecuted
       handler: handleLbpBuyExecuted
     - event: xyk.LiquidityAdded
