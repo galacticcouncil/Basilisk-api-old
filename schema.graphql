@@ -72,7 +72,6 @@ type SellActionDetail {
     assetOut: BigInt!
     assetInAmount: BigInt!
     assetOutAmount: BigInt!
-    sellPrice: BigInt!
     feeAsset: BigInt!
     feeAmount: BigInt!
 }
@@ -83,7 +82,6 @@ type BuyActionDetail {
     assetIn: BigInt!
     assetOutAmount: BigInt!
     assetInAmount: BigInt!
-    buyPrice: BigInt!
     feeAsset: BigInt!
     feeAmount: BigInt!
 }

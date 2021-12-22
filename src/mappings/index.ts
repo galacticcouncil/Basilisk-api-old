@@ -8,6 +8,8 @@ import handleCurrentBlockNumbers from './relayChainInfo/handleCurrentBlockNumber
 import handleXykBuyExecuted from './xyk/handleXykBuyExecuted';
 import handleLbpBuyExecuted from './lbp/handleLbpBuyExecuted';
 import handleXykLiquidityAdded from './xyk/handleXykLiquidityAdded';
+import handleXykSellExecuted from './xyk/handleXykSellExecuted';
+import handleLbpSellExecuted from './lbp/handleLbpSellExecuted';
 
 export {
     handlePostBlock,
@@ -19,5 +21,7 @@ export {
     handleCurrentBlockNumbers,
     handleXykBuyExecuted,
     handleLbpBuyExecuted,
-    handleXykLiquidityAdded
+    handleXykLiquidityAdded,
+    handleXykSellExecuted,
+    handleLbpSellExecuted
 };

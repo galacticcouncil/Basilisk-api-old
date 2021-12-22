@@ -58,6 +58,8 @@ mappings:
       handler: handleXykSellExecuted
     - event: lbp.BuyExecuted
       handler: handleLbpBuyExecuted
+    - event: lbp.SellExecuted
+      handler: handleLbpSellExecuted
     - event: xyk.LiquidityAdded
       handler: handleXykLiquidityAdded
   postBlockHooks:
