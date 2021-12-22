@@ -9,7 +9,7 @@ import { createUserActionBuy } from "../../utils/userActions";
 export const getXykBuyExecutedParameters = (
     event: SubstrateEvent
 ) => {
-    const [address, assetOut, assetIn, outAmount, buyPrice, feeAsset, feeAmount ] =
+    const [address, assetOut, assetIn, outAmount, inAmount, feeAsset, feeAmount ] =
         new LBP.BuyExecutedEvent(event).params
         
     return {
@@ -17,7 +17,7 @@ export const getXykBuyExecutedParameters = (
         assetOut: assetOut.toBigInt(),
         assetIn: assetIn.toBigInt(),
         outAmount: outAmount.toBigInt(),
-        buyPrice: buyPrice.toBigInt(),
+        inAmount: inAmount.toBigInt(),
         feeAsset: feeAsset.toBigInt(),
         feeAmount: feeAmount.toBigInt(),
     };

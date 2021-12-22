@@ -8,7 +8,7 @@ import { createUserActionBuy } from "../../utils/userActions";
 export const getActionDetailsFromXykBuyExecutedEvent = (
     event: SubstrateEvent
 ): buyDetails => {
-    const [address, assetOut, assetIn, outAmount, buyPrice, feeAsset, feeAmount, poolId ] =
+    const [address, assetOut, assetIn, outAmount, inAmount, feeAsset, feeAmount, poolId ] =
         new XYK.BuyExecutedEvent(event).params
 
     return {
@@ -16,7 +16,7 @@ export const getActionDetailsFromXykBuyExecutedEvent = (
         assetOut: assetOut.toBigInt(),
         assetIn: assetIn.toBigInt(),
         outAmount: outAmount.toBigInt(),
-        buyPrice: buyPrice.toBigInt(),
+        inAmount: inAmount.toBigInt(),
         feeAsset: feeAsset.toBigInt(),
         feeAmount: feeAmount.toBigInt(),
         poolId:  toBasiliskFormattedAddress(poolId)

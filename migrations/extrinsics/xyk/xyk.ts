@@ -22,4 +22,4 @@ const sell = async () => {
     await xyk.sell();
 };
 
-export { addLiquidity, buy };
+export { addLiquidity, buy, sell };

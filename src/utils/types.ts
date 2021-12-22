@@ -51,7 +51,18 @@ export type buyDetails = {
     assetOut: assetId,
     assetIn: assetId,
     outAmount: amount,
-    buyPrice: amount,
+    inAmount: amount,
+    feeAsset: assetId,
+    feeAmount: amount,
+    poolId: address
+}
+
+export type sellDetails = {
+    account: string,
+    assetIn: assetId,
+    assetOut: assetId,
+    inAmount: amount,
+    outAmount: amount,
     feeAsset: assetId,
     feeAmount: amount,
     poolId: address
