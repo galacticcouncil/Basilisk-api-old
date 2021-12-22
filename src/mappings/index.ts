@@ -10,6 +10,7 @@ import handleLbpBuyExecuted from './lbp/handleLbpBuyExecuted';
 import handleXykLiquidityAdded from './xyk/handleXykLiquidityAdded';
 import handleXykSellExecuted from './xyk/handleXykSellExecuted';
 import handleLbpSellExecuted from './lbp/handleLbpSellExecuted';
+import handleCurrencySet from './multiTransactionPayment/handleCurrencySet';
 
 export {
     handlePostBlock,
@@ -23,5 +24,6 @@ export {
     handleLbpBuyExecuted,
     handleXykLiquidityAdded,
     handleXykSellExecuted,
-    handleLbpSellExecuted
+    handleLbpSellExecuted,
+    handleCurrencySet
 };

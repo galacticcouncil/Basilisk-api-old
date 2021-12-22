@@ -7,8 +7,9 @@ import {
     UserAction,
     UserActionType,
 } from '../generated/model';
+import { CurrencySetDetail } from '../generated/model/currencySetDetail';
 import { getOrCreate } from './getOrCreate';
-import { buyDetails, sellDetails } from './types';
+import { currencySetAction, buyDetails, sellDetails } from './types';
 
 export const createUserActionBuy = async (
     buyDetails: buyDetails,
@@ -57,7 +58,7 @@ export const createUserActionLiquidityAdded = async (
         assetA: liquidityAddedDetails.assetA,
         assetB: liquidityAddedDetails.assetB,
         assetAAmount: liquidityAddedDetails.amountA,
-        assetBAmount: liquidityAddedDetails.amountB
+        assetBAmount: liquidityAddedDetails.amountB,
     });
 
     const id = extrinsic.id;
@@ -111,4 +112,34 @@ export const createUserActionSell = async (
     );
 
     await store.save(userAction);
+};
+
+export const createUserCurrencySet = async (
+    currencySetAction: currencySetAction,
+    extrinsic: SubstrateExtrinsic,
+    parachainBlockHeight: bigint,
+    store: DatabaseManager
+) => {
+    const currencySetDetail = new CurrencySetDetail();
+    Object.assign(currencySetDetail, {
+        assetId: currencySetAction.assetId
+    })
+
+    const id = extrinsic.id;
+    const userActionValues = {
+        status: Status.isFinalized,
+        currencySetAction: currencySetAction.account,
+        action: UserActionType.CurrencySet,
+        account: currencySetAction.account,
+        detail: currencySetDetail,
+        parachainBlockHeight,
+    };
+    const userAction = await getOrCreate(
+        store,
+        UserAction,
+        id,
+        userActionValues
+    )
+
+    await store.save(userAction)
 };

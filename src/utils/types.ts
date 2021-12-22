@@ -58,7 +58,7 @@ export type buyDetails = {
 }
 
 export type sellDetails = {
-    account: string,
+    account: address,
     assetIn: assetId,
     assetOut: assetId,
     inAmount: amount,
@@ -66,4 +66,9 @@ export type sellDetails = {
     feeAsset: assetId,
     feeAmount: amount,
     poolId: address
+}
+
+export type currencySetAction = {
+    account: address,
+    assetId: assetId
 }

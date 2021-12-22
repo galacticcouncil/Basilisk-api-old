@@ -27,7 +27,7 @@ typegen:
     - xYK.LiquidityAdded
     - xyk.LiquidityRemoved
     # set currency
-    - multiTransactionPayment.setCurrency
+    - multiTransactionPayment.CurrencySet
   customTypes:
     lib: ../chain
     typedefsLoc: types.json
@@ -62,5 +62,8 @@ mappings:
       handler: handleLbpSellExecuted
     - event: xyk.LiquidityAdded
       handler: handleXykLiquidityAdded
+    # misc
+    - event: multiTransactionPayment.CurrencySet
+      handler: handleCurrencySet
   postBlockHooks:
     - handler: handlePostBlock

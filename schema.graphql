@@ -102,14 +102,18 @@ type LiquidityRemovedActionDetail {
     assetBAmount: BigInt!
 }
 
-union UserActionDetail = SellActionDetail | BuyActionDetail | LiquidityAddedActionDetail | LiquidityRemovedActionDetail
+type CurrencySetDetail {
+    assetId: BigInt!
+}
+
+union UserActionDetail = SellActionDetail | BuyActionDetail | LiquidityAddedActionDetail | LiquidityRemovedActionDetail | CurrencySetDetail
 
 enum UserActionType {
     Buy, # LBP & XYK
     Sell, # LBP & XYK
     AddLiquidity, # XYK
     RemoveLiquidity, # XYK
-    SetFeeAsset,
+    CurrencySet,
     Transfer,
     XCM, # cross chain transfer
 }
@@ -122,7 +126,7 @@ enum Status {
 }
 
 type UserAction @entity {
-    # transactionHash
+    # extrensic.id
     id: ID!
     status: Status!
     account: String!
