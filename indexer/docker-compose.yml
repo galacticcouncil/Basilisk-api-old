@@ -22,7 +22,7 @@ services:
       - DB_PORT=5432
       - REDIS_URI=redis://redis:6379/0
       - BLOCK_HEIGHT=0 # starting block height
-      - WS_PROVIDER_ENDPOINT_URI=ws://host.docker.internal:9988
+      - WS_PROVIDER_ENDPOINT_URI=ws://172.17.0.1:9988
 
     # # If your chain uses custom types you need to provide those
     # # as detailed here - https://polkadot.js.org/docs/api/start/types.extend
@@ -36,8 +36,8 @@ services:
     #   - CHAIN_TYPES=typesChain.json
     #   - BUNDLE_TYPES=typesBundle.json
     #
-    extra_hosts:
-      - host.docker.internal:172.17.0.1
+#    extra_hosts:
+#      - "host.docker.internal:172.17.0.1"
     volumes:
       - ../types.json:/hydra-indexer/types.json
       - ../typesAlias.json:/hydra-indexer/typesAlias.json
