@@ -37,7 +37,7 @@ services:
     #   - BUNDLE_TYPES=typesBundle.json
     #
     extra_hosts:
-      - host.docker.internal:host-gateway
+      - host.docker.internal:172.17.0.2
     volumes:
       - ../types.json:/hydra-indexer/types.json
       - ../typesAlias.json:/hydra-indexer/typesAlias.json
