@@ -36,7 +36,8 @@ services:
     #   - CHAIN_TYPES=typesChain.json
     #   - BUNDLE_TYPES=typesBundle.json
     #
-#    extra_hosts:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 #      - "host.docker.internal:172.17.0.1"
     volumes:
       - ../types.json:/hydra-indexer/types.json

@@ -25,7 +25,6 @@
     "processor:test:watch": "mocha -r ts-node/register --watch --watch-files src/mappings/**.ts,utils/**.ts mappings/**.spec.ts src/utils/**.spec.ts",
     "processor:gen-chain-types": "./scripts/dev/gen-chain-types.sh",
     "indexer:start": "docker-compose -f ./indexer/docker-compose.yml up",
-    "indexer:start-ci-linux": "docker-compose -f ./indexer/docker-compose.yml up --add-host host.docker.internal:host-gateway",
     "indexer:stop": "docker-compose -f ./indexer/docker-compose.yml down",
     "testnet:start": "./scripts/dev/start-testnet.sh",
     "testnet:stop": "./scripts/dev/stop-testnet.sh",
