@@ -61,10 +61,10 @@ type HistoricalBalanceXYK @entity {
 type HistoricalVolumeLBP @entity {
     "PoolId-paraChainBlockHeight-volume"
     id: ID!
-    assetABalanceIn: BigInt!
-    assetABalanceOut: BigInt!
-    assetBBalanceIn: BigInt!
-    assetBBalanceOut: BigInt!
+    assetAAmountIn: BigInt!
+    assetAAmountOut: BigInt!
+    assetBAmountIn: BigInt!
+    assetBAmountOut: BigInt!
     createdAt: DateTime!
     pool: LBPPool!
     blockHeight: BlockHeightPairing!
@@ -73,10 +73,10 @@ type HistoricalVolumeLBP @entity {
 type HistoricalVolumeXYK @entity {
     "PoolId-paraChainBlockHeight-volume"
     id: ID!
-    assetABalanceIn: BigInt!
-    assetABalanceOut: BigInt!
-    assetBBalanceIn: BigInt!
-    assetBBalanceOut: BigInt!
+    assetAAmountIn: BigInt!
+    assetAAmountOut: BigInt!
+    assetBAmountIn: BigInt!
+    assetBAmountOut: BigInt!
     createdAt: DateTime!
     pool: XYKPool!
     blockHeight: BlockHeightPairing!

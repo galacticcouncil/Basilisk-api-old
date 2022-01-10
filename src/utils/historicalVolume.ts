@@ -135,10 +135,10 @@ export const addIncomingVolumeForAssetId = (
 ) => {
     // it is not possible to create a pool where both asset ids are the same
     if (pool.assetAId === assetId) {
-        historicalVolume.assetABalanceIn += balanceToAdd;
+        historicalVolume.assetAAmountIn += balanceToAdd;
     }
     if (pool.assetBId === assetId) {
-        historicalVolume.assetBBalanceIn += balanceToAdd;
+        historicalVolume.assetBAmountIn += balanceToAdd;
     }
 
     return historicalVolume;
@@ -157,10 +157,10 @@ export const addOutgoingVolumeForAssetId = (
 ) => {
     // it is not possible to create a pool where both asset ids are the same
     if (pool.assetAId === assetId) {
-        historicalVolume.assetABalanceOut += balanceToAdd;
+        historicalVolume.assetAAmountOut += balanceToAdd;
     }
     if (pool.assetBId === assetId) {
-        historicalVolume.assetBBalanceOut += balanceToAdd;
+        historicalVolume.assetBAmountOut += balanceToAdd;
     }
 
     return historicalVolume;
@@ -219,17 +219,17 @@ const getHistoricalVolumeInitValues = (
     blockTimeStamp: number
 ) => {
     // initial values
-    const assetABalanceIn = initialBalance;
-    const assetABalanceOut = initialBalance;
-    const assetBBalanceIn = initialBalance;
-    const assetBBalanceOut = initialBalance;
+    const assetAAmountIn = initialBalance;
+    const assetAAmountOut = initialBalance;
+    const assetBAmountIn = initialBalance;
+    const assetBAmountOut = initialBalance;
 
     const createdAt = new Date(blockTimeStamp);
     const initValuesHistoricalVolume = {
-        assetABalanceIn,
-        assetABalanceOut,
-        assetBBalanceIn,
-        assetBBalanceOut,
+        assetAAmountIn,
+        assetAAmountOut,
+        assetBAmountIn,
+        assetBAmountOut,
         pool,
         blockHeight: blockHeightPairing,
         createdAt,
