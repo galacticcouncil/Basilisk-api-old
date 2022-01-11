@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: testnet.Dockerfile
       shm_size: '8gb'
-    image: polkadot-basilisk-testnet:0.1.12
+    image: polkadot-basilisk-testnet:0.1.16
     ports:
       - "127.0.0.1:9988:9988"
       - "127.0.0.1:9944:9944"
