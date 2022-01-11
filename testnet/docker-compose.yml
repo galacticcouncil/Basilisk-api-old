@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.9"
 
 services:
   polkadot_basilisk_testnet:
@@ -6,8 +6,8 @@ services:
     build:
       context: .
       dockerfile: testnet.Dockerfile
-      shm_size: '4gb'
-    image: polkadot-basilisk-testnet:0.1.11
+      shm_size: '8gb'
+    image: polkadot-basilisk-testnet:0.1.12
     ports:
       - "127.0.0.1:9988:9988"
       - "127.0.0.1:9944:9944"
@@ -18,15 +18,23 @@ services:
       - "9966"
       - "9955"
       - "9944"
+      - "9933"
+      - "9945"
+      - "9934"
     networks:
       - default
+#    deploy:
+#      resources:
+#        reservations:
+#          cpus: '1'
+#          memory: 12000M
 
   basiliisk-ui-app:
     restart: always
     build:
       context: .
       dockerfile: basiliskui.Dockerfile
-      shm_size: '4gb'
+      shm_size: '6gb'
 #    deploy:
 #      resources:
 #        limits:

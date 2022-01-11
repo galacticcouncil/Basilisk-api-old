@@ -38,7 +38,7 @@ ENV VERSIION_BASILISK_NODE=6.1.0
 
 RUN apt-get update && curl https://getsubstrate.io -sSf | bash -s -- --fast
 
-RUN git clone -b develop https://github.com/galacticcouncil/Basilisk-api.git
+RUN git clone -b feature/dockerize-testnet https://github.com/galacticcouncil/Basilisk-api.git
 WORKDIR /Basilisk-api
 RUN yarn
 
