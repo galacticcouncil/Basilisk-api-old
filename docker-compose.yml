@@ -13,3 +13,8 @@ services:
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: ${DB_NAME}
 #    command: ["postgres", "-c", "log_statement=all"]
+
+networks:
+  default:
+    external: true
+    name: basilisk-wrapper-network

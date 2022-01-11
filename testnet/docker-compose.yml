@@ -1,0 +1,52 @@
+version: "3.4"
+
+services:
+  polkadot_basilisk_testnet:
+    container_name: polkadot_basilisk_testnet
+    build:
+      context: .
+      dockerfile: testnet.Dockerfile
+      shm_size: '4gb'
+    image: polkadot-basilisk-testnet:0.1.11
+    ports:
+      - "127.0.0.1:9988:9988"
+      - "127.0.0.1:9944:9944"
+    expose:
+      - "9989"
+      - "9988"
+      - "9977"
+      - "9966"
+      - "9955"
+      - "9944"
+    networks:
+      - default
+
+  basiliisk-ui-app:
+    restart: always
+    build:
+      context: .
+      dockerfile: basiliskui.Dockerfile
+      shm_size: '4gb'
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '1.00'
+#          memory: 4000M
+#        reservations:
+#          cpus: '0.5'
+#          memory: 2048M
+
+    image: basilisk-ui-app:0.1.5
+    ports:
+      - "127.0.0.1:3000:3000"
+    expose:
+      - "3000"
+    environment:
+      - REACT_APP_NODE_URL=ws://polkadot_basilisk_testnet:9988
+      - WS_URL=ws://polkadot_basilisk_testnet:9988
+    networks:
+      - default
+networks:
+  default:
+    external: true
+    name: basilisk-wrapper-network

@@ -22,7 +22,8 @@ services:
       - DB_PORT=5432
       - REDIS_URI=redis://redis:6379/0
       - BLOCK_HEIGHT=0 # starting block height
-      - WS_PROVIDER_ENDPOINT_URI=ws://host.docker.internal:9988
+#      - WS_PROVIDER_ENDPOINT_URI=ws://host.docker.internal:9988
+      - WS_PROVIDER_ENDPOINT_URI="ws://${WS_PROVIDER_ENDPOINT_HOST}:9988"
 
     # # If your chain uses custom types you need to provide those
     # # as detailed here - https://polkadot.js.org/docs/api/start/types.extend
@@ -82,3 +83,8 @@ services:
     restart: always
     ports:
       - "6379"
+
+networks:
+  default:
+    external: true
+    name: basilisk-wrapper-network
