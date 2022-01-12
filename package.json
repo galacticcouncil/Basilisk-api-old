@@ -36,7 +36,7 @@
     "indexer:start-ci-linux": "docker network create basilisk-wrapper-network | docker-compose -f ./indexer/docker-compose-ci-linux.yml up",
     "processor:clean-and-setup-single": "./scripts/dev/clean-and-setup-single.sh",
     "testnet-container:start": "docker network create basilisk-wrapper-network | docker-compose -f ./testnet-docker-compose.yml up",
-    "testnet-container:stop": "docker-compose -f ./testnet/testnet-docker-compose.yml down",
+    "testnet-container:stop": "docker-compose -f testnet/docker-compose.yml down",
     "fullruntime:clean-setup-start": "./scripts/dev/clear-setup-start-fullruntime.sh",
     "fullruntime:start": "./scripts/dev/start-fullruntime.sh"
   },
