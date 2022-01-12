@@ -48,16 +48,10 @@ async function updateHistoricalVolume(
     entity: EntityConstructor<LBPPool | XYKPool>,
     transferParameters: transferParameters
 ) {
-    const currentHeightSearchOption = {
-        where: {
-            id: block.hash,
-        },
-    };
-    const currentBlockHeightPairing = await store.get<BlockHeightPairing>(
-        BlockHeightPairing,
-        currentHeightSearchOption
+    const currentBlockHeightPairing = await getCurrentBlockHeightPairing(
+        block,
+        store
     );
-    if (!currentBlockHeightPairing) throw errorInvalidCurrentBlockHeightPairing;
 
     // check whether the pool is receiving a transfer
     let poolToReceiveTransfer = await store.get(entity, {
@@ -168,7 +162,7 @@ export const addOutgoingVolumeForAssetId = (
 
 /**
  * Creates a new historical volume entry with initial values.
- * Skips if a historical volume already exists for the given 
+ * Skips if a historical volume already exists for the given
  * pool and block height.
  */
 export const createHistoricalVolume = async (
@@ -180,11 +174,12 @@ export const createHistoricalVolume = async (
     // get historical volume for given block height
     const HistoricalVolumeEntity = getHistoricalVolumeEntity(pool);
     const historicalVolumeId = getHistoricalVolumeId(pool, blockHeightPairing);
+    // retrieve from database
     let historicalVolumeExists = await store.get(HistoricalVolumeEntity, {
         where: { id: historicalVolumeId },
     });
     // skip if entry exists
-    if(historicalVolumeExists) return 
+    if (historicalVolumeExists) return;
 
     // create historical volume entry with initial values
     const initValues = getHistoricalVolumeInitValues(
@@ -243,3 +238,21 @@ const getHistoricalVolumeId = (
 ) => {
     return `${pool.id}-${blockHeightPairing.paraChainBlockHeight}-volume`;
 };
+
+async function getCurrentBlockHeightPairing(
+    block: SubstrateBlock,
+    store: DatabaseManager
+): Promise<BlockHeightPairing> {
+    const currentHeightSearchOption = {
+        where: {
+            id: block.hash,
+        },
+    };
+    const currentBlockHeightPairing = await store.get<BlockHeightPairing>(
+        BlockHeightPairing,
+        currentHeightSearchOption
+    );
+    if (!currentBlockHeightPairing) throw errorInvalidCurrentBlockHeightPairing;
+
+    return currentBlockHeightPairing;
+}
