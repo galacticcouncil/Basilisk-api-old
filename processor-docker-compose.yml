@@ -1,11 +1,12 @@
 version: "3.4"
 
 services:
-  db:
+  db-processor:
+    container_name: db-processor
     image: postgres:12
     restart: always
     ports:
-      - "${DB_PORT}:5432"
+      - ${DB_PORT}:5432
     volumes:
       - /var/lib/postgresql/data
     environment:
@@ -13,8 +14,3 @@ services:
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: ${DB_NAME}
 #    command: ["postgres", "-c", "log_statement=all"]
-
-networks:
-  default:
-    external: true
-    name: basilisk-wrapper-network

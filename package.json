@@ -25,7 +25,6 @@
     "processor:test:watch": "mocha -r ts-node/register --watch --watch-files src/mappings/**.ts,utils/**.ts mappings/**.spec.ts src/utils/**.spec.ts",
     "processor:gen-chain-types": "./scripts/dev/gen-chain-types.sh",
     "indexer:start": "docker-compose -f ./indexer/docker-compose.yml -e WS_PROVIDER_ENDPOINT_HOST=host.docker.internal up",
-    "indexer:start-ci-linux": "docker network create basilisk-wrapper-network | docker-compose -f ./indexer/docker-compose-ci-linux.yml up",
     "indexer:stop": "docker-compose -f ./indexer/docker-compose.yml down",
     "testnet:start": "./scripts/dev/start-testnet.sh",
     "testnet:stop": "./scripts/dev/stop-testnet.sh",
@@ -34,8 +33,11 @@
     "test:e2e": "mocha --timeout 10000 -r ts-node/register e2e/**/**.spec.ts",
     "test:unit": "mocha --timeout 10000 -r ts-node/register src/**/**.spec.ts src/**/**/**.spec.ts",
 
-    "testnet-container:start": "docker network create basilisk-wrapper-network | docker-compose -f ./testnet/docker-compose.yml up",
-    "testnet-container:stop": "docker-compose -f ./testnet/docker-compose.yml down",
+    "indexer:start-ci-linux": "docker network create basilisk-wrapper-network | docker-compose -f ./indexer/docker-compose-ci-linux.yml up",
+    "processor:clean-and-setup-single": "./scripts/dev/clean-and-setup-single.sh",
+    "testnet-container:start": "docker network create basilisk-wrapper-network | docker-compose -f ./testnet-docker-compose.yml up",
+    "testnet-container:stop": "docker-compose -f ./testnet/testnet-docker-compose.yml down",
+    "fullruntime:clean-setup-start": "./scripts/dev/clear-setup-start-fullruntime.sh",
     "fullruntime:start": "./scripts/dev/start-fullruntime.sh"
   },
   "dependencies": {

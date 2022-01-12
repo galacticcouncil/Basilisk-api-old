@@ -1,3 +1,4 @@
+
 version: "3.4"
 
 services:
@@ -22,15 +23,15 @@ services:
       - DB_PORT=5432
       - REDIS_URI=redis://redis:6379/0
       - BLOCK_HEIGHT=0 # starting block height
-#      - WS_PROVIDER_ENDPOINT_URI=ws://host.docker.internal:9988
-      - WS_PROVIDER_ENDPOINT_URI="ws://${WS_PROVIDER_ENDPOINT_HOST}:9988"
+      #      - WS_PROVIDER_ENDPOINT_URI=ws://host.docker.internal:9988
+      - WS_PROVIDER_ENDPOINT_URI=ws://${WS_PROVIDER_ENDPOINT_HOST}:9988
 
-    # # If your chain uses custom types you need to provide those
-    # # as detailed here - https://polkadot.js.org/docs/api/start/types.extend
-    # #
-    # # Json files below are passed verbatim to ApiPromise.create() from @polkadot/api.
-    # # Use any combination of those
-    #
+      # # If your chain uses custom types you need to provide those
+      # # as detailed here - https://polkadot.js.org/docs/api/start/types.extend
+      # #
+      # # Json files below are passed verbatim to ApiPromise.create() from @polkadot/api.
+      # # Use any combination of those
+      #
       - TYPES_JSON=types.json
       - TYPES_ALIAS=typesAlias.json
     #   - SPEC_TYPES=typesSpec.json
