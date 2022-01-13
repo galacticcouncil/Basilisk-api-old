@@ -7,9 +7,9 @@ services:
 #      context: ../
 #      dockerfile: testnet/testnet.Dockerfile
 #      shm_size: '12gb'
-
+#
 #    image: polkadot-basilisk-testnet:0.1.19
-    image: 639663059215.dkr.ecr.eu-central-1.amazonaws.com/polkadot-basilisk-testnet:0.1.19
+    image: public.ecr.aws/e4o7i5u6/polkadot-basilisk-testnet:0.1.19
     ports:
       - "127.0.0.1:9989:9989"
       - "127.0.0.1:9988:9988"
