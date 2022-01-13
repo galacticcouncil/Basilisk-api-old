@@ -3,27 +3,28 @@ version: "3.9"
 services:
   polkadot-basilisk-testnet:
     container_name: polkadot-basilisk-testnet
-    build:
-      context: ../
-      dockerfile: testnet/testnet.Dockerfile
-      shm_size: '12gb'
+#    build:
+#      context: ../
+#      dockerfile: testnet/testnet.Dockerfile
+#      shm_size: '12gb'
 
-    image: polkadot-basilisk-testnet:0.1.19
+#    image: polkadot-basilisk-testnet:0.1.19
+    image: 639663059215.dkr.ecr.eu-central-1.amazonaws.com/polkadot-basilisk-testnet:0.1.19
     ports:
       - "127.0.0.1:9989:9989"
       - "127.0.0.1:9988:9988"
       - "127.0.0.1:9944:9944"
       - "127.0.0.1:30333:30333"
-    expose:
-      - "9989"
-      - "9988"
-      - "9977"
-      - "9966"
-      - "9955"
-      - "9944"
-      - "9933"
-      - "9945"
-      - "9934"
+#    expose:
+#      - "9989"
+#      - "9988"
+#      - "9977"
+#      - "9966"
+#      - "9955"
+#      - "9944"
+#      - "9933"
+#      - "9945"
+#      - "9934"
     networks:
       - default
 
