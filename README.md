@@ -153,8 +153,7 @@ Do not run `yarn run processor:query-node:start`, because we need to keep port `
 
 ```
 # migrate test data
-yarn run migrate:lbp
-yarn run migrate:xyk
+yarn run migrate:test:e2e
 
 # start indexer and processor
 yarn run processor:clean-and-setup

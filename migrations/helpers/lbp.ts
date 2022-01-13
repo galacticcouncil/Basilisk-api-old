@@ -85,8 +85,8 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                                             ) {
                                                 unsub();
                                                 // set pool's address
-                                                this.address =
-                                                    data[0].toString();
+                                                const poolAddress = data[0].toString();
+                                                this.address = poolAddress;
                                                 saveLbpMigration({
                                                     address: this.address,
                                                     assetAId:
@@ -98,7 +98,7 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                                                     assetBBalance:
                                                         this.assetBBalance12e,
                                                 });
-                                                resolve(data[0].toString());
+                                                resolve(poolAddress);
                                             }
                                         }
                                     );
@@ -173,7 +173,7 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                 }
             });
         },
-        buy: async function () {
+        buy: async function (signer?: KeyringPair) {
             return new Promise<void>(async (resolve, reject) => {
                 try {
                     const unsub = await this.api.tx.lbp
@@ -183,7 +183,7 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                             '100000', // amount
                             '200000', // max limit
                         )
-                        .signAndSend(this.signer, ({ events = [], status }) => {
+                        .signAndSend(signer ?? this.signer, ({ events = [], status }) => {
                             events.forEach(
                                 ({
                                     event: { data, method, section },

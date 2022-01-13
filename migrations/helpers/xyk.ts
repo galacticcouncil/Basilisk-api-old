@@ -86,7 +86,7 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                 );
             });
         },
-        buy: async function () {
+        buy: async function (signer?: KeyringPair) {
             return new Promise<void>(async (resolve, reject) => {
                 try {
                     const unsub = await this.api.tx.xyk
@@ -97,7 +97,7 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                             '205000', // max limit
                             false //discount
                         )
-                        .signAndSend(this.signer, ({ events = [], status }) => {
+                        .signAndSend(signer ?? this.signer, ({ events = [], status, dispatchError }) => {
                             events.forEach(
                                 ({
                                     event: { data, method, section },
@@ -120,6 +120,15 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                             if (status.isFinalized) {
                                 unsub();
                                 resolve();
+                            }
+                            if (dispatchError) {
+                                console.log(
+                                    'dispatchError',
+                                    api.registry.findMetaError(
+                                        dispatchError.asModule
+                                    )
+                                );
+                                reject();
                             }
                         });
                 } catch (e: any) {
@@ -169,18 +178,18 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                 }
             });
         },
-        sell: async function () {
+        sell: async function (signer?: KeyringPair) {
             return new Promise<void>(async (resolve, reject) => {
                 try {
                     const unsub = await this.api.tx.xyk
                         .sell(
-                            this.assetPair.assetB, // assetIn
-                            this.assetPair.assetA, // assetOut
+                            this.assetPair.assetA, // assetIn
+                            this.assetPair.assetB, // assetOut
                             '205000', // amount
                             '100000', // max limit
                             false //discount
                         )
-                        .signAndSend(this.signer, ({ events = [], status }) => {
+                        .signAndSend(signer ?? this.signer, ({ events = [], status, dispatchError }) => {
                             events.forEach(
                                 ({
                                     event: { data, method, section },
@@ -203,6 +212,15 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                             if (status.isFinalized) {
                                 unsub();
                                 resolve();
+                            }
+                            if (dispatchError) {
+                                console.log(
+                                    'dispatchError',
+                                    api.registry.findMetaError(
+                                        dispatchError.asModule
+                                    )
+                                );
+                                reject();
                             }
                         });
                 } catch (e: any) {

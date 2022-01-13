@@ -1,5 +1,5 @@
 import { Basilisk } from './helpers/api';
-import { getSigner, getSignerBob } from './helpers/utils';
+import { getSigner, getSignerFromUri } from './helpers/utils';
 
 async function main() {
     const api = await Basilisk.getInstance();
@@ -20,7 +20,7 @@ async function main() {
     return new Promise<void>(async (resolve, reject) => {
         try {
             const unsub = await tx2.signAndSend(
-                getSignerBob(),
+                getSignerFromUri('//Bob'),
                 async ({ status, events: _events, dispatchError }) => {
                     //console.log('before extrinsic tx hash', tx2.hash.toHex());
                     if (status.isBroadcast) {

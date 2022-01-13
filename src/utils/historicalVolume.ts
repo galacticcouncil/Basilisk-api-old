@@ -236,7 +236,7 @@ const getHistoricalVolumeId = (
     pool: LBPPool | XYKPool,
     blockHeightPairing: BlockHeightPairing
 ) => {
-    return `${pool.id}-${blockHeightPairing.paraChainBlockHeight}-volume`;
+    return `${pool.id}-${blockHeightPairing.parachainBlockHeight}-volume`;
 };
 
 async function getCurrentBlockHeightPairing(

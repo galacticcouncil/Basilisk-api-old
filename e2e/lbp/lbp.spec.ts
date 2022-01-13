@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { DBClient } from '../../src/utils/db/setup';
-import migration from '../../pools/lbp/lbp.json'
+import migration from '../../pools/lbp/lbp.json';
 
 describe('Integration LBP', () => {
     let client: any;
@@ -50,7 +50,7 @@ describe('Integration LBP', () => {
 
     it('can handle balances.Transfer and tokens.Transfer events', async () => {
         await client.test(
-        `
+            `
             query MyQuery {
                 lBPPools(where: {id_eq: "${lbpPoolAddress}"}) {
                         id
@@ -73,7 +73,7 @@ describe('Integration LBP', () => {
 
     it('can create historical balances', async () => {
         const response = await client.query(
-        `
+            `
             query MyQuery {
                 historicalBalanceLBPs(where: {pool: {id_eq: "${lbpPoolAddress}"}}) {
                     assetABalance
@@ -117,5 +117,26 @@ describe('Integration LBP', () => {
         );
         expect(response.data.historicalBalanceLBPs).to.be.an('array').and.to.be
             .empty;
+    });
+
+    // Historical Volume
+    it('can create a historical volume entry', async () => {
+        const response = await client.query(`
+            query MyQuery {
+                historicalVolumeLBPs(where: {assetAAmountIn_not_eq: "0"}) {
+                    assetAAmountIn
+                    assetAAmountOut
+                    assetBAmountIn
+                    assetBAmountOut
+                }
+            }
+        `);
+
+        expect(response.data.historicalVolumeLBPs[0]).to.deep.equal({
+            assetAAmountIn: '1000000000000000000',
+            assetAAmountOut: '0',
+            assetBAmountIn: '1000000000000000000',
+            assetBAmountOut: '0',
+        });
     });
 });
