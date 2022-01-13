@@ -70,6 +70,7 @@
                     "port": 31200,
                     "flags": [
                         "--alice",
+                        "--no-beefy",
                         "--ws-external",
                         "--rpc-external",
                         "--rpc-cors=all",
@@ -85,6 +86,7 @@
                     "port": 31201,
                     "flags": [
                         "--bob",
+                        "--no-beefy",
                         "--ws-external",
                         "--rpc-external",
                         "--rpc-cors=all",

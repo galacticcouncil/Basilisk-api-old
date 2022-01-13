@@ -1,7 +1,7 @@
 # Polkadot-launch is not compatible with node >= 15 so we must use node:14
 FROM node:14
 
-ENV VERSIION_POLKADOT_NODE=0.9.13
+ENV VERSIION_POLKADOT_NODE=0.9.14
 ENV VERSIION_BASILISK_NODE=6.1.0
 
 RUN apt-get update && curl https://getsubstrate.io -sSf | bash -s -- --fast
