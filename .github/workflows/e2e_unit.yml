@@ -18,6 +18,7 @@ jobs:
     steps:
     - name: Clone Polkadot-node
       run: |
+        pwd
         git clone https://github.com/paritytech/polkadot.git
     # - name: Cache binary file for Polkadot-node
     #   id: cache-bin-polkadot-node
@@ -73,12 +74,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: yarn
     - run: |
-        cd Basilisk-api
-        yarn
-        yarn run testnet:start &
-    # - run: yarn
-    # - run: yarn run testnet:start &
+      pwd
+      ls
+      cd ..
+      ls
+      pwd
+    - run: yarn run testnet:start &
     # - run: yarn run migrate:lbp
     # - run: yarn run migrate:xyk
     # - run: yarn run test:unit
