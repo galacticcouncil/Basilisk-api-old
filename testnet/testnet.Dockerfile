@@ -6,13 +6,6 @@ ENV VERSIION_BASILISK_NODE=6.1.0
 
 RUN apt-get update && curl https://getsubstrate.io -sSf | bash -s -- --fast
 
-#RUN git clone -b feature/dockerize-testnet https://github.com/galacticcouncil/Basilisk-api.git
-COPY . /Basilisk-api
-WORKDIR /Basilisk-api
-RUN yarn
-
-WORKDIR /
-
 RUN wget -O polkadot.tar.gz https://github.com/paritytech/polkadot/archive/refs/tags/v$VERSIION_POLKADOT_NODE.tar.gz
 RUN tar -xvzf polkadot.tar.gz
 RUN mv polkadot-$VERSIION_POLKADOT_NODE polkadot
@@ -34,5 +27,9 @@ RUN cp basilisk testing-basilisk
 RUN chmod +x basilisk
 RUN chmod +x testing-basilisk
 
+#RUN git clone -b feature/dockerize-testnet https://github.com/galacticcouncil/Basilisk-api.git
+COPY . /Basilisk-api
 WORKDIR /Basilisk-api
+RUN yarn
+
 CMD ["yarn", "testnet:start"]

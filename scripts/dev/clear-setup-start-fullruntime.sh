@@ -1,5 +1,3 @@
-#!/bin/sh
-
 
 chmod -R 777 ./scripts/dev/wait-for-log-message.sh
 . ./scripts/dev/wait-for-log-message.sh

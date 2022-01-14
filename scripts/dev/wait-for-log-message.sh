@@ -1,4 +1,3 @@
-#!/bin/sh
 
 wait_for_log_message() {
     log_file="$1"
