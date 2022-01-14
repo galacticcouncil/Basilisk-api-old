@@ -99,9 +99,9 @@ jobs:
 
       - name: Install npm packages
         run: |
-        ls
-        cd Basilisk-api
-        yarn
+          ls
+          cd Basilisk-api
+          yarn
 
       # Update folders structure
 
