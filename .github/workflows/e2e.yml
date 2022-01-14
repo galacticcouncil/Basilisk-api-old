@@ -1,0 +1,57 @@
+name: e2e test
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Clone Polkadot-node
+      run: |
+        cd ..
+        git clone https://github.com/paritytech/polkadot.git
+        cd polkadot
+        mkdir -p target
+        cd target
+        mkdir -p release
+        cd release
+        wget https://github.com/paritytech/polkadot/releases/download/v0.9.13/polkadot
+        chmod +x polkadot
+    - name: Clone Basilisk-node
+      run: |
+        cd ..
+        git clone https://github.com/galacticcouncil/Basilisk-node.git
+        cd Basilisk-node
+        mkdir -p target
+        cd target
+        mkdir -p release
+        cd release
+        wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v6.0.0/basilisk
+        cp -v basilisk testing-basilisk
+        chmod +x basilisk
+        chmod +x testing-basilisk    
+
+    - run: yarn
+    - run: |
+        chmod -R 777 ./scripts/ci/gh-actions-run-testnet-with-waiting.sh
+        . ./scripts/ci/gh-actions-run-testnet-with-waiting.sh
+    - run: yarn run migrate:lbp
+    - run: yarn run migrate:xyk
+    - run: yarn run test:unit
+    - run: yarn run test:e2e
