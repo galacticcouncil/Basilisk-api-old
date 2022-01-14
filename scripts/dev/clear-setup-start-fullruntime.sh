@@ -1,13 +1,14 @@
 
-chmod -R 777 ./scripts/dev/wait-for-log-message.sh
-. ./scripts/dev/wait-for-log-message.sh
-
 export $(grep -v '^#' .env | xargs)
 
 set -e
 
 docker network inspect basilisk-wrapper-network >/dev/null 2>&1 || \
     docker network create basilisk-wrapper-network
+
+chmod -R 777 ./scripts/dev/wait-for-log-message.sh
+. ./scripts/dev/wait-for-log-message.sh
+
 
 testnet_logfile=$(mktemp)
 
