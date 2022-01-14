@@ -1,6 +1,3 @@
-# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: e2e and unit testing
 
 on:
@@ -22,12 +19,12 @@ jobs:
     - name: Clone Polkadot-node
       run: |
         git clone https://github.com/paritytech/polkadot.git
-    - name: Cache binary file for Polkadot-node
-      id: cache-bin-polkadot-node
-      uses: actions/cache@v2
-      with:
-        path: polkadot/target/release
-        key: bin-polkadot-node-3-${{ hashFiles('polkadot/Cargo.lock') }}
+    # - name: Cache binary file for Polkadot-node
+    #   id: cache-bin-polkadot-node
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: polkadot/target/release
+    #     key: bin-polkadot-node-3-${{ hashFiles('polkadot/Cargo.lock') }}
 
     - name: Fetch Polkadot-node bin file
       if: steps.cache-bin-polkadot-node.outputs.cache-hit != 'true'
@@ -46,12 +43,12 @@ jobs:
     - name: Clone Basilisk-node
       run: |
         git clone https://github.com/galacticcouncil/Basilisk-node.git
-    - name: Cache binary file for Basilisk-node
-      id: cache-bin-basilisk-node
-      uses: actions/cache@v2
-      with:
-        path: Basilisk-node/target/release
-        key: bin-basilisk-node-5-${{ hashFiles('Basilisk-node/Cargo.lock') }}
+    # - name: Cache binary file for Basilisk-node
+    #   id: cache-bin-basilisk-node
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: Basilisk-node/target/release
+    #     key: bin-basilisk-node-5-${{ hashFiles('Basilisk-node/Cargo.lock') }}
 
     - name: Fetch Basilisk-node bin file
       if: steps.cache-bin-basilisk-node.outputs.cache-hit != 'true'
@@ -76,9 +73,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: yarn
-    - run: yarn run testnet:start &
-    - run: yarn run migrate:lbp
-    - run: yarn run migrate:xyk
-    - run: yarn run test:unit
-    - run: yarn run test:e2e
+    - run: |
+        cd Basilisk-api
+        yarn
+        yarn run testnet:start &
+    # - run: yarn
+    # - run: yarn run testnet:start &
+    # - run: yarn run migrate:lbp
+    # - run: yarn run migrate:xyk
+    # - run: yarn run test:unit
+    # - run: yarn run test:e2e
