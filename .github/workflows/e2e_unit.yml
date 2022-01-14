@@ -76,9 +76,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run testnet:start &
-    - run: npm run migrate:lbp
-    - run: npm run migrate:xyk
+    - run: yarn
+    - run: yarn run testnet:start &
+    - run: yarn run migrate:lbp
+    - run: yarn run migrate:xyk
     - run: yarn run test:unit
     - run: yarn run test:e2e
