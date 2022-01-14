@@ -1,0 +1,84 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: e2e and unit testing
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - name: Clone Polkadot-node
+      run: |
+        git clone https://github.com/paritytech/polkadot.git
+    - name: Cache binary file for Polkadot-node
+      id: cache-bin-polkadot-node
+      uses: actions/cache@v2
+      with:
+        path: polkadot/target/release
+        key: bin-polkadot-node-3-${{ hashFiles('polkadot/Cargo.lock') }}
+
+    - name: Fetch Polkadot-node bin file
+      if: steps.cache-bin-polkadot-node.outputs.cache-hit != 'true'
+      run: |
+        cd polkadot
+        mkdir -p target
+        cd target
+        mkdir -p release
+        cd release
+        wget https://github.com/paritytech/polkadot/releases/download/v0.9.13/polkadot
+    - name: Make Polkadot-node bin executable
+      run: |
+        cd polkadot/target/release
+        chmod +x polkadot
+    
+    - name: Clone Basilisk-node
+      run: |
+        git clone https://github.com/galacticcouncil/Basilisk-node.git
+    - name: Cache binary file for Basilisk-node
+      id: cache-bin-basilisk-node
+      uses: actions/cache@v2
+      with:
+        path: Basilisk-node/target/release
+        key: bin-basilisk-node-5-${{ hashFiles('Basilisk-node/Cargo.lock') }}
+
+    - name: Fetch Basilisk-node bin file
+      if: steps.cache-bin-basilisk-node.outputs.cache-hit != 'true'
+      run: |
+        cd Basilisk-node
+        mkdir -p target
+        cd target
+        mkdir -p release
+        cd release
+        wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v6.0.0/basilisk
+        cp -v basilisk testing-basilisk
+        ls
+    - name: Make Basilisk-node bin executable
+      run: |
+        cd Basilisk-node/target/release
+        chmod +x basilisk
+        chmod +x testing-basilisk    
+        
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run testnet:start &
+    - run: npm run migrate:lbp
+    - run: npm run migrate:xyk
+    - run: yarn run test:unit
+    - run: yarn run test:e2e
