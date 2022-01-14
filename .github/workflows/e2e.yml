@@ -27,7 +27,7 @@ jobs:
         cd target
         mkdir -p release
         cd release
-        wget https://github.com/paritytech/polkadot/releases/download/v0.9.13/polkadot
+        wget https://github.com/paritytech/polkadot/releases/download/v0.9.15/polkadot
         chmod +x polkadot
     - name: Clone Basilisk-node
       run: |
@@ -38,7 +38,7 @@ jobs:
         cd target
         mkdir -p release
         cd release
-        wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v6.1.0/basilisk
+        wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v6.1.1/basilisk
         cp -v basilisk testing-basilisk
         chmod +x basilisk
         chmod +x testing-basilisk    
