@@ -42,7 +42,7 @@ jobs:
         cd target
         mkdir -p release
         cd release
-        wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v6.0.0/basilisk
+        wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v6.1.1/basilisk
         cp -v basilisk testing-basilisk
         chmod +x basilisk
         chmod +x testing-basilisk    
