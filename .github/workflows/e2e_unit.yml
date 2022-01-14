@@ -76,11 +76,11 @@ jobs:
         cache: 'npm'
     - run: yarn
     - run: |
-      pwd
-      ls
-      cd ..
-      ls
-      pwd
+        pwd
+        ls
+        cd ..
+        ls
+        pwd
     - run: yarn run testnet:start &
     # - run: yarn run migrate:lbp
     # - run: yarn run migrate:xyk
