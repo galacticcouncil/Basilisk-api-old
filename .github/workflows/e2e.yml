@@ -18,37 +18,22 @@ jobs:
         node-version: 16.x
         cache: 'npm'
     
-    - name: Clone Polkadot-node
-      run: |
-        cd ..
-        git clone https://github.com/paritytech/polkadot.git
-        cd polkadot
-        mkdir -p target
-        cd target
-        mkdir -p release
-        cd release
-        wget https://github.com/paritytech/polkadot/releases/download/v0.9.15/polkadot
-        chmod +x polkadot
-    - name: Clone Basilisk-node
-      run: |
-        cd ..
-        git clone https://github.com/galacticcouncil/Basilisk-node.git
-        cd Basilisk-node
-        mkdir -p target
-        cd target
-        mkdir -p release
-        cd release
-        wget https://github.com/galacticcouncil/Basilisk-node/suites/4955321651/artifacts/143993929
-        cp -v basilisk testing-basilisk
-        chmod +x basilisk
-        chmod +x testing-basilisk    
-
-    - run: yarn
-    - name: Run local testnet
-      timeout-minutes: 10
-      run: |
-        chmod -R 777 ./scripts/ci/gh-actions-run-testnet-with-waiting.sh
-        . ./scripts/ci/gh-actions-run-testnet-with-waiting.sh
+    - name: Install Node.js wait-port
+      run: yarn global add wait-port
+      
+    - name: Launch local sandbox
+      run: docker run -d -p 9988:9988 -p 9944:9944 public.ecr.aws/e4o7i5u6/polkadot-basilisk-testnet:0.1.25
+      
+    - name: Wait for Basilisk Node port :9988
+      shell: bash
+      timeout-minutes: 5
+      run: wait-port 9988
+    
+    - name: Wait 50 seconds for sandbox
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '50s'
+    
     - run: yarn run migrate:lbp
     - run: yarn run migrate:xyk
     - run: yarn run test:unit
