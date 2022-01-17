@@ -18,22 +18,15 @@ jobs:
         node-version: 16.x
         cache: 'npm'
     
-    - name: Install Node.js wait-port
-      run: yarn global add wait-port
-      
     - name: Launch local sandbox
       run: docker run -d -p 9988:9988 -p 9944:9944 public.ecr.aws/e4o7i5u6/polkadot-basilisk-testnet:0.1.25
-      
-    - name: Wait for Basilisk Node port :9988
-      shell: bash
-      timeout-minutes: 5
-      run: wait-port 9988
     
-    - name: Wait 50 seconds for sandbox
+    - name: Wait 120 seconds for sandbox
       uses: jakejarvis/wait-action@master
       with:
-        time: '50s'
+        time: '120s'
     
+    - run: yarn install --frozen-lockfile
     - run: yarn run migrate:lbp
     - run: yarn run migrate:xyk
     - run: yarn run test:unit
