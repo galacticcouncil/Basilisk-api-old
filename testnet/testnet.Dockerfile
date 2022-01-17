@@ -5,6 +5,7 @@ ENV VERSION_POLKADOT_NODE=0.9.13
 ENV VERSION_BASILISK_NODE=6.1.1
 
 #RUN apt-get update && curl https://getsubstrate.io -sSf | bash -s -- --fast
+RUN apt-get update && curl https://sh.rustup.rs -sSf | sh -s -- -y
 
 RUN wget -O polkadot.tar.gz https://github.com/paritytech/polkadot/archive/refs/tags/v$VERSION_POLKADOT_NODE.tar.gz
 RUN tar -xvzf polkadot.tar.gz
@@ -22,14 +23,22 @@ RUN tar -xvzf Basilisk-node.tar.gz
 RUN mv Basilisk-node-$VERSION_BASILISK_NODE Basilisk-node
 
 WORKDIR /Basilisk-node/target/release
-RUN wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v$VERSION_BASILISK_NODE/basilisk
-RUN cp basilisk testing-basilisk
+
+#RUN wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v$VERSION_BASILISK_NODE/basilisk
+
+# Use next line instead of fetching release bin files from the repository. Insert locally built bin file into ./testnet folder.
+COPY ./testnet/basilisk basilisk
+COPY ./testnet/basilisk testing-basilisk
+#RUN cp basilisk testing-basilisk
 RUN chmod +x basilisk
 RUN chmod +x testing-basilisk
 
 #RUN git clone -b feature/dockerize-testnet https://github.com/galacticcouncil/Basilisk-api.git
 COPY . /Basilisk-api
 WORKDIR /Basilisk-api
+
+# Clean up redundant bin files.
+RUN rm testnet/basilisk
 RUN yarn
 
 CMD ["yarn", "testnet:start"]

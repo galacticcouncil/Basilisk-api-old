@@ -48,15 +48,11 @@
                 ]
             }
         ],
-        "genesis": {
-            "runtime": {
-                "runtime_genesis_config": {
-                    "configuration": {
-                        "config": {
-                            "validation_upgrade_frequency": 1,
-                            "validation_upgrade_delay": 10
-                        }
-                    }
+        "runtime_genesis_config": {
+            "parachainsConfiguration": {
+                "config": {
+                    "validation_upgrade_frequency": 1,
+                    "validation_upgrade_delay": 10
                 }
             }
         }
@@ -65,7 +61,8 @@
     "parachains": [
         {
             "bin": "../../Basilisk-node/target/release/testing-basilisk",
-            "chain": "local",
+            "id": "200",
+            "chain": "dev",
             "balance": "1000000000000000000000",
             "nodes": [
                 {
@@ -87,7 +84,7 @@
                     "wsPort": 9989,
                     "port": 31201,
                     "flags": [
-                        "--alice",
+                        "--bob",
                         "--ws-external",
                         "--rpc-external",
                         "--rpc-cors=all",

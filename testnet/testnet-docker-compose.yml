@@ -3,13 +3,13 @@ version: "3.9"
 services:
   polkadot-basilisk-testnet:
     container_name: polkadot-basilisk-testnet
-#    build:
-#      context: ../
-#      dockerfile: testnet/testnet.Dockerfile
-#      shm_size: '12gb'
-#
-#    image: polkadot-basilisk-testnet:0.1.23
-    image: public.ecr.aws/e4o7i5u6/polkadot-basilisk-testnet:0.1.23
+    build:
+      context: ../
+      dockerfile: testnet/testnet.Dockerfile
+      shm_size: '12gb'
+
+    image: polkadot-basilisk-testnet:0.1.25
+#    image: public.ecr.aws/e4o7i5u6/polkadot-basilisk-testnet:0.1.23
     ports:
       - "127.0.0.1:9989:9989"
       - "127.0.0.1:9988:9988"
