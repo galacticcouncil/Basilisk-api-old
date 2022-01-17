@@ -29,19 +29,24 @@ jobs:
         cd release
         wget https://github.com/paritytech/polkadot/releases/download/v0.9.15/polkadot
         chmod +x polkadot
-    - name: Clone Basilisk-node
+
+    - name: Download Basilisk-node
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        github_token: ${{secrets.GITHUB_TOKEN}}
+        # Required, workflow file name or ID
+        workflow: tests.yml
+        # Optional, will use specified workflow run
+        run_id: 1708801604
+        name: basilisk
+        # Optional, defaults to current repo
+        repo: galacticcouncil/Basilisk-node
+
+    - name: Rename Basilisk-node binary
       run: |
-        cd ..
-        git clone https://github.com/galacticcouncil/Basilisk-node.git
-        cd Basilisk-node
-        mkdir -p target
-        cd target
-        mkdir -p release
-        cd release
-        wget https://github.com/galacticcouncil/Basilisk-node/suites/4955321651/artifacts/143993929
-        cp -v basilisk testing-basilisk
-        chmod +x basilisk
-        chmod +x testing-basilisk    
+        mkdir -p ../Basilisk-node/target/release
+        cp -v basilisk ../Basilisk-node/target/release/testing-basilisk
+        chmod +x ../Basilisk-node/target/release/testing-basilisk
 
     - run: yarn
     - name: Run local testnet
