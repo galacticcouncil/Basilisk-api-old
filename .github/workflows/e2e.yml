@@ -54,11 +54,11 @@ jobs:
       run: |
         chmod -R 777 ./scripts/ci/gh-actions-run-testnet-with-waiting.sh
         . ./scripts/ci/gh-actions-run-testnet-with-waiting.sh
-    - name: Wait 90 seconds for sandbox
+    - name: Wait 120 seconds for sandbox
       uses: jakejarvis/wait-action@master
       with:
-        time: '90s'
-    - run: yarn run migrate:lbp
+        time: '120s'
     - run: yarn run migrate:xyk
+    - run: yarn run migrate:lbp
     - run: yarn run test:unit
     - run: yarn run test:e2e
