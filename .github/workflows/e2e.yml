@@ -69,9 +69,9 @@ jobs:
     - run: |
         yarn run migrate:lbp
         yarn run migrate:xyk
-    - name: Wait 50 seconds for processor to catch up
-      uses: jakejarvis/wait-action@master
-      with:
-        time: '50s'
-    - name: Run e2e test
-      run: yarn run test
+    # - name: Wait 50 seconds for processor to catch up
+    #   uses: jakejarvis/wait-action@master
+    #   with:
+    #     time: '50s'
+    - name: Test
+      run: pm2 logs processor
