@@ -67,7 +67,7 @@ jobs:
         yarn run processor:clean-and-setup
         ./scripts/ci/gh-actions-run-processor.sh &
     - run: |
-      yarn run migrate:lbp
-      yarn run migrate:xyk
-    
-    - run: yarn run test
+        yarn run migrate:lbp
+        yarn run migrate:xyk
+    - name: Run e2e test
+      run: yarn run test
