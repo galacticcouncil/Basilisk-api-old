@@ -58,7 +58,16 @@ jobs:
       uses: jakejarvis/wait-action@master
       with:
         time: '120s'
-    - run: yarn run migrate:xyk
-    - run: yarn run migrate:lbp
-    - run: yarn run test:unit
-    - run: yarn run test:e2e
+    - run: yarn run indexer:start -- -d
+    - name: Wait 30 seconds for indexer
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '30s'
+    - run: |
+      yarn run processor:clean-and-setup
+      ./scripts/ci/gh-actions-run-processor.sh &
+    - run: |
+      yarn run migrate:lbp
+      yarn run migrate:xyk
+    
+    - run: yarn run test
