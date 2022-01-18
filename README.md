@@ -69,7 +69,8 @@ For Apple M1 support you need to build the indexer docker image locally:
 
 ```
 git clone https://github.com/subsquid/hydra
-cd hydra 
+cd hydra
+git checkout v5
 ./scripts/docker-build.sh --target indexer-gateway -t subsquid/hydra-indexer-gateway:5
 ./scripts/docker-build.sh --target indexer -t subsquid/hydra-indexer:5
 ./scripts/docker-build.sh --target indexer-status-service -t subsquid/hydra-indexer-status-service:5
