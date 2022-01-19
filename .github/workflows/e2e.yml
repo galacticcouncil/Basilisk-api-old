@@ -58,7 +58,7 @@ jobs:
       uses: jakejarvis/wait-action@master
       with:
         time: '120s'
-    - run: yarn run indexer:start -- -d
+    - run: yarn run indexer:start-ci -- -d
     - name: Wait 30 seconds for indexer
       uses: jakejarvis/wait-action@master
       with:

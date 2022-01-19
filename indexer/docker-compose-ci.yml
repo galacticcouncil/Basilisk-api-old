@@ -9,20 +9,26 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
 
   indexer:
     image: subsquid/hydra-indexer:5
     restart: unless-stopped
+    network_mode: host
     environment:
       - INDEXER_WORKERS=5
       - DB_NAME=indexer
-      - DB_HOST=db
+      #      - DB_HOST=db
+      - DB_HOST=localhost
       - DB_USER=postgres
       - DB_PASS=postgres
       - DB_PORT=5432
-      - REDIS_URI=redis://redis:6379/0
+      #      - REDIS_URI=redis://redis:6379/0
+      - REDIS_URI=localhost:6379
       - BLOCK_HEIGHT=0 # starting block height
-      - WS_PROVIDER_ENDPOINT_URI=ws://host.docker.internal:9988
+      #      - WS_PROVIDER_ENDPOINT_URI=ws://host.docker.internal:9988
+      - WS_PROVIDER_ENDPOINT_URI=ws://localhost:9988
 
       # # If your chain uses custom types you need to provide those
       # # as detailed here - https://polkadot.js.org/docs/api/start/types.extend
@@ -81,4 +87,5 @@ services:
     image: redis:6.0-alpine
     restart: always
     ports:
-      - "6379"
+      - "6379:6379"
+
