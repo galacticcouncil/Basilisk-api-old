@@ -1,7 +1,6 @@
-# Polkadot-launch is not compatible with node >= 15 so we must use node:14
-FROM node:14
+FROM node:16
 
-ENV VERSION_POLKADOT_NODE=0.9.15
+ENV VERSION_POLKADOT_NODE=0.9.13
 ENV VERSION_BASILISK_NODE=6.1.1
 
 #RUN apt-get update && curl https://getsubstrate.io -sSf | bash -s -- --fast
@@ -24,21 +23,23 @@ RUN mv Basilisk-node-$VERSION_BASILISK_NODE Basilisk-node
 
 WORKDIR /Basilisk-node/target/release
 
-#RUN wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v$VERSION_BASILISK_NODE/basilisk
+RUN wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v$VERSION_BASILISK_NODE/basilisk
 
 # Use locally built bins instead of fetching release bin files from the repository. Insert locally built bin file into ./testnet folder.
-COPY ./testnet/basilisk basilisk
-COPY ./testnet/basilisk testing-basilisk
+#COPY ./testnet/basilisk basilisk
+#COPY ./testnet/basilisk testing-basilisk
 
+RUN cp basilisk testing-basilisk
 RUN chmod +x basilisk
 RUN chmod +x testing-basilisk
 
-#RUN git clone -b feature/dockerize-testnet https://github.com/galacticcouncil/Basilisk-api.git
-COPY . /Basilisk-api
+RUN git clone -b develop https://github.com/galacticcouncil/Basilisk-api.git
+#COPY . /Basilisk-api
 WORKDIR /Basilisk-api
 
 # Clean up redundant bin files.
-RUN rm testnet/basilisk
-RUN yarn
+#RUN rm testnet/basilisk
 
-CMD ["yarn", "testnet:start"]
+RUN yarn install --frozen-lockfile --network-timeout 600000
+
+CMD ["yarn", "run", "testnet:start"]
