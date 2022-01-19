@@ -7,20 +7,15 @@ on:
     branches: [ develop ]
 
 jobs:
-  build:
-
+  e2e:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 16.x
       uses: actions/setup-node@v2
       with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        node-version: 16.x
     
     - name: Clone Polkadot-node
       run: |
@@ -31,27 +26,48 @@ jobs:
         cd target
         mkdir -p release
         cd release
-        wget https://github.com/paritytech/polkadot/releases/download/v0.9.13/polkadot
+        wget https://github.com/paritytech/polkadot/releases/download/v0.9.15/polkadot
         chmod +x polkadot
-    - name: Clone Basilisk-node
+
+    - name: Download Basilisk-node
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        github_token: ${{secrets.GITHUB_TOKEN}}
+        workflow: tests.yml
+        run_id: 1708801604
+        name: basilisk
+        repo: galacticcouncil/Basilisk-node
+
+    - name: Rename Basilisk-node binary
       run: |
-        cd ..
-        git clone https://github.com/galacticcouncil/Basilisk-node.git
-        cd Basilisk-node
-        mkdir -p target
-        cd target
-        mkdir -p release
-        cd release
-        wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v6.0.0/basilisk
-        cp -v basilisk testing-basilisk
-        chmod +x basilisk
-        chmod +x testing-basilisk    
+        mkdir -p ../Basilisk-node/target/release
+        cp -v basilisk ../Basilisk-node/target/release/testing-basilisk
+        chmod +x ../Basilisk-node/target/release/testing-basilisk
 
     - run: yarn
-    - run: |
+    - name: Run local testnet
+      timeout-minutes: 10
+      run: |
         chmod -R 777 ./scripts/ci/gh-actions-run-testnet-with-waiting.sh
         . ./scripts/ci/gh-actions-run-testnet-with-waiting.sh
-    - run: yarn run migrate:lbp
-    - run: yarn run migrate:xyk
-    - run: yarn run test:unit
-    - run: yarn run test:e2e
+    - name: Wait 120 seconds for sandbox
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '120s'
+    - run: yarn run indexer:start-ci -- -d
+    - name: Wait 30 seconds for indexer
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '30s'
+    - run: |
+        yarn run processor:clean-and-setup
+        ./scripts/ci/gh-actions-run-processor.sh &
+    - run: |
+        yarn run migrate:lbp
+        yarn run migrate:xyk
+    - name: Wait 50 seconds for processor to catch up
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '50s'
+    - name: Test
+      run: npm run test
