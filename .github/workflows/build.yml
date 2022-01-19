@@ -1,0 +1,62 @@
+name: build  
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+    
+    - name: Clone Polkadot-node
+      run: |
+        cd ..
+        git clone https://github.com/paritytech/polkadot.git
+        cd polkadot
+        mkdir -p target
+        cd target
+        mkdir -p release
+        cd release
+        wget https://github.com/paritytech/polkadot/releases/download/v0.9.15/polkadot
+        chmod +x polkadot
+
+    - name: Download Basilisk-node
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        github_token: ${{secrets.GITHUB_TOKEN}}
+        workflow: tests.yml
+        run_id: 1708801604
+        name: basilisk
+        repo: galacticcouncil/Basilisk-node
+
+    - name: Rename Basilisk-node binary
+      run: |
+        mkdir -p ../Basilisk-node/target/release
+        cp -v basilisk ../Basilisk-node/target/release/testing-basilisk
+        chmod +x ../Basilisk-node/target/release/testing-basilisk
+
+    - run: yarn
+    - name: Run local testnet
+      timeout-minutes: 10
+      run: |
+        chmod -R 777 ./scripts/ci/gh-actions-run-testnet-with-waiting.sh
+        . ./scripts/ci/gh-actions-run-testnet-with-waiting.sh
+    - name: Wait 60 seconds for sandbox
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '60s'
+
+    - name: Build Basilisk API
+      run: |
+        yarn run processor:codegen
+        yarn run processor:typegen
+        yarn run build
