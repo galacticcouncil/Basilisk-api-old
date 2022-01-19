@@ -34,12 +34,9 @@ jobs:
       uses: dawidd6/action-download-artifact@v2
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
-        # Required, workflow file name or ID
         workflow: tests.yml
-        # Optional, will use specified workflow run
         run_id: 1708801604
         name: basilisk
-        # Optional, defaults to current repo
         repo: galacticcouncil/Basilisk-node
 
     - name: Rename Basilisk-node binary
@@ -69,9 +66,9 @@ jobs:
     - run: |
         yarn run migrate:lbp
         yarn run migrate:xyk
-    # - name: Wait 50 seconds for processor to catch up
-    #   uses: jakejarvis/wait-action@master
-    #   with:
-    #     time: '50s'
+    - name: Wait 50 seconds for processor to catch up
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '50s'
     - name: Test
-      run: pm2 logs processor
+      run: npm run test
