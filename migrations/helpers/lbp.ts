@@ -41,10 +41,7 @@ const lbp = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                         '10000000',
                         '90000000',
                         'Linear',
-                        {
-                            numerator: '1',
-                            denominator: '10',
-                        },
+                        ['1', '10'], // numerator, denominator
                         aliceAddress,
                         '0'
                     );
