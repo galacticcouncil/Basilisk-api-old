@@ -1,3 +1,6 @@
+[![build](https://github.com/galacticcouncil/Basilisk-api/actions/workflows/build.yml/badge.svg)](https://github.com/galacticcouncil/Basilisk-api/actions/workflows/build.yml)
+[![e2e test](https://github.com/galacticcouncil/Basilisk-api/actions/workflows/e2e.yml/badge.svg)](https://github.com/galacticcouncil/Basilisk-api/actions/workflows/e2e.yml)
+
 # Basilisk API
 
 This project serves as the API for [Basilisk's](https://bsx.fi) UIs, Dashboards and analytics.
