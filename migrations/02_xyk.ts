@@ -7,7 +7,7 @@ async function main(): Promise<void> {
     const assetPair: assetPair = { assetA: '0', assetB: '2' };
     const assetAAmount = new BigNumber(1_000_000);
     const price = new BigNumber(2);
-    const xykPoolInstance = await xykPool.createPool(assetPair, assetAAmount, price);
+    await xykPool.createPool(assetPair, assetAAmount, price);
 }
 
 main().then(
@@ -16,4 +16,4 @@ main().then(
         console.error(err);
         process.exit(1);
     }
-);
+);  

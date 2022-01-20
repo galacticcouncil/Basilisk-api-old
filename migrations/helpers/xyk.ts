@@ -4,6 +4,7 @@ import { Basilisk } from './api';
 import { get12DecimalsFormat, getSigner, saveXykMigration } from './utils';
 import { assetPair } from './types';
 import { BigNumber } from 'bignumber.js';
+import { pool } from './types';
 
 const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
     return {
@@ -35,9 +36,13 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
                     {},
                     ({ status, events: _events, dispatchError }) => {
                         if (status.isBroadcast) {
-                            console.log('tx hash:', status.hash.toString());
+                            console.log('tx hash is broadcast:', status.hash.toString());
+                        }
+                        if (status.isInBlock) {
+                            console.log('tx hash is in block:', status.hash.toString());
                         }
                         if (status.isFinalized) {
+                            console.log('tx hash is finalized:', status.hash.toString());
                             _events.forEach(
                                 ({
                                     event: { data, method, section },
@@ -82,26 +87,143 @@ const xyk = (assetPair: assetPair, api: ApiPromise, signer: KeyringPair) => {
             });
         },
         buy: async function () {
-            const tx = await this.api.tx.xyk.buy(
-                this.assetPair.assetA, // assetOut
-                this.assetPair.assetB, // assetIn
-                '10000', // amount
-                '10000', // max limit
-                false //discount
-            );
-            await tx.signAndSend(this.signer);
+            return new Promise<void>(async (resolve, reject) => {
+                try {
+                    const unsub = await this.api.tx.xyk
+                        .buy(
+                            this.assetPair.assetA, // assetOut
+                            this.assetPair.assetB, // assetIn
+                            '100000', // amount
+                            '205000', // max limit
+                            false //discount
+                        )
+                        .signAndSend(this.signer, ({ events = [], status }) => {
+                            events.forEach(
+                                ({
+                                    event: { data, method, section },
+                                    phase,
+                                }) => {
+                                    if (method === 'ExtrinsicFailed') {
+                                        unsub();
+                                        reject(1);
+                                    }
+                                    if (section === 'xyk' && method == 'BuyExecuted') {
+                                        console.log(
+                                            '[1/1] >>> Buy executed on XYK Pool.'
+                                        );
+                                        unsub();
+                                        resolve();
+                                    }
+                                }
+                            );
+
+                            if (status.isFinalized) {
+                                unsub();
+                                resolve();
+                            }
+                        });
+                } catch (e: any) {
+                    console.log(e);
+                    reject(e);
+                }
+            });
+        },
+        addLiquidity: async function () {
+            return new Promise<void>(async (resolve, reject) => {
+                try {
+                    const unsub = await this.api.tx.xyk
+                        .addLiquidity(
+                            this.assetPair.assetA, // assetA
+                            this.assetPair.assetB, // assetB
+                            '10000', // amount
+                            '22000', // amount B max limit
+                        )
+                        .signAndSend(this.signer, ({ events = [], status }) => {
+                            events.forEach(
+                                ({
+                                    event: { data, method, section },
+                                    phase,
+                                }) => {
+                                    if (method === 'ExtrinsicFailed') {
+                                        unsub();
+                                        reject(1);
+                                    }
+                                    if (section === 'xyk' && method == 'LiquidityAdded') {
+                                        console.log(
+                                            '[1/1] >>> Liquidity added to XYK Pool.'
+                                        );
+                                        unsub();
+                                        resolve();
+                                    }
+                                }
+                            );
+
+                            if (status.isFinalized) {
+                                unsub();
+                                resolve();
+                            }
+                        });
+                } catch (e: any) {
+                    console.log(e);
+                    reject(e);
+                }
+            });
         },
         sell: async function () {
-            const tx = await this.api.tx.xyk.sell(
-                this.assetPair.assetB, // assetOut
-                this.assetPair.assetA, // assetIn
-                '10000', // amount
-                '10000', // max limit
-                false //discount
-            );
-            await tx.signAndSend(this.signer);
+            return new Promise<void>(async (resolve, reject) => {
+                try {
+                    const unsub = await this.api.tx.xyk
+                        .sell(
+                            this.assetPair.assetB, // assetIn
+                            this.assetPair.assetA, // assetOut
+                            '205000', // amount
+                            '100000', // max limit
+                            false //discount
+                        )
+                        .signAndSend(this.signer, ({ events = [], status }) => {
+                            events.forEach(
+                                ({
+                                    event: { data, method, section },
+                                    phase,
+                                }) => {
+                                    if (method === 'ExtrinsicFailed') {
+                                        unsub();
+                                        reject(1);
+                                    }
+                                    if (section === 'xyk' && method == 'SellExecuted') {
+                                        console.log(
+                                            '[1/1] >>> Sell executed on XYK Pool.'
+                                        );
+                                        unsub();
+                                        resolve();
+                                    }
+                                }
+                            );
+
+                            if (status.isFinalized) {
+                                unsub();
+                                resolve();
+                            }
+                        });
+                } catch (e: any) {
+                    console.log(e);
+                    reject(e);
+                }
+            });
         },
     };
+};
+
+const loadXyk = (pool: pool, api: ApiPromise, signer: KeyringPair) => {
+    const assetPair: assetPair = {
+        assetA: pool.assetAId,
+        assetB: pool.assetBId,
+    };
+    const xykInstance = xyk(assetPair, api, signer);
+    xykInstance.address = pool.address;
+    xykInstance.assetABalance12e;
+    xykInstance.assetBBalance12e;
+    return xykInstance;
 };
 
 export default {
@@ -118,5 +240,12 @@ export default {
         await xykPool.createPool(assetAAmount, price);
 
         return xykPool;
+    },
+    loadPool: async function (pool: pool) {
+        const api = await Basilisk.getInstance();
+        if(!api) throw(`Can't load Basilisk API`)
+        const signer = getSigner();
+
+        return loadXyk(pool, api!, signer);
     },
 };

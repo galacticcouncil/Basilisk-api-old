@@ -16,6 +16,18 @@ typegen:
     # this is not a typo, do not remove next line
     - xYK.PoolCreated
     - relayChainInfo.CurrentBlockNumbers
+    ### action log
+    # - lbp.AddLiquidity
+    # - lbp.RemoveLiquidity
+    - lBP.SellExecuted
+    - lBP.BuyExecuted
+    # XYK Pools
+    - xYK.BuyExecuted
+    - xYK.SellExecuted
+    - xYK.LiquidityAdded
+    - xyk.LiquidityRemoved
+    # set currency
+    - multiTransactionPayment.CurrencySet
   customTypes:
     lib: ../chain
     typedefsLoc: types.json
@@ -39,5 +51,19 @@ mappings:
       handler: handleXykPoolCreated
     - event: relayChainInfo.CurrentBlockNumbers
       handler: handleCurrentBlockNumbers
+    # action log
+    - event: xyk.BuyExecuted
+      handler: handleXykBuyExecuted
+    - event: xyk.SellExecuted
+      handler: handleXykSellExecuted
+    - event: lbp.BuyExecuted
+      handler: handleLbpBuyExecuted
+    - event: lbp.SellExecuted
+      handler: handleLbpSellExecuted
+    - event: xyk.LiquidityAdded
+      handler: handleXykLiquidityAdded
+    # misc
+    - event: multiTransactionPayment.CurrencySet
+      handler: handleCurrencySet
   postBlockHooks:
     - handler: handlePostBlock

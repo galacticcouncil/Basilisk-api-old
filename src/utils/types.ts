@@ -1,16 +1,22 @@
 import { u32 } from '@polkadot/types';
 
+type assetId = bigint;
+type balance = bigint;
+// TODO standardize - either amount or balance
+type amount = balance;
+type address = string;
+
 export type transferParameters = {
     assetId: bigint;
-    from: string;
-    to: string;
-    balance: bigint;
+    from: address;
+    to: address;
+    balance: balance;
 };
 
 export type poolCreatedParameters = {
     poolId: string;
-    assetAId: bigint;
-    assetBId: bigint;
+    assetAId: assetId;
+    assetBId: assetId;
 };
 
 export interface poolCreatedParams1 {
@@ -37,5 +43,32 @@ export type EntityConstructor<T> = {
 
 export type currentBlockNumbersParameters = {
     relayChainBlockHeight: bigint;
-    paraChainBlockHeight: bigint;
+    parachainBlockHeight: bigint;
 };
+
+export type buyDetails = {
+    account: string,
+    assetOut: assetId,
+    assetIn: assetId,
+    outAmount: amount,
+    inAmount: amount,
+    feeAsset: assetId,
+    feeAmount: amount,
+    poolId: address
+}
+
+export type sellDetails = {
+    account: address,
+    assetIn: assetId,
+    assetOut: assetId,
+    inAmount: amount,
+    outAmount: amount,
+    feeAsset: assetId,
+    feeAmount: amount,
+    poolId: address
+}
+
+export type currencySetAction = {
+    account: address,
+    assetId: assetId
+}

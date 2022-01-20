@@ -22,14 +22,14 @@ export const createHistoricalBalance = async (
 ) => {
     const assetABalance = pool.assetABalance;
     const assetBBalance = pool.assetBBalance;
-    const paraChainBlockHeight =
-        blockHeightPairing.paraChainBlockHeight.toString();
+    const parachainBlockHeight =
+        blockHeightPairing.parachainBlockHeight.toString();
     const createdAt = new Date(blockTimeStamp);
 
     const historicalBalance = await getOrCreate(
         store,
         entity,
-        `${pool.id}-${paraChainBlockHeight}`,
+        `${pool.id}-${parachainBlockHeight}`,
         {
             assetABalance,
             assetBBalance,

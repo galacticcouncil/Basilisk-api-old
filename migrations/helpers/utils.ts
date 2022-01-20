@@ -11,6 +11,13 @@ export const getSigner = (): KeyringPair => {
     return signer;
 };
 
+export const getSignerBob = (): KeyringPair => {
+    const keyring = new Keyring({ type: 'sr25519' });
+    const signer = keyring.addFromUri('//Bob');
+
+    return signer;
+};
+
 export const get12DecimalsFormat = (assetBalance: BigNumber): BigNumber => {
     return assetBalance.multipliedBy(new BigNumber('10').pow('12'));
 };

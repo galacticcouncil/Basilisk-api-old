@@ -33,13 +33,13 @@ type BlockHeightPairing @entity {
     "paraChainBlockHash"
     id: ID!
     createdAt: DateTime!
-    paraChainBlockHeight: BigInt!
+    parachainBlockHeight: BigInt!
     relayChainBlockHeight: BigInt!
 }
 
 # TODO generalize LBPPool reference to Pool; consider using union for XYKPool | LBPPool
 type HistoricalBalanceLBP @entity {
-    "PoolId-paraChainBlockHeight"
+    "PoolId-parachainBlockHeight"
     id: ID!
     assetABalance: BigInt!
     assetBBalance: BigInt!
@@ -49,7 +49,7 @@ type HistoricalBalanceLBP @entity {
 }
 
 type HistoricalBalanceXYK @entity {
-    "PoolId-paraChainBlockHeight"
+    "PoolId-parachainBlockHeight"
     id: ID!
     assetABalance: BigInt!
     assetBBalance: BigInt!
@@ -63,6 +63,80 @@ type Chronicle @entity {
     # TODO: use stateSubscription.lastCompletedBlock instead
     lastProcessedBlock: BigInt!
 }
+
+### UserActionLog 
+
+type SellActionDetail {
+    poolId: String!
+    assetIn: BigInt!
+    assetOut: BigInt!
+    assetInAmount: BigInt!
+    assetOutAmount: BigInt!
+    feeAsset: BigInt!
+    feeAmount: BigInt!
+}
+
+type BuyActionDetail {
+    poolId: String!
+    assetOut: BigInt!
+    assetIn: BigInt!
+    assetOutAmount: BigInt!
+    assetInAmount: BigInt!
+    feeAsset: BigInt!
+    feeAmount: BigInt!
+}
+
+type LiquidityAddedActionDetail {
+    poolId: String!
+    assetA: BigInt!
+    assetB: BigInt!
+    assetAAmount: BigInt!
+    assetBAmount: BigInt!
+}
+
+type LiquidityRemovedActionDetail {
+    poolId: String!
+    assetA: BigInt!
+    assetB: BigInt!
+    assetAAmount: BigInt!
+    assetBAmount: BigInt!
+}
+
+type CurrencySetDetail {
+    assetId: BigInt!
+}
+
+union UserActionDetail = SellActionDetail | BuyActionDetail | LiquidityAddedActionDetail | LiquidityRemovedActionDetail | CurrencySetDetail
+
+enum UserActionType {
+    Buy, # LBP & XYK
+    Sell, # LBP & XYK
+    AddLiquidity, # XYK
+    RemoveLiquidity, # XYK
+    CurrencySet,
+    Transfer,
+    XCM, # cross chain transfer
+}
+
+# Processor will always use isFinalized
+enum Status {
+    isBroadcast
+    isInBlock
+    isFinalized 
+}
+
+type UserAction @entity {
+    # extrensic.id
+    id: ID!
+    status: Status!
+    account: String!
+    action: UserActionType!
+    detail: UserActionDetail
+    parachainBlockHeight: BigInt
+}
+
+
+### Testing
 
 type TestBlock @entity {
   blockHeight: BigInt!,
