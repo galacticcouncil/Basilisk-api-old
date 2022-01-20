@@ -5,11 +5,14 @@ import fs from 'fs-extra';
 import { pool } from './types';
 
 export const getSigner = (): KeyringPair => {
-    const keyring = new Keyring({ type: 'sr25519' });
-    const signer = keyring.addFromUri('//Alice');
-
-    return signer;
+    return getSignerFromUri('//Alice');
 };
+
+export const getSignerFromUri = (uri: string):KeyringPair => {
+    const keyring = new Keyring({ type: 'sr25519' });
+    const signer = keyring.addFromUri(uri);
+    return signer;
+}
 
 export const get12DecimalsFormat = (assetBalance: BigNumber): BigNumber => {
     return assetBalance.multipliedBy(new BigNumber('10').pow('12'));

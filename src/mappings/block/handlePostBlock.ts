@@ -9,6 +9,8 @@ import {
 import { createHistoricalBalance } from '../../utils/historicalBalance';
 import { updateChronicle } from '../../utils/chronicle';
 import { MoreThanOrEqual } from 'typeorm';
+import { createHistoricalVolume } from '../../utils/historicalVolume';
+import { errorInvalidCurrentBlockHeightPairing } from '../../constants';
 
 const handlePostBlock = async ({
     block,
@@ -23,18 +25,18 @@ const handlePostBlock = async ({
         }
     );
     if (!currentBlockHeightPairing)
-        throw `Can't process data without block height pairing`;
+        throw errorInvalidCurrentBlockHeightPairing;
 
     const relayChainBlockHeight =
         currentBlockHeightPairing.relayChainBlockHeight;
-    const paraChainBlockHeight = currentBlockHeightPairing.paraChainBlockHeight;
+    const parachainBlockHeight = currentBlockHeightPairing.parachainBlockHeight;
 
     let databaseQueries = [];
 
     // update chronicle
     databaseQueries = [
         updateChronicle(store, {
-            lastProcessedBlock: paraChainBlockHeight,
+            lastProcessedBlock: parachainBlockHeight,
         }),
     ];
 
@@ -51,7 +53,13 @@ const handlePostBlock = async ({
                 store,
                 pool,
                 HistoricalBalanceLBP,
-                currentBlockHeightPairing!,
+                currentBlockHeightPairing,
+                block.timestamp
+            ),
+            createHistoricalVolume(
+                store,
+                pool,
+                currentBlockHeightPairing,
                 block.timestamp
             ),
         ];
@@ -65,7 +73,13 @@ const handlePostBlock = async ({
                 store,
                 pool,
                 HistoricalBalanceXYK,
-                currentBlockHeightPairing!,
+                currentBlockHeightPairing,
+                block.timestamp
+            ),
+            createHistoricalVolume(
+                store,
+                pool,
+                currentBlockHeightPairing,
                 block.timestamp
             ),
         ];
