@@ -11,7 +11,7 @@ npm run build
 docker network inspect basilisk-wrapper-network >/dev/null 2>&1 || \
     docker network create basilisk-wrapper-network
 
-docker-compose -f processor-docker-compose.yml -p basilisk-processor up -d db-processor
+docker-compose -f processor-docker-compose.yml -f dockerized-network.yml -p basilisk-processor up -d db-processor
 sleep 5
 
 npm run processor:migrate

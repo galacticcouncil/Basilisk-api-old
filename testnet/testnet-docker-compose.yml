@@ -8,7 +8,7 @@ services:
 #      dockerfile: testnet/testnet.Dockerfile
 #      shm_size: '12gb'
 #
-#    image: mckrava/polkadot-basilisk-testnet-multiarch:6.1.1-0.9.13-0.1.1
+#    image: polkadot-basilisk-testnet-multiarch:6.1.1-0.9.13-0.1.1
     image: mckrava/polkadot-basilisk-testnet-multiarch:6.1.1-0.9.13-0.1.1
     ports:
       - "127.0.0.1:9989:9989"

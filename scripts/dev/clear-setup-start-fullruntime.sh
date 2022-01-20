@@ -15,7 +15,7 @@ testnet_logfile=$(mktemp)
 docker-compose -f ./testnet/testnet-docker-compose.yml -p basilisk-testnet up 2>&1 | tee "${testnet_logfile}" &
 
 message='POLKADOT LAUNCH COMPLETE'
-echo Basilisk testnet run success triger message:: "$message"
+echo Basilisk testnet success trigger message:: "$message"
 wait_for_log_message "${testnet_logfile}" "$message"
 
 echo ">>> Basilisk testnet has been launched successfully! >>>"
@@ -24,4 +24,4 @@ rm -f "${testnet_logfile}"
 
 yarn processor:clean-and-setup-single
 
-WS_PROVIDER_ENDPOINT_HOST=polkadot-basilisk-testnet docker-compose -f ./indexer/docker-compose.yml -p basilisk-indexer up -d
+WS_PROVIDER_ENDPOINT_HOST=polkadot-basilisk-testnet docker-compose -f ./indexer/docker-compose.yml -f dockerized-network.yml -p basilisk-indexer up -d

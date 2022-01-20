@@ -24,6 +24,7 @@ services:
       - REDIS_URI=redis://redis:6379/0
       - BLOCK_HEIGHT=0 # starting block height
       #      - WS_PROVIDER_ENDPOINT_URI=ws://host.docker.internal:9988
+#      For local usage WS_PROVIDER_ENDPOINT_HOST can be "host.docker.internal"
       - WS_PROVIDER_ENDPOINT_URI=ws://${WS_PROVIDER_ENDPOINT_HOST}:9988
 
       # # If your chain uses custom types you need to provide those
@@ -84,8 +85,3 @@ services:
     restart: always
     ports:
       - "6379"
-
-networks:
-  default:
-    external: true
-    name: basilisk-wrapper-network
