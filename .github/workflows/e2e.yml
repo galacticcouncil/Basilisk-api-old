@@ -63,8 +63,7 @@ jobs:
         yarn run processor:clean-and-setup
         ./scripts/ci/gh-actions-run-processor.sh &
     - run: |
-        yarn run migrate:lbp
-        yarn run migrate:xyk
+        yarn run migrate:test:e2e
     - name: Wait 50 seconds for processor to catch up
       uses: jakejarvis/wait-action@master
       with:
