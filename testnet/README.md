@@ -76,3 +76,7 @@ eebd1c360e8d   redis:6.0-alpine                                                 
 
 Docker-compose config `dockerized-network.yml` is using together with `processor-docker-compose.yml` and `./indexer/docker-compose.yml` for
 adding `networks` parameter.
+
+Dockerized testnet generates a folder (volume) `./testnet-logs` 
+which contains `polkadot-launch` logs from container path `./Basilisk-api/logs`. This logs can be saved in GH Action workflow as 
+artifacts for further investigation.
