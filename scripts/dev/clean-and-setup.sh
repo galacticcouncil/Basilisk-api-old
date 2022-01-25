@@ -1,6 +1,6 @@
 set -e
 
-docker-compose down
+docker-compose -f processor-docker-compose.yml down
 rm -rf db src/generated src/types
 
 npm run processor:codegen
