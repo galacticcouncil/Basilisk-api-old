@@ -3,6 +3,8 @@ export $(grep -v '^#' .env | xargs)
 
 set -e
 
+yarn global add wait-port
+
 docker network inspect basilisk-wrapper-network >/dev/null 2>&1 || \
     docker network create basilisk-wrapper-network
 
@@ -12,7 +14,7 @@ chmod -R 777 ./scripts/dev/wait-for-log-message.sh
 
 testnet_logfile=$(mktemp)
 
-docker-compose -f ./testnet/testnet-docker-compose.yml -p basilisk-testnet up 2>&1 | tee "${testnet_logfile}" &
+docker-compose -f ./testnet/testnet-docker-compose.yml -f dockerized-network.yml -p basilisk-testnet up 2>&1 | tee "${testnet_logfile}" &
 
 message='POLKADOT LAUNCH COMPLETE'
 echo Basilisk testnet success trigger message:: "$message"
@@ -21,7 +23,7 @@ wait_for_log_message "${testnet_logfile}" "$message"
 echo ">>> Basilisk testnet has been launched successfully! >>>"
 rm -f "${testnet_logfile}"
 
-sleep 15
+wait-port 9988
 
 yarn processor:clean-and-setup-single
 
