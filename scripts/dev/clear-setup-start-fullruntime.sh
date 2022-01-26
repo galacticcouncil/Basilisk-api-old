@@ -21,6 +21,7 @@ wait_for_log_message "${testnet_logfile}" "$message"
 echo ">>> Basilisk testnet has been launched successfully! >>>"
 rm -f "${testnet_logfile}"
 
+sleep 15
 
 yarn processor:clean-and-setup-single
 
