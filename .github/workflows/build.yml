@@ -93,7 +93,7 @@ jobs:
       - name: get ecr credentials
         run: aws ecr get-login-password --region eu-west-1 | sudo docker login --username AWS --password-stdin ${{ env.ECR_URL }}
       - name: push image to ecr repository
-        run: sudo docker tag basilisk:latest ${{ env.ECR_URL }}/basilisk-api
+        run: sudo docker tag basilisk-api:latest ${{ env.ECR_URL }}/basilisk-api
       - run: sudo docker push ${{ env.ECR_URL }}/basilisk-api:latest
   run-external-deployment:
     needs: deploy-infra
