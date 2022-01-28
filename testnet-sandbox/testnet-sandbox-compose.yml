@@ -1,16 +1,16 @@
 version: "3.9"
 
 services:
-  polkadot-basilisk-testnet:
-    container_name: polkadot-basilisk-testnet
-    image: mckrava/polkadot-basilisk-testnet-multiarch:6.1.1-0.9.13-0.1.3
+  polkadot-basilisk-testnet-sandbox:
+    container_name: polkadot-basilisk-testnet-sandbox
+    image: mckrava/polkadot-basilisk-testnet-sandbox-multiarch:6.1.1-0.9.13-0.1.3
     ports:
       - "127.0.0.1:9989:9989"
       - "127.0.0.1:9988:9988"
       - "127.0.0.1:9944:9944"
       - "127.0.0.1:30333:30333"
     volumes:
-      - "../testnet-logs:/Basilisk-api/logs"
+      - "../testnet-sandbox-logs:/Basilisk-api/logs"
     networks:
       - default
 

@@ -151,7 +151,7 @@ export class EntityModel{
 
 ## Dockerized infrastructure
 
-More information is [here](testnet/README.md).
+More information is [here](testnet-sandbox/README.md).
 
 ## Testing
 
