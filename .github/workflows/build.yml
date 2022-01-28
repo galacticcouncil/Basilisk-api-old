@@ -80,8 +80,12 @@ jobs:
           aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region eu-west-1
+          
       - name: install docker
-        run: sudo snap install docker
+        run: |
+          sudo rm -rf /etc/docker
+          sudo snap refresh
+          sudo snap install docker
       - name: Sleep for 30 seconds
         run: sleep 30s
       - name: build docker image
@@ -91,4 +95,15 @@ jobs:
       - name: push image to ecr repository
         run: sudo docker tag basilisk:latest ${{ env.ECR_URL }}/basilisk-api
       - run: sudo docker push ${{ env.ECR_URL }}/basilisk-api:latest
-      
+  run-external-deployment:
+    needs: deploy-infra
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/testnet'
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.DISPATCH_DEPLOYMENT_TOKEN }}
+          repository: galacticcouncil/testnet-deployment
+          event-type: run-k8s-deployment
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
