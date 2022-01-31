@@ -2,9 +2,7 @@ name: build
 
 on:
   push:
-    branches: [ develop, feat/infra-setup ]
-  pull_request:
-    branches: [ develop ]
+    branches: [ testnet ]
 
 jobs:
   inform-deployment-start:
