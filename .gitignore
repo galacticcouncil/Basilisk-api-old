@@ -6,7 +6,7 @@
 /src/types
 /pools
 /logs
-/testnet-logs
+/testnet-sandbox-logs
 
 # Created by https://www.toptal.com/developers/gitignore/api/osx
 # Edit at https://www.toptal.com/developers/gitignore?templates=osx
