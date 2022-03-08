@@ -1,14 +1,26 @@
 name: build  
 on:
   push:
-    branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
+    branches: [ testnet ]
 
 jobs:
+  inform-deployment-start:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-ruby@v1
+      - name: Send Webhook Notification
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          HOOK_OS_NAME: ${{ runner.os }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+        run: |
+          git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
+          bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL - Basilisk API build Started
+        shell: bash        
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 16.x
@@ -59,3 +71,66 @@ jobs:
         yarn run processor:codegen
         yarn run processor:typegen
         yarn run build
+  deploy-infra:
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      ECR_URL: 601305236792.dkr.ecr.eu-west-1.amazonaws.com
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: sleep 10
+        run: sleep 10
+      - name: Configure AWS CLI
+        run: |
+          sudo apt-get -y install awscli
+          aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region eu-west-1
+          
+      - name: install docker
+        run: |
+          sudo rm -rf /etc/docker
+          sudo snap refresh
+          sudo snap install docker
+      - name: Sleep for 30 seconds
+        run: sleep 30s
+      - name: build docker image
+        run: sudo docker build -t basilisk-api:latest .
+      - name: get ecr credentials
+        run: aws ecr get-login-password --region eu-west-1 | sudo docker login --username AWS --password-stdin ${{ env.ECR_URL }}
+      - name: push image to ecr repository
+        run: sudo docker tag basilisk-api:latest ${{ env.ECR_URL }}/basilisk-api
+      - run: sudo docker push ${{ env.ECR_URL }}/basilisk-api:latest
+  run-external-deployment:
+    needs: deploy-infra
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/testnet'
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.DISPATCH_DEPLOYMENT_TOKEN }}
+          repository: galacticcouncil/testnet-deployment
+          event-type: run-k8s-deployment
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+  inform-deployment-success:
+    needs: run-external-deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-ruby@v1
+      - name: Send Webhook Notification
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          HOOK_OS_NAME: ${{ runner.os }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+        run: |
+          git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
+          bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL Basilisk - API build Succeeded, Redeploying Testnet
+        shell: bash

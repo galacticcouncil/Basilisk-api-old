@@ -6,7 +6,7 @@ hydraVersion: "4"
 typegen:
   outDir: src/types
   metadata:
-    source: ws://localhost:9988
+    source: wss://basilisk-parachain.hydration.cloud/ws/
   events:
     - tokens.Transfer
     - balances.Transfer
