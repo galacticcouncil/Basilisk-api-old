@@ -3,10 +3,11 @@ import { KeyringPair } from '@polkadot/keyring/types';
 import BigNumber from 'bignumber.js';
 import fs from 'fs-extra';
 import { pool } from './types';
+import "dotenv/config";
 
 export const getSigner = (): KeyringPair => {
     const keyring = new Keyring({ type: 'sr25519' });
-    const signer = keyring.addFromUri('//Alice');
+    const signer = keyring.addFromUri(process.env.SIGNER_SURI || '//Alice');
 
     return signer;
 };
