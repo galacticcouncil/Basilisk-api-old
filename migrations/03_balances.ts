@@ -1,7 +1,7 @@
 import { Basilisk } from './helpers/api';
 import { getSigner } from './helpers/utils';
 
-const participants = [
+const destinations = [
     // gets BSX
     'bXjjaSUwRkYdrnNgHarhhsSjAEDksAeSBh1miTicqUqk1Etes',
     'bXhsEJyKkZ3EenwDtUSQBE3tEAZA3kqLsCDL7Nsi6wuQ6g459',
@@ -21,7 +21,7 @@ const participants = [
     'bXk1AESn2a9venvNRDDYFGpTycYHQi7porGpjdxES4xQXRvpj',
     'bXmTE4ZgWSnbBZA82spbbrF1ebJxdDujRgAu4mc4oM8PUZcWA',
     'bXhndbrHDEHgDT6eAWjUvw4E5Yj6TCdk6bxL3oWgAaQMDG4hX',
-    '5Da19S1o5f1ybH4i4V725DKMXPzy47ihUSsLaPdVwVK19uYm',
+    'bXi6iL5Q3kvPfoxnzx71k95yQCxAVKqFfZSh65FixjsqMyEyx',
     'bXkBpsV2uifcSEiqt5eLBVR1RuyRG9DDQ8jHsU1UEpFRggxoC',
     'bXjWFgjWDd96DXDxf6u1ymk4UuYNLNNRi6L8RKUnFtrovxXJC',
     'bXidt9FsvgKT9r33JSKFrxGDQVgLBTiPZR9yj2CUu6a5m5DrN',
@@ -35,8 +35,8 @@ const participants = [
     // 'bXiTT9xZYDsLarmdGuApTxCoiJDxmXKkfBo4PCsrua83rZ3Rm',
     // 'bXgsgqEHwZdtpShnu8yL2dTSkAZQ5wApuqsr7B7s5TNg5ijZK',
     // 'bXij57gYEQSm74uA3mKzPM98ecGS2Q4QmkayjuCyTtKvYm6BS',
-    // '5G9pSYAqhkqcZFScBxdd9epKC4c5v75yGsXagqC6HJKSrdLd',
-    // '5HguNuwmrfpBo9Mh1GniP77C9fFJmFjadzX9r65rXdZLd2if',
+    // 'bXkgXdBZ6P2DJmwAu5aYMDXUMscmcBpcwMsMLBhHZ5gqofsRb',
+    // 'bXnDcZZL2XwBt1q5ytthSSymEqDQq2yGYizLuLxBKL25hSFZN',
     // 'bXh6nYU9ejJYAXiNwnsMYUzCNbg494gfvcFLS27TN2zZieoZP',
     // 'bXn2LGJ6KkPB3JzoicabYoVgWt7fsy8up4Gy3zq7A1xx5Gy9x',
     // 'bXiTWWfZdUi8pA7cKnHTpaNjSwR8HMqoK15FxMFVX6Zs6R8vd',
@@ -49,7 +49,6 @@ const participants = [
     // 'bXmoe95Uz6LjtdCGY9VxZfCfV2zE2DXy5mA4tW9uExM1WDCQa',
 ];
 
-const destinations = [];
 const assetId = 0;
 const amount = 5000 * 10 ** 12;
 
@@ -66,22 +65,17 @@ async function main() {
 
     await api.tx.utility
         .batch(txs)
-        .signAndSend(
-            signer,
-            {},
-            ({ status, events, dispatchError }: any) => {
-                if (status.isBroadcast) console.log('isBroadcast');
-                if (status.isInBlock) console.log('isInBlock');
-                if (status.isFinalized) console.log('isFinalized');
+        .signAndSend(signer, ({ status, events, dispatchError }: any) => {
+            if (status.isBroadcast) console.log('isBroadcast');
+            if (status.isInBlock) console.log('isInBlock');
+            if (status.isFinalized) console.log('isFinalized');
 
-                if (dispatchError) console.log(
+            if (dispatchError)
+                console.log(
                     'dispatchError',
-                    api.registry.findMetaError(
-                        dispatchError.asModule
-                    )
+                    api.registry.findMetaError(dispatchError.asModule)
                 );
-            }
-        );
+        });
 }
 
 main().then(
