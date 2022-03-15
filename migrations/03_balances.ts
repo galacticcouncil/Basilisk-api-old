@@ -65,7 +65,7 @@ async function main() {
 
     await api.tx.utility
         .batch(txs)
-        .signAndSend(signer, ({ status, events, dispatchError }: any) => {
+        .signAndSend(signer, {}, ({ status, events, dispatchError }: any) => {
             if (status.isBroadcast) console.log('isBroadcast');
             if (status.isInBlock) console.log('isInBlock');
             if (status.isFinalized) console.log('isFinalized');
