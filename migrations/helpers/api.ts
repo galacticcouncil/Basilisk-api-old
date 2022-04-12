@@ -1,8 +1,7 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import fs from "fs";
-import YAML from "yaml";
 import BigNumber from "bignumber.js";
 import type { AnyJson } from "@polkadot/types/types";
+import "dotenv/config";
 
 type RelayChainValidationDataHuman = {
     parentHead: string;
@@ -35,9 +34,7 @@ class BasiliskAPI {
     }
 
     private initialize = async () => {
-        const manifest = fs.readFileSync("manifest.yml", "utf8");
-        const config = YAML.parse(manifest);
-        const wsProvider = new WsProvider(config.typegen.metadata.source);
+        const wsProvider = new WsProvider(process.env.BASILISK_NODE_URL);
 
         this.instance = await new ApiPromise({ provider: wsProvider }).isReady;
     };

@@ -9,6 +9,7 @@
     "build": "rm -rf lib && tsc",
     "migrate:lbp": "ts-node ./migrations/01_lbp.ts",
     "migrate:xyk": "ts-node ./migrations/02_xyk.ts",
+    "migrate:balances": "ts-node ./migrations/03_balances.ts",
     "processor:typegen": "hydra-typegen typegen manifest.yml",
     "processor:codegen": "hydra-cli codegen",
     "processor:db:create": "hydra-cli db:create",
