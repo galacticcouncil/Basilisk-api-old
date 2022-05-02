@@ -149,6 +149,28 @@ export class EntityModel{
 - `db_name` is exact table name in the database.
 - `time_fieldname` is exact field name of timestamp field in the table.
 
+## Historical Volume
+
+One Historical Volume exists per pool and block. The entity is created in two ways:
+1. An asset transfer occurs *to* or *from* the `pool`. Each subsequent transfer within the same block updates the Historical Volume entity.
+2. Post block hook creates Historical Volume entity only if no trading has happened in that block. The volume has initial values.
+
+```typescript
+// schema.graphql
+type HistoricalVolume @entity {
+    "PoolId-paraChainBlockHeight-volume"
+    id: ID!
+    assetAAmountIn: BigInt!
+    assetAAmountOut: BigInt!
+    assetBAmountIn: BigInt!
+    assetBAmountOut: BigInt!
+    createdAt: DateTime!
+    pool: LBPPool! | XYKPool
+    blockHeight: BlockHeightPairing!
+}
+// the actual implementation has HistoricalVolumeXYK and HistoricalVolumeLBP
+```
+
 ## Testing
 
 Make sure to have Basilisk-node with XYK pools enabled. Use `make build` to build `releases/testing-basilisk` binary and launch in `rococo-local` folder `polkadot-launch testing-config.json`.
