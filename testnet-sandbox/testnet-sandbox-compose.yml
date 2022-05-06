@@ -3,7 +3,7 @@ version: "3.9"
 services:
   polkadot-basilisk-testnet-sandbox:
     container_name: polkadot-basilisk-testnet-sandbox
-    image: mckrava/polkadot-basilisk-testnet-sandbox-multiarch:7.0.0-0.9.17_rc4-0.1.4
+    image: mckrava/polkadot-basilisk-testnet-sandbox-multiarch:7.0.1-0.9.20-0.1.6
     ports:
       - "127.0.0.1:9989:9989"
       - "127.0.0.1:9988:9988"
