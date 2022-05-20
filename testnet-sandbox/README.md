@@ -9,6 +9,7 @@ You can use yarn command `yarn fullruntime:clean-setup-start` which can
 - run indexer infra containers
 
 This image is used for testnet container - [polkadot-basilisk-testnet-sandbox-multiarch](https://hub.docker.com/r/mckrava/polkadot-basilisk-testnet-sandbox-multiarch)
+It can be built with this GitHub Action - https://github.com/mckrava/basilisk-testnet-docker-builder-publisher/blob/master/.github/workflows/build-publish-testnet-sandbox-image.yml
 
 You will get testnet/processor/indexer infrastructure fully ready for work and testing.
 All containers are wrapped into one docker network `basilisk-wrapper-network` what allows to use a service name as path
