@@ -149,6 +149,10 @@ export class EntityModel{
 - `db_name` is exact table name in the database.
 - `time_fieldname` is exact field name of timestamp field in the table.
 
+## Dockerized infrastructure
+
+More information is [here](testnet-sandbox/README.md).
+
 ## Testing
 
 Make sure to have Basilisk-node with XYK pools enabled. Use `make build` to build `releases/testing-basilisk` binary and launch in `rococo-local` folder `polkadot-launch testing-config.json`.

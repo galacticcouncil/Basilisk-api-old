@@ -61,7 +61,7 @@ jobs:
         time: '30s'
     - run: |
         yarn run processor:clean-and-setup
-        ./scripts/ci/gh-actions-run-processor.sh &
+        . ./scripts/ci/gh-actions-run-processor.sh &
     - run: |
         yarn run migrate:lbp
         yarn run migrate:xyk

@@ -6,7 +6,7 @@ hydraVersion: "4"
 typegen:
   outDir: src/types
   metadata:
-    source: ws://localhost:9988
+    source: ws://127.0.0.1:9988
   events:
     - tokens.Transfer
     - balances.Transfer

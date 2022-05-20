@@ -1,0 +1,64 @@
+name: Build and Publish Testnet Sandbox Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      polkadot_version:
+        description: 'Polkadot release version'
+        required: true
+        type: string
+      basilisk_node_version:
+        description: 'Basilisk-node release version'
+        required: true
+        type: string
+      image_build_version:
+        description: 'Docker image build version (Semantic Versioning should be used)'
+        required: true
+        type: string
+      registry_name:
+        description: 'Docker Hub registry name'
+        required: false
+        default: 'mckrava'
+        type: string
+
+concurrency:
+  group: build-images
+  cancel-in-progress: true
+
+env:
+  REGISTRY: ${{ github.event.inputs.registry_name }}
+  IMAGE_TAG: ${{ github.event.inputs.polkadot_version }}-${{ github.event.inputs.basilisk_node_version }}-${{ github.event.inputs.image_build_version }}
+#  IMAGE_TAG: 7.0.0-0.9.17_rc4-0.1.4
+
+jobs:
+  build-testnet-multiarch-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          buildkitd-flags: --debug
+
+      - name: Login to my Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          file: ./testnet/testnet.Dockerfile
+          tags: ${{ env.REGISTRY }}/polkadot-basilisk-testnet-sandbox-multiarch:${{env.IMAGE_TAG}}
+          build-args:
+            VERSION_POLKADOT_NODE=${{ github.event.inputs.polkadot_version }}
+            VERSION_BASILISK_NODE=${{ github.event.inputs.basilisk_node_version }}
+

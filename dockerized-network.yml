@@ -1,0 +1,9 @@
+version: "3.4"
+
+# All services will be merged in run command
+# This config file is necessary for adding "networks" parameter for dockerized testnet infra config
+
+networks:
+  default:
+    external: true
+    name: basilisk-wrapper-network

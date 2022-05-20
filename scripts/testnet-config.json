@@ -1,62 +1,106 @@
 {
-  "relaychain": {
-    "bin": "../../polkadot/target/release/polkadot",
-    "chain": "rococo-local",
-    "nodes": [
-      {
-        "name": "alice",
-        "wsPort": 9944,
-        "port": 30444
-      },
-      {
-        "name": "bob",
-        "wsPort": 9955,
-        "port": 30555
-      },
-      {
-        "name": "charlie",
-        "wsPort": 9966,
-        "port": 30666
-      },
-      {
-        "name": "dave",
-        "wsPort": 9977,
-        "port": 30777
-      }
-    ],
-    "genesis": {
-      "runtime": {
-        "runtime_genesis_config": {
-          "configuration": {
-            "config": {
-              "validation_upgrade_frequency": 1,
-              "validation_upgrade_delay": 10
+    "relaychain": {
+        "bin": "../../polkadot/target/release/polkadot",
+        "chain": "rococo-local",
+        "nodes": [
+            {
+                "name": "alice",
+                "wsPort": 9944,
+                "port": 30444,
+                "flags": [
+                    "--rpc-cors=all",
+                    "--rpc-external",
+                    "--ws-external",
+                    "--prometheus-external"
+                ]
+            },
+            {
+                "name": "bob",
+                "wsPort": 9955,
+                "port": 30555,
+                "flags": [
+                    "--rpc-cors=all",
+                    "--rpc-external",
+                    "--ws-external",
+                    "--prometheus-external"
+                ]
+            },
+            {
+                "name": "charlie",
+                "wsPort": 9966,
+                "port": 30666,
+                "flags": [
+                    "--rpc-cors=all",
+                    "--rpc-external",
+                    "--ws-external",
+                    "--prometheus-external"
+                ]
+            },
+            {
+                "name": "dave",
+                "wsPort": 9977,
+                "port": 30777,
+                "flags": [
+                    "--rpc-cors=all",
+                    "--rpc-external",
+                    "--ws-external",
+                    "--prometheus-external"
+                ]
             }
-          }
+        ],
+        "genesis": {
+            "runtime": {
+                "runtime_genesis_config": {
+                    "configuration": {
+                        "config": {
+                            "validation_upgrade_frequency": 1,
+                            "validation_upgrade_delay": 10
+                        }
+                    }
+                }
+            }
         }
-      }
-    }
-  },
-  "simpleParachains": [],
-  "parachains": [
-    {
-      "bin": "../../Basilisk-node/target/release/testing-basilisk",
-      "chain":"local",
-      "balance": "1000000000000000000000",
-      "nodes": [
+    },
+    "simpleParachains": [],
+    "parachains": [
         {
-          "wsPort": 9988,
-          "port": 31200,
-          "flags": ["--alice", "--rpc-cors=all", "--runtime=testing", "--", "--execution=wasm"]
-        },
-        {
-          "wsPort": 9989,
-          "port": 31201,
-          "flags": ["--bob", "--rpc-cors=all", "--runtime=testing", "--", "--execution=wasm"]
+            "bin": "../../Basilisk-node/target/release/testing-basilisk",
+            "chain": "local",
+            "balance": "1000000000000000000000",
+            "nodes": [
+                {
+                    "wsPort": 9988,
+                    "port": 31200,
+                    "flags": [
+                        "--alice",
+                        "--ws-external",
+                        "--rpc-external",
+                        "--rpc-cors=all",
+                        "--unsafe-rpc-external",
+                        "--rpc-methods=unsafe",
+                        "--runtime=testing",
+                        "--",
+                        "--execution=wasm"
+                    ]
+                },
+                {
+                    "wsPort": 9989,
+                    "port": 31201,
+                    "flags": [
+                        "--alice",
+                        "--ws-external",
+                        "--rpc-external",
+                        "--rpc-cors=all",
+                        "--unsafe-rpc-external",
+                        "--rpc-methods=unsafe",
+                        "--runtime=testing",
+                        "--",
+                        "--execution=wasm"
+                    ]
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "hrmpChannels": [],
-  "types": {}
+    ],
+    "hrmpChannels": [],
+    "types": {}
 }
